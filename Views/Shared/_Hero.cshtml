@@ -1,0 +1,61 @@
+﻿@* _Hero.cshtml *@
+<!-- Hero -->
+<section class="relative overflow-hidden">
+    <div class="glow"></div>
+    <div class="mx-auto max-w-7xl px-4 pt-14 pb-20 md:pt-20 md:pb-28">
+        <div class="grid items-center gap-12 md:grid-cols-2">
+            <div>
+                <div class="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-neutral ring-1 ring-inset ring-brand-100">
+                    <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
+                    Instant online booking • 24/7
+                </div>
+                <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">
+                    Healthcare appointments,
+                    <span class="text-brand-900">simplified</span>.
+                </h1>
+                <p class="mt-4 text-neutral">
+                    Find the right specialist, pick a time, and confirm in under 2
+                    minutes. Transparent pricing, reminders, and secure records in one
+                    place.
+                </p>
+                <form id="book" class="mt-8 grid gap-3 sm:grid-cols-3">
+                    <input type="text"
+                           placeholder="Search specialty (e.g., cardiology)"
+                           class="sm:col-span-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-sm focus:border-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/50" />
+                    <button type="button"
+                            class="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
+                        Check availability
+                    </button>
+                </form>
+            </div>
+            <div class="relative">
+                <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-accent/20 to-white blur-2xl"></div>
+                <div class="overflow-hidden rounded-3xl border border-secondary bg-white shadow-soft">
+                    <div class="grid grid-cols-3 gap-4 p-6">
+                        <div class="col-span-3">
+                            <h3 class="text-sm font-semibold">Your next visit</h3>
+                            <p class="mt-1 text-sm text-slate-600">
+                                Dr. Jane Smith • Dermatology • Oct 22, 10:30 AM
+                            </p>
+                        </div>
+                        <!-- Calendar preview image -->
+                        <img src="https://cdn.pixabay.com/photo/2024/09/01/15/40/ai-generated-9014380_1280.png"
+                             alt="Calendar preview"
+                             class="col-span-3 h-40 w-full rounded-xl object-cover" />
+                        <!-- Doctor profile images -->
+                        <img src="https://images.pexels.com/photos/8460379/pexels-photo-8460379.jpeg"
+                             alt="Doctor profile 1"
+                             class="h-20 w-full rounded-xl object-cover" />
+                        <img src="https://images.pexels.com/photos/8376232/pexels-photo-8376232.jpeg"
+                             alt="Doctor profile 2"
+                             class="h-20 w-full rounded-xl object-cover" />
+
+                        <img src="https://images.pexels.com/photos/8460159/pexels-photo-8460159.jpeg"
+                             alt="Doctor profile 3"
+                             class="h-20 w-full rounded-xl object-cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

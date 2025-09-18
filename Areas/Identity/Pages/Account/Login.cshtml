@@ -1,0 +1,88 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-secondary px-4">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-soft p-8">
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-2xl font-bold text-brand-900">@ViewData["Title"]</h1>
+            <p class="mt-2 text-sm text-neutral">Access your account to book and manage appointments.</p>
+        </div>
+
+        <!-- Local Login Form -->
+        <form id="account" method="post" class="mt-6 space-y-5">
+            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm" role="alert"></div>
+
+            <div>
+                <label asp-for="Input.Email" class="block text-sm font-medium text-neutral">Email</label>
+                <input asp-for="Input.Email"
+                       class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 text-sm focus:border-brand-900 focus:ring-2 focus:ring-accent/50"
+                       placeholder="name@example.com" autocomplete="username" />
+                <span asp-validation-for="Input.Email" class="text-red-600 text-xs"></span>
+            </div>
+
+            <div>
+                <label asp-for="Input.Password" class="block text-sm font-medium text-neutral">Password</label>
+                <input asp-for="Input.Password"
+                       class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 text-sm focus:border-brand-900 focus:ring-2 focus:ring-accent/50"
+                       placeholder="••••••" autocomplete="current-password" />
+                <span asp-validation-for="Input.Password" class="text-red-600 text-xs"></span>
+            </div>
+
+            <div class="flex items-center justify-between text-sm">
+                <div class="flex items-center gap-2">
+                    <input asp-for="Input.RememberMe" class="h-4 w-4 text-accent border-gray-300 rounded" />
+                    <label asp-for="Input.RememberMe" class="text-neutral">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
+                </div>
+                <a id="forgot-password" asp-page="./ForgotPassword" class="text-brand-900 hover:underline">Forgot password?</a>
+            </div>
+
+            <button id="login-submit"
+                    type="submit"
+                    class="w-full rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
+                Log in
+            </button>
+
+            <div class="mt-4 text-sm text-center space-y-1">
+                <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-brand-900 hover:underline">Register as a new user</a></p>
+                <p><a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-brand-900 hover:underline">Resend email confirmation</a></p>
+            </div>
+        </form>
+
+        <!-- External Login -->
+        <div class="mt-8">
+            <h3 class="text-sm font-medium text-neutral text-center">Or log in with</h3>
+            <div class="mt-4 space-y-3">
+                @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                {
+                    <p class="text-sm text-neutral text-center">
+                        No external authentication services configured. See this
+                        <a href="https://go.microsoft.com/fwlink/?LinkID=532715" class="underline text-accent">guide</a>.
+                    </p>
+                }
+                else
+                {
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-3">
+                        @foreach (var provider in Model.ExternalLogins!)
+                        {
+                            <button type="submit"
+                                    class="w-full rounded-xl bg-white border border-secondary px-4 py-2 text-sm font-semibold text-brand-900 hover:bg-secondary"
+                                    name="provider"
+                                    value="@provider.Name">
+                                @provider.DisplayName
+                            </button>
+                        }
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

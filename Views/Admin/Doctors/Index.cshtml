@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Manage Doctors";
+}
+<a asp-action="Create" class="mb-4 inline-block rounded bg-accent px-4 py-2 text-sm font-semibold text-neutral">+ Add Doctor</a>
+<table class="w-full border border-secondary text-sm">
+    <thead class="bg-brand-900 text-white">
+        <tr>
+            <th class="p-2">Name</th>
+            <th class="p-2">Specialty</th>
+            <th class="p-2">Fee</th>
+            <th class="p-2">Availability</th>
+            <th class="p-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @* loop over doctors *@
+        <tr class="border-t">
+            <td class="p-2">Dr. Smith</td>
+            <td class="p-2">Cardiology</td>
+            <td class="p-2">$50</td>
+            <td class="p-2">Mon-Fri</td>
+            <td class="p-2 space-x-2">
+                <a asp-action="Edit" class="text-brand-900 hover:underline">Edit</a>
+                <a asp-action="Delete" class="text-red-600 hover:underline">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

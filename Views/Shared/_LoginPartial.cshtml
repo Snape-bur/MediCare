@@ -1,0 +1,36 @@
+﻿@using MediCare.Models
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+<ul class="flex items-center gap-4 text-sm font-medium">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="text-neutral hover:text-brand-900">
+                Hello, @UserManager.GetUserName(User)!
+            </a>
+        </li>
+        <li>
+            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" class="inline">
+                <button id="logout" type="submit" class="rounded-xl bg-accent px-3 py-1.5 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
+                    Log out
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Login" class="text-neutral hover:text-brand-900">
+                Sign in
+            </a>
+        </li>
+        <li>
+            <a asp-area="Identity" asp-page="/Account/Register" class="rounded-xl bg-brand-900 px-3 py-1.5 text-sm font-semibold text-white shadow-soft hover:bg-brand-800">
+                Book now
+            </a>
+        </li>
+    }
+</ul>

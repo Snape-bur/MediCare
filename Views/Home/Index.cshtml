@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "MediCare — Book Doctors Online";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <meta name="description"
+          content="Book healthcare appointments online. Comprehensive specialists, transparent pricing, and fast booking in minutes." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+              colors: {
+                brand: {
+                  50: "#E8EAF6",
+                  100: "#C5CAE9",
+                  200: "#9FA8DA",
+                  300: "#7986CB",
+                  400: "#5C6BC0",
+                  500: "#3F51B5",
+                  600: "#303F9F",
+                  700: "#283593",
+                  800: "#1A237E",
+                  900: "#0D47A1" /* Navy Blue */,
+                },
+                accent: "#FBC02D" /* Gold */,
+                secondary: "#ECEFF1" /* Light Gray */,
+                neutral: "#212121" /* Dark Gray/Black */,
+              },
+              boxShadow: {
+                soft: "0 10px 30px rgba(0, 0, 0, 0.08)",
+              },
+            },
+          },
+        };
+    </script>
+    <link rel="stylesheet" href="~/css/styles.css" />
+</head>
+<body class="bg-secondary text-neutral antialiased">
+    @Html.Partial("_TopBar")
+    @Html.Partial("_Header")
+    @Html.Partial("_Hero")
+    @Html.Partial("_HowItWorks")
+    @Html.Partial("_Stats")
+    @Html.Partial("_Pricing")
+    @Html.Partial("_CTA")
+    @Html.Partial("_Footer")
+
+    <script src="~/js/scripts.js"></script>
+</body>
+</html>

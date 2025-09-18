@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 900: '#0D47A1' },
+                        accent: '#FBC02D',
+                        secondary: '#ECEFF1',
+                        neutral: '#212121'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-secondary text-neutral antialiased">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-brand-900 text-white flex flex-col">
+            <div class="p-4 text-xl font-bold border-b border-white/20">MediCare Admin</div>
+            <nav class="flex-1 p-4 space-y-2 text-sm">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">Dashboard</a>
+                <a asp-area="Admin" asp-controller="Doctors" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">Manage Doctors</a>
+                <a asp-area="Admin" asp-controller="Specialties" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">Manage Specialties</a>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">View Users</a>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">Reports</a>
+            </nav>
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="p-4 border-t border-white/20">
+                <button class="w-full rounded bg-accent px-3 py-2 text-sm font-semibold text-neutral hover:bg-yellow-500">Log out</button>
+            </form>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <h1 class="text-2xl font-bold mb-4">@ViewData["Title"]</h1>
+            <div class="bg-white rounded-xl shadow p-6">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+</body>
+</html>

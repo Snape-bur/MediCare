@@ -1,0 +1,75 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-secondary px-4">
+    <div class="w-full max-w-4xl bg-white rounded-2xl shadow-soft overflow-hidden grid md:grid-cols-2">
+
+        <!-- Left side: form -->
+        <div class="p-8">
+            <h1 class="text-2xl font-bold text-brand-900">@ViewData["Title"]</h1>
+            <p class="mt-2 text-sm text-neutral">Create a new account to book appointments faster.</p>
+            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-6 space-y-4">
+                <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm" role="alert"></div>
+                <div class="form-group">
+                    <label asp-for="Input.FullName"></label>
+                    <input asp-for="Input.FullName" class="form-control" />
+                    <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Email" class="block text-sm font-medium text-neutral">Email</label>
+                    <input asp-for="Input.Email" class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 focus:border-brand-900 focus:ring-2 focus:ring-accent/50" placeholder="name@example.com" />
+                    <span asp-validation-for="Input.Email" class="text-red-600 text-xs"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Password" class="block text-sm font-medium text-neutral">Password</label>
+                    <input asp-for="Input.Password" class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 focus:border-brand-900 focus:ring-2 focus:ring-accent/50" placeholder="••••••" />
+                    <span asp-validation-for="Input.Password" class="text-red-600 text-xs"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.ConfirmPassword" class="block text-sm font-medium text-neutral">Confirm Password</label>
+                    <input asp-for="Input.ConfirmPassword" class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 focus:border-brand-900 focus:ring-2 focus:ring-accent/50" placeholder="••••••" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-red-600 text-xs"></span>
+                </div>
+
+                <button id="registerSubmit" type="submit" class="w-full rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
+                    Register
+                </button>
+            </form>
+        </div>
+
+        <!-- Right side: external login -->
+        <div class="bg-brand-900 text-white p-8 flex flex-col justify-center">
+            <h3 class="text-lg font-semibold text-accent">Use another service</h3>
+            <p class="mt-2 text-sm text-secondary">Sign up quickly with your preferred account.</p>
+            <hr class="my-4 border-white/20" />
+            @if ((Model.ExternalLogins?.Count ?? 0) == 0)
+            {
+                <p class="text-sm text-secondary">
+                    No external authentication services configured. See this
+                    <a href="https://go.microsoft.com/fwlink/?LinkID=532715" class="underline text-accent">guide</a>.
+                </p>
+            }
+            else
+            {
+                <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-3">
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit" class="w-full rounded-xl bg-white px-4 py-2 text-sm font-semibold text-brand-900 hover:bg-secondary" name="provider" value="@provider.Name">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </form>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

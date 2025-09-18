@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MediCare</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+                    colors: {
+                        brand: {
+                            900: '#0D47A1' /* Navy Blue */
+                        },
+                        accent: '#FBC02D',   /* Gold */
+                        secondary: '#ECEFF1', /* Light Gray */
+                        neutral: '#212121'   /* Dark Gray */
+                    },
+                    boxShadow: {
+                        soft: '0 10px 30px rgba(0, 0, 0, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MediCare.styles.css" asp-append-version="true" />
+</head>
+<body class="bg-secondary text-neutral antialiased">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b">
+        <div class="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
+            <!-- Logo -->
+            <a class="flex items-center gap-2 font-bold text-brand-900" asp-area="" asp-controller="Home" asp-action="Index">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 text-accent">
+                    <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 5a1 1 0 00-2 0v4H7a1 1 0 000 2h4v4a1 1 0 002 0v-4h4a1 1 0 000-2h-4V7z" />
+                </svg>
+                MediCare
+            </a>
+
+            <!-- Nav -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a class="hover:text-brand-900" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="hover:text-brand-900" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </nav>
+
+            <!-- LoginPartial -->
+            <div class="flex items-center gap-4">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main role="main" class="mx-auto max-w-7xl px-4 py-6">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-10">
+        <div class="mx-auto max-w-7xl px-4 py-6 flex flex-col sm:flex-row justify-between text-xs text-neutral">
+            <p>&copy; 2025 - MediCare</p>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="hover:text-brand-900">Privacy</a>
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
