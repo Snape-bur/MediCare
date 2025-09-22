@@ -1,0 +1,29 @@
+﻿@model IEnumerable<MediCare.Models.Patient>
+
+@{
+    ViewData["Title"] = "Patients";
+}
+
+<h2>Patients</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var patient in Model)
+        {
+            <tr>
+                <td>@patient.AppUser.FullName</td>
+                <td>@patient.AppUser.Email</td>
+                <td>@patient.AppUser.PhoneNumber</td>
+                <td>@patient.AppUser.Address</td>
+            </tr>
+        }
+    </tbody>
+</table>

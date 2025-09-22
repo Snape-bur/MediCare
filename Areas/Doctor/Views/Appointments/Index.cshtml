@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MediCare.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Appointments";
+    Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Appointments</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Date/Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var appt in Model)
+    {
+        <tr>
+            <td>@appt.Patient?.AppUser?.FullName</td>
+            <td>@appt.DateTime</td>
+            <td>@appt.Status</td>
+            <td>
+                @if (appt.Status == "Pending")
+                {
+                    <form asp-action="Confirm" asp-route-id="@appt.AppointmentId" method="post" style="display:inline">
+                        <button class="btn btn-success btn-sm">Confirm</button>
+                    </form>
+                    <form asp-action="Cancel" asp-route-id="@appt.AppointmentId" method="post" style="display:inline">
+                        <button class="btn btn-danger btn-sm">Cancel</button>
+                    </form>
+                    <a asp-action="Reschedule" asp-route-id="@appt.AppointmentId" class="btn btn-warning btn-sm">Reschedule</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

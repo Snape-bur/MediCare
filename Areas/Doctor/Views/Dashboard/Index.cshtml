@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Doctor Dashboard";
+    Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Welcome, @ViewData["DoctorName"]</h1>
+<p>Specialty: @ViewData["Specialty"]</p>
+
+<div class="card mt-4 p-3 shadow-sm">
+    <h4>Quick Stats</h4>
+    <p>Upcoming Appointments: <strong>@ViewData["UpcomingAppointments"]</strong></p>
+</div>
+
+<div class="mt-4">
+    <h4>Actions</h4>
+    <ul>
+        <li><a asp-area="Doctor" asp-controller="Appointments" asp-action="Index">View Appointments</a></li>
+        <li><a asp-area="Doctor" asp-controller="Availability" asp-action="Edit">Edit Availability</a></li>
+    </ul>
+</div>

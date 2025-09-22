@@ -1,0 +1,64 @@
+﻿@model IEnumerable<MediCare.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Doctors";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-10">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">👨‍⚕️ Doctors</h1>
+        <a asp-action="Create"
+           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white
+                  bg-gradient-to-r from-indigo-600 to-blue-500 rounded-xl shadow-lg
+                  hover:from-indigo-700 hover:to-blue-600 focus:outline-none
+                  focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">
+            <span class="text-lg font-bold">+</span> Add Doctor
+        </a>
+    </div>
+
+    <!-- Doctors Grid -->
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        @foreach (var item in Model)
+        {
+            <div class="group bg-white rounded-2xl shadow-sm hover:shadow-2xl
+                            transition-transform duration-300 border border-gray-100 hover:-translate-y-1">
+                <div class="p-6">
+                    <!-- Doctor Profile -->
+                    <div class="flex items-center mb-6">
+                        <img src="https://cdn-icons-png.flaticon.com/512/387/387561.png"
+                             alt="Doctor Profile"
+                             class="h-16 w-16 rounded-full border-2 border-indigo-500 object-cover shadow-md" />
+
+
+
+                        <div class="ml-4">
+                            <h2 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition">
+                                @item.Specialty?.Name ?? "Specialty N/A"
+                            </h2>
+                            <p class="text-sm text-gray-500">👤 User: @item.AppUser?.UserName</p>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Info -->
+                    <div class="space-y-2 text-sm text-gray-700">
+                        <p><span class="font-medium">💰 Fee:</span> $@item.ConsultationFee</p>
+                        <p><span class="font-medium">🕒 Availability:</span> @item.AvailabilitySchedule</p>
+                        <p><span class="font-medium">📋 Profile:</span> @item.ProfileInfo</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="mt-6 flex justify-between border-t pt-4">
+                        <a asp-action="Details" asp-route-id="@item.DoctorId"
+                           class="text-sm font-medium text-indigo-600 hover:text-indigo-800 hover:underline">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.DoctorId"
+                           class="text-sm font-medium text-green-600 hover:text-green-800 hover:underline">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.DoctorId"
+                           class="text-sm font-medium text-red-600 hover:text-red-800 hover:underline">Delete</a>
+                    </div>
+                </div>
+            </div>
+                }
+    </div>
+</div>

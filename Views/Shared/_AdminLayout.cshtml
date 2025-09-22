@@ -33,7 +33,7 @@
                 <a asp-area="Admin" asp-controller="Reports" asp-action="Index" class="block px-3 py-2 rounded hover:bg-brand-800">Reports</a>
             </nav>
             <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="p-4 border-t border-white/20">
-                <button class="w-full rounded bg-accent px-3 py-2 text-sm font-semibold text-neutral hover:bg-yellow-500">Log out</button>
+                @await Html.PartialAsync("_LoginPartial")
             </form>
         </aside>
 

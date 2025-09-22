@@ -126,20 +126,20 @@ namespace MediCare.Areas.Identity.Pages.Account
 
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
                     }
                     else if (await _userManager.IsInRoleAsync(user, "Doctor"))
                     {
-                        return RedirectToAction("Dashboard", "Doctor");
+                        return RedirectToAction("Index", "Dashboard", new { area = "Doctor" });
                     }
                     else if (await _userManager.IsInRoleAsync(user, "Patient"))
                     {
-                        return RedirectToAction("Dashboard", "Patient");
+                        return RedirectToAction("Index", "Dashboard", new { area = "Patient" });
                     }
 
-                    // fallback
                     return LocalRedirect(returnUrl);
                 }
+
 
                 if (result.RequiresTwoFactor)
                 {

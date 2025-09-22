@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MediCare.Data;
 using MediCare.Models;
+using DoctorModel = MediCare.Models.Doctor;
 
-namespace MediCare.Controllers
+
+namespace MediCare.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class DoctorsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,14 +22,14 @@ namespace MediCare.Controllers
             _context = context;
         }
 
-        // GET: Doctors
+        // GET: Admin/Doctors
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Doctors.Include(d => d.AppUser).Include(d => d.Specialty);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Doctors/Details/5
+        // GET: Admin/Doctors/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,7 +49,7 @@ namespace MediCare.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Create
+        // GET: Admin/Doctors/Create
         public IActionResult Create()
         {
             ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -54,12 +57,12 @@ namespace MediCare.Controllers
             return View();
         }
 
-        // POST: Doctors/Create
+        // POST: Admin/Doctors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DoctorId,AppUserId,SpecialtyId,ConsultationFee,AvailabilitySchedule,ProfileInfo")] Doctor doctor)
+        public async Task<IActionResult> Create([Bind("DoctorId,AppUserId,SpecialtyId,ConsultationFee,AvailabilitySchedule,ProfileInfo")] DoctorModel doctor)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +75,7 @@ namespace MediCare.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Edit/5
+        // GET: Admin/Doctors/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,12 +93,12 @@ namespace MediCare.Controllers
             return View(doctor);
         }
 
-        // POST: Doctors/Edit/5
+        // POST: Admin/Doctors/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DoctorId,AppUserId,SpecialtyId,ConsultationFee,AvailabilitySchedule,ProfileInfo")] Doctor doctor)
+        public async Task<IActionResult> Edit(int id, [Bind("DoctorId,AppUserId,SpecialtyId,ConsultationFee,AvailabilitySchedule,ProfileInfo")] DoctorModel doctor)
         {
             if (id != doctor.DoctorId)
             {
@@ -127,7 +130,7 @@ namespace MediCare.Controllers
             return View(doctor);
         }
 
-        // GET: Doctors/Delete/5
+        // GET: Admin/Doctors/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +150,7 @@ namespace MediCare.Controllers
             return View(doctor);
         }
 
-        // POST: Doctors/Delete/5
+        // POST: Admin/Doctors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
