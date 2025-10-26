@@ -1,0 +1,64 @@
+﻿@model MediCare.Models.Payment
+
+@{
+    ViewData["Title"] = "Confirm Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex justify-center items-center min-h-[80vh] bg-gray-50">
+    <div class="bg-white shadow-lg rounded-3xl p-8 w-full max-w-md">
+        <!-- Header -->
+        <h2 class="text-2xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2">
+            💳 Confirm Payment
+        </h2>
+
+        <!-- Appointment Info -->
+        <div class="text-left bg-gray-50 p-4 rounded-xl mb-6 shadow-inner">
+            <p><strong>Doctor:</strong> @Model.Appointment?.Doctor?.AppUser?.FullName</p>
+            <p><strong>Date:</strong> @Model.Appointment?.DateTime.ToString("dddd, dd MMM yyyy hh:mm tt")</p>
+            <p><strong>Amount:</strong> <span class="text-green-600 font-semibold">฿@Model.Amount.ToString("N2")</span></p>
+        </div>
+
+        <!-- Mock Payment Form -->
+        <form asp-action="Confirm" method="post" class="space-y-4">
+            <input type="hidden" name="appointmentId" value="@Model.AppointmentId" />
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Cardholder Name</label>
+                <input type="text" placeholder="John Doe" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Card Number</label>
+                <input type="text" maxlength="19" placeholder="1234 5678 9012 3456"
+                       class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Expiry Date</label>
+                    <input type="text" placeholder="MM/YY"
+                           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">CVV</label>
+                    <input type="text" maxlength="4" placeholder="123"
+                           class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" required />
+                </div>
+            </div>
+
+            <button type="submit"
+                    class="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow transition">
+                ✅ Confirm Payment
+            </button>
+        </form>
+
+        <!-- Back Link -->
+        <div class="mt-6 text-center">
+            <a asp-area="Patient" asp-controller="Appointments" asp-action="Index"
+               class="text-sm text-gray-500 hover:text-gray-700 transition">
+                ← Back to My Appointments
+            </a>
+        </div>
+    </div>
+</div>

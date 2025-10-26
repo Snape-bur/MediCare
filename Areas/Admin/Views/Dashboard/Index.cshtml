@@ -1,164 +1,81 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="grid gap-6 sm:grid-cols-4 mb-6">
-    <!-- Total Patients -->
-    <div class="p-6 bg-white rounded-xl shadow text-center">
-        <div class="text-sm font-semibold text-neutral">Total Patients</div>
-        <div class="text-3xl font-bold mt-2">2,847</div>
-        <p class="text-xs text-green-600 mt-1">+12% from last month</p>
-    </div>
+<div class="max-w-7xl mx-auto mt-10 px-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">📊 Admin Dashboard</h1>
 
-    <!-- Appointments Today -->
-    <div class="p-6 bg-white rounded-xl shadow text-center">
-        <div class="text-sm font-semibold text-neutral">Appointments Today</div>
-        <div class="text-3xl font-bold mt-2">28</div>
-        <p class="text-xs text-green-600 mt-1">+5% from last month</p>
-    </div>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
 
-    <!-- Pending Reports -->
-    <div class="p-6 bg-white rounded-xl shadow text-center">
-        <div class="text-sm font-semibold text-neutral">Pending Reports</div>
-        <div class="text-3xl font-bold mt-2">156</div>
-        <p class="text-xs text-red-600 mt-1">-8% from last month</p>
-    </div>
-
-    <!-- System Performance -->
-    <div class="p-6 bg-white rounded-xl shadow text-center">
-        <div class="text-sm font-semibold text-neutral">System Performance</div>
-        <div class="text-3xl font-bold mt-2">98.5%</div>
-        <p class="text-xs text-green-600 mt-1">+0.3% from last month</p>
-    </div>
-</div>
-
-<div class="grid gap-6 lg:grid-cols-3">
-    <!-- Recent Activities -->
-    <div class="lg:col-span-2 bg-white rounded-xl shadow p-6">
-        <h2 class="text-lg font-semibold mb-4">Recent Activities</h2>
-        <ul class="space-y-4 text-sm">
-            <li class="flex items-start">
-                <span class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 mr-3"></span>
-                <div>
-                    <p class="font-medium">New appointment scheduled for John Doe</p>
-                    <p class="text-xs text-gray-500">5 minutes ago</p>
-                </div>
-            </li>
-            <li class="flex items-start">
-                <span class="w-2 h-2 rounded-full bg-green-500 mt-1.5 mr-3"></span>
-                <div>
-                    <p class="font-medium">Lab report completed for patient #1234</p>
-                    <p class="text-xs text-gray-500">15 minutes ago</p>
-                </div>
-            </li>
-            <li class="flex items-start">
-                <span class="w-2 h-2 rounded-full bg-purple-500 mt-1.5 mr-3"></span>
-                <div>
-                    <p class="font-medium">New staff member Sarah Johnson added</p>
-                    <p class="text-xs text-gray-500">1 hour ago</p>
-                </div>
-            </li>
-            <li class="flex items-start">
-                <span class="w-2 h-2 rounded-full bg-gray-500 mt-1.5 mr-3"></span>
-                <div>
-                    <p class="font-medium">System backup completed successfully</p>
-                    <p class="text-xs text-gray-500">2 hours ago</p>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <!-- Today’s Appointments -->
-    <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-lg font-semibold mb-4">Today's Appointments</h2>
-        <ul class="space-y-3 text-sm">
-            <li class="flex justify-between items-center">
-                <div>
-                    <p class="font-medium">John Smith</p>
-                    <p class="text-xs text-gray-500">Consultation</p>
-                </div>
-                <span class="text-xs text-green-600">10:00 AM • confirmed</span>
-            </li>
-            <li class="flex justify-between items-center">
-                <div>
-                    <p class="font-medium">Maria Garcia</p>
-                    <p class="text-xs text-gray-500">Follow-up</p>
-                </div>
-                <span class="text-xs text-yellow-600">11:30 AM • pending</span>
-            </li>
-            <li class="flex justify-between items-center">
-                <div>
-                    <p class="font-medium">David Wilson</p>
-                    <p class="text-xs text-gray-500">Check-up</p>
-                </div>
-                <span class="text-xs text-green-600">2:00 PM • confirmed</span>
-            </li>
-            <li class="flex justify-between items-center">
-                <div>
-                    <p class="font-medium">Lisa Anderson</p>
-                    <p class="text-xs text-gray-500">Consultation</p>
-                </div>
-                <span class="text-xs text-green-600">3:30 PM • confirmed</span>
-            </li>
-        </ul>
-        <div class="mt-4 text-center">
-            <a href="#" class="text-sm text-blue-600 hover:underline">View All Appointments</a>
+        <!-- Doctors -->
+        <div class="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
+            <div>
+                <h3 class="text-lg font-semibold mb-1">Total Doctors</h3>
+                <p class="text-blue-100 text-sm">Registered specialists</p>
+            </div>
+            <div class="flex justify-between items-center mt-6">
+                <span class="text-4xl font-bold">@ViewBag.DoctorCount</span>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Doctors"
+                   class="bg-white text-blue-600 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-50 transition">View</a>
+            </div>
         </div>
-    </div>
-    <!-- Quick Actions -->
-    <div class="bg-white rounded-xl shadow p-6 mt-6">
-        <h2 class="text-lg font-semibold mb-4">Quick Actions</h2>
-        <div class="grid gap-4 sm:grid-cols-4">
 
-            <!-- Add Patient -->
-            <a href="#" class="flex flex-col items-center p-6 border rounded-lg hover:bg-gray-50 transition">
-                <!-- Heroicon: User Plus -->
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-7 w-7 text-blue-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M18 9v6m3-3h-6m-2 4a4 4 0 11-8 0 4 4 0 018 0zM6 19a6 6 0 1112 0H6z" />
-                </svg>
-                <span class="text-sm font-medium text-blue-600">Add Patient</span>
-            </a>
+        <!-- Patients -->
+        <div class="bg-gradient-to-r from-green-600 to-emerald-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
+            <div>
+                <h3 class="text-lg font-semibold mb-1">Total Patients</h3>
+                <p class="text-green-100 text-sm">Active patient profiles</p>
+            </div>
+            <div class="flex justify-between items-center mt-6">
+                <span class="text-4xl font-bold">@ViewBag.PatientCount</span>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Patients"
+                   class="bg-white text-green-600 px-3 py-1.5 rounded-lg font-medium hover:bg-green-50 transition">View</a>
+            </div>
+        </div>
 
-            <!-- Schedule -->
-            <a href="#" class="flex flex-col items-center p-6 border rounded-lg hover:bg-gray-50 transition">
-                <!-- Heroicon: Calendar -->
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-7 w-7 text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M8 7V3m8 4V3M5 11h14M5 19h14a2 2 0 002-2V7a2 2 0
-                         00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <span class="text-sm font-medium text-gray-700">Schedule</span>
-            </a>
+        <!-- Clinics -->
+        <div class="bg-gradient-to-r from-indigo-600 to-purple-500 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
+            <div>
+                <h3 class="text-lg font-semibold mb-1">Clinics</h3>
+                <p class="text-indigo-100 text-sm">Registered locations</p>
+            </div>
+            <div class="flex justify-between items-center mt-6">
+                <span class="text-4xl font-bold">@ViewBag.ClinicCount</span>
+                <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
+                   class="bg-white text-indigo-600 px-3 py-1.5 rounded-lg font-medium hover:bg-indigo-50 transition">Manage</a>
+            </div>
+        </div>
 
-            <!-- Generate Report -->
-            <a href="#" class="flex flex-col items-center p-6 border rounded-lg hover:bg-gray-50 transition">
-                <!-- Heroicon: Document -->
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-7 w-7 text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2
-                         0 012-2h5l5 5v14a2 2 0 01-2 2z" />
-                </svg>
-                <span class="text-sm font-medium text-gray-700">Generate Report</span>
-            </a>
-
-            <!-- View Alerts -->
-            <a href="#" class="flex flex-col items-center p-6 border rounded-lg hover:bg-gray-50 transition">
-                <!-- Heroicon: Exclamation -->
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     class="h-7 w-7 text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0
-                         2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464
-                         0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <span class="text-sm font-medium text-gray-700">View Alerts</span>
-            </a>
+        <!-- Appointments -->
+        <div class="bg-gradient-to-r from-pink-600 to-rose-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
+            <div>
+                <h3 class="text-lg font-semibold mb-1">Appointments</h3>
+                <p class="text-pink-100 text-sm">Upcoming & completed</p>
+            </div>
+            <div class="flex justify-between items-center mt-6">
+                <span class="text-4xl font-bold">@ViewBag.AppointmentCount</span>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+                   class="bg-white text-pink-600 px-3 py-1.5 rounded-lg font-medium hover:bg-pink-50 transition">Reports</a>
+            </div>
         </div>
     </div>
 
+    <!-- Quick Access Links -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition">
+            <h3 class="text-xl font-semibold mb-3 text-gray-800">⚙️ Manage Users</h3>
+            <p class="text-gray-600 mb-4">Access and control doctors and patients accounts within the system.</p>
+            <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+               class="inline-block bg-gradient-to-r from-indigo-600 to-purple-500 text-white font-medium px-5 py-2.5 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition">Go to Users →</a>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition">
+            <h3 class="text-xl font-semibold mb-3 text-gray-800">🏥 Manage Clinics</h3>
+            <p class="text-gray-600 mb-4">Add or update clinic information, contact details, and addresses.</p>
+            <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
+               class="inline-block bg-gradient-to-r from-indigo-600 to-purple-500 text-white font-medium px-5 py-2.5 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition">Go to Clinics →</a>
+        </div>
+    </div>
 </div>

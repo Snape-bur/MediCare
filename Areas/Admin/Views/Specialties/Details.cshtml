@@ -1,30 +1,42 @@
 ﻿@model MediCare.Models.Specialty
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Specialty Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="max-w-3xl mx-auto px-6 py-10">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">🩺 Specialty Details</h1>
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-300 rounded-xl hover:bg-indigo-50 transition">
+            ← Back to List
+        </a>
+    </div>
 
-<div>
-    <h4>Specialty</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.SpecialtyId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <!-- Card -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
+        <div>
+            <h2 class="text-lg font-semibold text-gray-800">Specialty Name</h2>
+            <p class="text-gray-600 mt-1">@Model.Name</p>
+        </div>
+
+        <div>
+            <h2 class="text-lg font-semibold text-gray-800">Description</h2>
+            <p class="text-gray-600 mt-1">@Model.Description</p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-4 pt-6">
+            <a asp-action="Edit" asp-route-id="@Model.SpecialtyId"
+               class="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 rounded-xl shadow-md hover:from-indigo-700 hover:to-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
+                Edit
+            </a>
+            <a asp-action="Index"
+               class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition">
+                Back
+            </a>
+        </div>
+    </div>
 </div>

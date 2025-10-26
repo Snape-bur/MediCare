@@ -1,6 +1,107 @@
-﻿@{
+﻿@model IEnumerable<MediCare.Models.Appointment>
+
+@{
     ViewData["Title"] = "Appointments Report";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Appointments Report</h2>
-<p>No appointment data available yet.</p>
+<div class="max-w-7xl mx-auto mt-10 px-6">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">🩺 Appointments Report</h2>
+     
+            <div class="flex items-center space-x-3">
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+                   class="px-5 py-2.5 rounded-xl bg-gray-700 text-white font-semibold shadow hover:bg-gray-800 transition">
+                    ⬅ Back to Reports Center
+                </a>
+                <a asp-action="ExportAppointments"
+                   class="px-5 py-2.5 bg-blue-600 text-white font-medium rounded-xl shadow hover:bg-blue-700 transition">
+                    ⬇ Export to Excel
+                </a>
+                <a asp-action="ExportAppointmentsPdf"
+                   class="px-5 py-2.5 bg-red-600 text-white font-medium rounded-xl shadow hover:bg-red-700 transition">
+                    📄 Export to PDF
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden border border-gray-100">
+        <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gray-100 text-gray-800">
+                <tr>
+                    <th class="px-6 py-3 text-left font-semibold">Date & Time</th>
+                    <th class="px-6 py-3 text-left font-semibold">Doctor</th>
+                    <th class="px-6 py-3 text-left font-semibold">Patient</th>
+                    <th class="px-6 py-3 text-left font-semibold">Status</th>
+                    <th class="px-6 py-3 text-left font-semibold">Payment</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var a in Model)
+                    {
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-3">
+                                @a.DateTime.ToString("dd MMM yyyy, HH:mm")
+
+                                @if (a.RescheduledAt != null)
+                                {
+                                    <div class="text-xs text-amber-700 font-medium mt-1">
+                                        🔄 Rescheduled on @a.RescheduledAt?.ToString("dd MMM yyyy, HH:mm")
+                                    </div>
+
+                                    @if (!string.IsNullOrEmpty(a.RescheduleReason))
+                                    {
+                                        <div class="text-[11px] text-gray-500 italic">
+                                            Reason: @a.RescheduleReason
+                                        </div>
+                                    }
+                                }
+                    </td>
+
+                            <td class="px-6 py-3">@a.Doctor?.AppUser?.FullName</td>
+                            <td class="px-6 py-3">@a.Patient?.AppUser?.FullName</td>
+                            <td class="px-6 py-3">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold
+    @(a.Status == "Completed" ? "bg-green-100 text-green-700" :
+                                      a.Status == "Cancelled" ? "bg-red-100 text-red-700" :
+                                      "bg-yellow-100 text-yellow-700")">
+                            @a.Status
+                        </span>
+
+                        @if (a.Status == "Pending" && a.RescheduledAt != null)
+                                {
+                                    <span class="ml-1 bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-[1px] rounded-full">
+                                        🔄 Rescheduled
+                                    </span>
+                                }
+
+                    </td>
+                    <td class="px-6 py-3">
+                        @if (a.Payment != null)
+                                {
+                                    <span>@a.Payment.Amount.ToString("C")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400">—</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-6 text-gray-500">No appointments found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

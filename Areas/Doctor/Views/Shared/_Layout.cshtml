@@ -1,53 +1,198 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<MediCare.Models.AppUser> SignInManager
 @inject UserManager<MediCare.Models.AppUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Doctor Dashboard</title>
+    <title>@ViewData["Title"] - MediCare Doctor</title>
+
+    <!-- ✅ Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ✅ Theme Configuration -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: { 900: '#1E3A8A' }, /* Darker indigo for doctor */
-                        accent: '#22C55E',          /* Green accent for doctor */
-                        secondary: '#F1F5F9',
-                        neutral: '#111827'
+                        brand: {
+                            50: '#f6fef9',
+                            100: '#e8f9f0',
+                            200: '#c6f1db',
+                            400: '#4fd1a1',
+                            500: '#38b981',
+                            600: '#2ea96e',
+                            700: '#24885b',
+                            800: '#1c6a47',
+                            900: '#134d34'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'sans-serif']
+                    },
+                    boxShadow: {
+                        soft: '0 2px 8px rgba(0,0,0,0.04)',
+                        medium: '0 4px 16px rgba(0,0,0,0.06)',
                     }
                 }
             }
         }
     </script>
+
+    <!-- ✅ Global UI Styles -->
+    <style type="text/tailwindcss">
+        @@layer components {
+            /* 🌿 Button Styles */
+            .btn-brand {
+                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
+            }
+
+            .btn-blue {
+                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-indigo-700 hover:to-sky-700 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
+            }
+
+            .btn-gray {
+                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200;
+            }
+
+            .btn-danger {
+                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-rose-700 hover:to-red-800 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
+            }
+            /* 🧩 Card Component */
+            .card {
+                @@apply bg-white shadow-soft rounded-2xl p-6 border border-gray-100;
+            }
+            /* 🩺 Page Headings */
+            h1.page-title {
+                @@apply text-2xl font-bold text-brand-800 mb-2;
+            }
+
+            p.page-subtitle {
+                @@apply text-sm text-gray-500 mb-6;
+            }
+            /* ✅ Always allow link/button clicks */
+            a, button {
+                position: relative !important;
+                z-index: 50 !important;
+                cursor: pointer !important;
+                pointer-events: auto !important;
+            }
+            /* 🚫 Prevent parent or header from blocking clicks */
+            header, .shadow-sm, .border-b, .relative, .bg-white {
+                z-index: auto !important;
+                pointer-events: auto !important;
+            }
+        }
+    </style>
+
 </head>
-<body class="bg-secondary text-neutral antialiased">
+
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-brand-900 text-white flex flex-col">
-            <div class="p-4 text-xl font-bold border-b border-white/20">MediCare Doctor</div>
-            <nav class="flex-1 p-4 space-y-2 text-sm">
-                <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index" class="block px-3 py-2 rounded hover:bg-indigo-600">Dashboard</a>
-                <a asp-area="Doctor" asp-controller="Appointments" asp-action="Index" class="block px-3 py-2 rounded hover:bg-indigo-600">Appointments</a>
-                <a asp-area="Doctor" asp-controller="Availability" asp-action="Edit" class="block px-3 py-2 rounded hover:bg-indigo-600">Manage Availability</a>
-                <a asp-area="Doctor" asp-controller="Patients" asp-action="Index" class="block px-3 py-2 rounded hover:bg-indigo-600">Patients</a>
+        <!-- 🌿 Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col">
+            <div class="flex items-center gap-2 border-b border-gray-100 px-5 py-5">
+                <div class="w-9 h-9 rounded-full bg-brand-600 flex items-center justify-center text-white text-lg font-bold">
+                    🩺
+                </div>
+                <h1 class="text-lg font-semibold text-brand-800">MediCare Doctor</h1>
+            </div>
+
+
+            <!-- Sidebar Nav -->
+            <nav class="flex-1 p-4 space-y-2 text-sm font-medium">
+                <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index"
+                   class="block px-4 py-2 rounded-lg transition
+                          @(ViewData["Title"]?.ToString() == "Doctor Dashboard"
+                                                 ? "bg-brand-100 text-brand-800"
+                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
+                    🏠 Dashboard
+                </a>
+
+                <a asp-area="Doctor" asp-controller="Appointments" asp-action="Index"
+                   class="block px-4 py-2 rounded-lg transition
+                          @(ViewData["Title"]?.ToString()?.Contains("Appointment") == true
+                                                 ? "bg-brand-100 text-brand-800"
+                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
+                    📅 Appointments
+                </a>
+
+                <a asp-area="Doctor" asp-controller="Patients" asp-action="Index"
+                   class="block px-4 py-2 rounded-lg transition
+                          @(ViewData["Title"]?.ToString()?.Contains("Patient") == true
+                                                 ? "bg-brand-100 text-brand-800"
+                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
+                    👥 Patients
+                </a>
+
+                <a asp-area="Doctor" asp-controller="Availabilities" asp-action="Edit"
+                   class="block px-4 py-2 rounded-lg transition
+                          @(ViewData["Title"]?.ToString()?.Contains("Availability") == true
+                                                 ? "bg-brand-100 text-brand-800"
+                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
+                    🕓 Availability
+                </a>
+
+                <a asp-area="Doctor" asp-controller="Profile" asp-action="Edit"
+                   class="block px-4 py-2 rounded-lg transition
+          @(ViewData["Title"]?.ToString()?.Contains("Profile") == true
+                               ? "bg-brand-100 text-brand-800"
+                               : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
+                    👤 My Profile
+                </a>
 
             </nav>
-            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="p-4 border-t border-white/20">
-                @await Html.PartialAsync("_LoginPartial")
-            </form>
+
+            <!-- Logout Section -->
+            <div class="p-4 border-t border-gray-100 bg-brand-50/60">
+                <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                    <button type="submit"
+                            class="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium
+                                   text-brand-800 bg-brand-100 hover:bg-brand-200 transition">
+                        🚪 Logout
+                    </button>
+                </form>
+                <p class="text-xs text-gray-400 text-center mt-3">© 2025 MediCare</p>
+            </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-6">
-            <h1 class="text-2xl font-bold mb-4">@ViewData["Title"]</h1>
-            <div class="bg-white rounded-xl shadow p-6">
+        <!-- 🌿 Main Layout -->
+        <div class="flex-1 flex flex-col">
+            <!-- ✅ Header (fixed stacking issue removed) -->
+            <header class="bg-white border-b border-gray-100 flex justify-between items-center px-4 py-3.5">
+                <div class="flex flex-col leading-tight">
+                    <h1 class="text-lg font-semibold text-brand-800">@ViewData["Title"]</h1>
+                    <p class="text-sm text-gray-500">MediCare Doctor Portal</p>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="text-sm text-gray-600">
+                        Hi, <strong>@User.Identity?.Name</strong>
+                    </span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png"
+                         alt="Doctor Avatar"
+                         class="w-9 h-9 rounded-full border border-gray-200 shadow-sm" />
+                </div>
+            </header>
+
+
+            <!-- ✅ Page Body -->
+            <main class="flex-1 p-8 bg-gray-50">
                 @RenderBody()
-            </div>
-        </main>
+            </main>
+
+            <!-- ✅ Footer -->
+            <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white">
+                MediCare Doctor Portal © 2025 — Crafted with 💚 by MediCare Dev Team
+            </footer>
+        </div>
     </div>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

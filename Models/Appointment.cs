@@ -13,11 +13,16 @@
 
         // Appointment details
         public DateTime DateTime { get; set; }
-        public string Status { get; set; } // Pending, Confirmed, Cancelled, etc.
+        public string Status { get; set; } = "Pending";
         public string? Notes { get; set; }
         public string? Prescription { get; set; }
 
+        public string? RescheduleReason { get; set; }
+        public DateTime? RescheduledAt { get; set; }
+
         // Navigation
         public Payment Payment { get; set; }
+        public decimal Fee { get; set; }
+        public ICollection<Feedback>? Feedbacks { get; set; }
     }
 }

@@ -1,0 +1,40 @@
+﻿@model MediCare.Models.Clinic
+
+@{
+    ViewData["Title"] = "Clinic Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-2xl font-bold text-gray-700 mb-6">🏥 Clinic Details</h2>
+
+<div class="bg-white shadow rounded-2xl p-8 max-w-3xl">
+    <dl class="divide-y divide-gray-200">
+        <div class="py-3 grid grid-cols-3">
+            <dt class="font-semibold text-gray-600">Clinic Name</dt>
+            <dd class="col-span-2">@Model.Name</dd>
+        </div>
+        <div class="py-3 grid grid-cols-3">
+            <dt class="font-semibold text-gray-600">Address</dt>
+            <dd class="col-span-2">@Model.Address</dd>
+        </div>
+        <div class="py-3 grid grid-cols-3">
+            <dt class="font-semibold text-gray-600">Phone</dt>
+            <dd class="col-span-2">@Model.PhoneNumber</dd>
+        </div>
+        <div class="py-3 grid grid-cols-3">
+            <dt class="font-semibold text-gray-600">Email</dt>
+            <dd class="col-span-2">@Model.Email</dd>
+        </div>
+    </dl>
+
+    <div class="flex justify-between mt-6">
+        <a asp-action="Index"
+           class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
+            ⬅ Back
+        </a>
+        <a asp-action="Edit" asp-route-id="@Model.ClinicId"
+           class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
+            ✏️ Edit
+        </a>
+    </div>
+</div>

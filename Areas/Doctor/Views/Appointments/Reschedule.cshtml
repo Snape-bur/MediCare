@@ -5,16 +5,80 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Reschedule Appointment</h2>
+<div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8 mt-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">🔄 Reschedule Appointment</h2>
 
-<form asp-action="Reschedule" method="post">
-    <input type="hidden" name="id" value="@Model.AppointmentId" />
+    <form asp-action="Reschedule" method="post">
+        <input type="hidden" asp-for="AppointmentId" />
 
-    <div class="form-group">
-        <label>New Date/Time</label>
-        <input type="datetime-local" name="newDateTime" class="form-control" required />
-    </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2">Current Date & Time</label>
+            <input type="text" value="@Model.DateTime.ToString("f")"
+                   class="w-full border rounded-lg px-4 py-2 bg-gray-100" disabled />
+        </div>
 
-    <button type="submit" class="btn btn-primary mt-2">Save</button>
-    <a asp-action="Index" class="btn btn-secondary mt-2">Cancel</a>
-</form>
+        @{
+            var availableSlots = new List<(DateTime Date, MediCare.Models.Availability Slot)>();
+
+            // 🧠 Build a list of all future slots (skip same-day)
+            foreach (var slot in (IEnumerable<MediCare.Models.Availability>)ViewBag.Availabilities)
+            {
+                var nextDate = DateTime.Today.AddDays(((int)slot.Day - (int)DateTime.Today.DayOfWeek + 7) % 7);
+
+                // Skip current appointment’s same date
+                if (nextDate.Date == Model.DateTime.Date)
+                {
+                    nextDate = nextDate.AddDays(7);
+                }
+
+                // Skip any past or same-day
+                if (nextDate <= DateTime.Today)
+                {
+                    nextDate = nextDate.AddDays(7);
+                }
+
+                availableSlots.Add((nextDate, slot));
+            }
+
+            // ✅ Sort by date (nearest first)
+            var sortedSlots = availableSlots.OrderBy(s => s.Date).ToList();
+        }
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium mb-2">Select New Date &amp; Time</label>
+            <select id="newDateTime" name="newDateTime"
+                    class="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
+                <option value="">-- Choose available slot --</option>
+
+                @foreach (var item in sortedSlots)
+                {
+                    var nextDate = item.Date;
+                    var slot = item.Slot;
+                    var startDateTime = nextDate.Add(slot.StartTime);
+
+                    <option value="@startDateTime.ToString("yyyy-MM-ddTHH:mm")">
+                        @nextDate.ToString("dddd, MMM dd yyyy") —
+                        @slot.StartTime.ToString(@"hh\:mm")–@slot.EndTime.ToString(@"hh\:mm")
+                    </option>
+                }
+            </select>
+        </div>
+
+
+
+        <div class="mb-4">
+            <label for="reason" class="block text-gray-700 font-medium mb-2">Reason for Reschedule (optional)</label>
+            <textarea id="reason" name="reason"
+                      class="w-full border rounded-lg px-4 py-2"
+                      rows="3">@Model.RescheduleReason</textarea>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <a asp-action="Index" class="text-gray-600 hover:text-gray-800">⬅ Back to Appointments</a>
+            <button type="submit"
+                    class="px-6 py-2.5 bg-blue-600 text-white rounded-lg shadow hover:scale-105 transition">
+                💾 Save Changes
+            </button>
+        </div>
+    </form>
+</div>

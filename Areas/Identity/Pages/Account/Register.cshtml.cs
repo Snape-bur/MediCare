@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MediCare.Models; 
+using MediCare.Models;
 
 namespace MediCare.Areas.Identity.Pages.Account
 {
@@ -44,10 +44,6 @@ namespace MediCare.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
-            [Display(Name = "Full Name")]
-            public string FullName { get; set; }
-
 
             [Required]
             [EmailAddress]
@@ -80,7 +76,6 @@ namespace MediCare.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-                user.FullName = Input.FullName;
 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -98,8 +93,10 @@ namespace MediCare.Areas.Identity.Pages.Account
                     // ✅ Auto sign-in new patient
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return LocalRedirect(returnUrl);
+                    // ✅ Redirect to Patient Registration Step1
+                    return RedirectToAction("Step1", "Registration", new { area = "Patient" });
                 }
+
 
                 foreach (var error in result.Errors)
                 {

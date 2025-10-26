@@ -1,0 +1,175 @@
+﻿@model MediCare.Models.Doctor
+@using MediCare.Models
+@{
+    ViewData["Title"] = "Edit My Availability";
+    Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
+    var allDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().ToList();
+}
+
+<div class="max-w-3xl mx-auto bg-white shadow rounded-3xl p-8 mt-10 border border-gray-100">
+    <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center space-x-2">
+        <span>🩺</span>
+        <span>My Availability Schedule</span>
+    </h2>
+    <p class="text-gray-600 mb-6">Set or adjust your weekly working hours here.</p>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded-lg mb-5 shadow-sm">
+            @Html.Raw(TempData["Message"])
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5 shadow-sm">
+            @Html.Raw(TempData["Error"])
+        </div>
+    }
+
+    <form asp-action="Edit" method="post" class="space-y-4">
+        @Html.AntiForgeryToken()
+
+        <div id="availabilityContainer" class="space-y-3">
+            @for (int i = 0; i < Model.Availabilities.Count; i++)
+            {
+                var slot = Model.Availabilities.ElementAt(i);
+                <div class="availability-row flex items-center gap-4 bg-gray-50 rounded-xl p-3">
+                    <input type="hidden" name="availabilities[@i].AvailabilityId" value="@slot.AvailabilityId" />
+
+                    <select name="availabilities[@i].Day"
+                            class="day-select border-gray-300 rounded-lg px-2 py-1 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select Day</option>
+                        @foreach (var day in allDays)
+                        {
+                            <option value="@((int)day)" selected="@(slot.Day == day)">@day</option>
+                        }
+                    </select>
+
+                    <input type="time" name="availabilities[@i].StartTime"
+                           value="@slot.StartTime.ToString(@"hh\:mm")"
+                           class="start-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
+
+                    <span>to</span>
+
+                    <input type="time" name="availabilities[@i].EndTime"
+                           value="@slot.EndTime.ToString(@"hh\:mm")"
+                           class="end-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
+
+                    <button type="button" class="remove-slot text-red-600 text-sm hover:underline">🗑 Remove</button>
+                </div>
+            }
+        </div>
+
+        <!-- Add Slot -->
+        <button type="button" id="addSlot"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
+            ➕ Add New Day & Time
+        </button>
+
+        <div id="validationMessage" class="mt-3"></div>
+
+        <div class="flex justify-between pt-6 border-t border-gray-100 mt-6">
+            <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index"
+               class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
+                ⬅ Back to Dashboard
+            </a>
+            <button id="saveBtn" type="submit"
+                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
+                💾 Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('addSlot').addEventListener('click', function () {
+            const container = document.getElementById('availabilityContainer');
+            const index = container.querySelectorAll('.availability-row').length;
+            const newRow = document.createElement('div');
+            newRow.classList.add('availability-row', 'flex', 'items-center', 'gap-4', 'bg-gray-50', 'rounded-xl', 'p-3');
+            newRow.innerHTML = `
+                <select name="availabilities[${index}].Day" class="day-select border-gray-300 rounded-lg px-2 py-1 focus:ring-indigo-500 focus:border-indigo-500">
+                    <option value="">Select Day</option>
+                    ${Array.from({length:7}).map((_,i)=>`<option value="${i}">${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][i]}</option>`).join("")}
+                </select>
+
+                <input type="time" name="availabilities[${index}].StartTime" class="start-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
+                <span>to</span>
+                <input type="time" name="availabilities[${index}].EndTime" class="end-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
+
+                <button type="button" class="remove-slot text-red-600 text-sm hover:underline">🗑 Remove</button>
+            `;
+            container.appendChild(newRow);
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('remove-slot')) {
+                e.target.closest('.availability-row').remove();
+                checkForDuplicates();
+            }
+        });
+
+        function checkForDuplicates() {
+            const rows = document.querySelectorAll('.availability-row');
+            const slots = [];
+            const messages = [];
+            const saveBtn = document.querySelector('#saveBtn');
+
+            rows.forEach(row => {
+                const day = row.querySelector('.day-select')?.value;
+                const start = row.querySelector('.start-time')?.value;
+                const end = row.querySelector('.end-time')?.value;
+                row.classList.remove('border', 'border-red-400', 'bg-red-50');
+
+                if (day && start && end) {
+                    const startTime = new Date(`1970-01-01T${start}`);
+                    const endTime = new Date(`1970-01-01T${end}`);
+
+                    if (startTime >= endTime) {
+                        messages.push(`⚠️ Invalid range for ${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day]}: start must be before end`);
+                        row.classList.add('border', 'border-red-400', 'bg-red-50');
+                    }
+
+                    const conflict = slots.find(s =>
+                        s.day === day &&
+                        (
+                            (startTime >= s.startTime && startTime < s.endTime) ||
+                            (endTime > s.startTime && endTime <= s.endTime) ||
+                            (startTime <= s.startTime && endTime >= s.endTime)
+                        )
+                    );
+
+                    if (conflict) {
+                        messages.push(`❌ Overlap detected on ${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day]}: ${start}–${end}`);
+                        row.classList.add('border', 'border-red-400', 'bg-red-50');
+                    } else {
+                        slots.push({ day, startTime, endTime });
+                    }
+                }
+            });
+
+            const msgBox = document.querySelector('#validationMessage');
+            msgBox.innerHTML = "";
+            if (messages.length > 0) {
+                msgBox.innerHTML = messages.map(m => `<div class="text-red-600 font-medium">${m}</div>`).join("");
+                saveBtn.disabled = true;
+                saveBtn.classList.add("opacity-50", "cursor-not-allowed");
+            } else {
+                msgBox.innerHTML = "";
+                saveBtn.disabled = false;
+                saveBtn.classList.remove("opacity-50", "cursor-not-allowed");
+            }
+        }
+
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('day-select') ||
+                e.target.classList.contains('start-time') ||
+                e.target.classList.contains('end-time')) {
+                checkForDuplicates();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', checkForDuplicates);
+    </script>
+}

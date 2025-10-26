@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<MediCare.Models.AppUser> SignInManager
+@inject UserManager<MediCare.Models.AppUser> UserManager
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MediCare Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800 flex">
+
+    <!-- Sidebar -->
+    <aside class="w-64 min-h-screen bg-white shadow-lg fixed">
+        <div class="px-6 py-5 border-b">
+            <h1 class="text-2xl font-bold text-blue-600">MediCare Admin</h1>
+        </div>
+
+        <nav class="mt-6">
+            <ul class="space-y-1">
+
+                <!-- Dashboard -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Dashboard" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="layout-dashboard"
+                           class="w-5 h-5 @(currentController == "Dashboard" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- Doctors -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Doctors" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Doctors" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="stethoscope"
+                           class="w-5 h-5 @(currentController == "Doctors" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">Doctors</span>
+                    </a>
+                </li>
+
+                <!-- Specialties -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Specialties" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Specialties" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="heart-pulse"
+                           class="w-5 h-5 @(currentController == "Specialties" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">Specialties</span>
+                    </a>
+                </li>
+
+                <!-- View user and clinis -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Users" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="users"
+                           class="w-5 h-5 @(currentController == "Users" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">View Users & Clinics</span>
+                    </a>
+                </li>
+
+                <!-- Clinics -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Clinics" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="hospital"
+                           class="w-5 h-5 @(currentController == "Clinics" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">Clinics</span>
+                    </a>
+                </li>
+
+                <!-- Reports -->
+                <li>
+                    <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+                       class="flex items-center px-6 py-3 rounded transition
+                              @(currentController == "Reports" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
+                        <i data-lucide="bar-chart-3"
+                           class="w-5 h-5 @(currentController == "Reports" ? "text-white" : "text-blue-600")"></i>
+                        <span class="ml-3">Reports</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 ml-64">
+
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-700">@ViewData["Title"]</h2>
+
+                <div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="inline">
+                            <button type="submit"
+                                    class="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow hover:shadow-md transition">
+                                Logout
+                            </button>
+                        </form>
+                    }
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Body -->
+        <main class="p-8">
+            <div class="bg-white shadow rounded-2xl p-6">
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

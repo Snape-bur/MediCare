@@ -3,18 +3,91 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Welcome, @ViewData["DoctorName"]</h1>
-<p>Specialty: @ViewData["Specialty"]</p>
+<div class="max-w-7xl mx-auto p-6 space-y-8 relative z-30">
 
-<div class="card mt-4 p-3 shadow-sm">
-    <h4>Quick Stats</h4>
-    <p>Upcoming Appointments: <strong>@ViewData["UpcomingAppointments"]</strong></p>
-</div>
+    <!-- 🩺 Header -->
+    <div class="flex items-center justify-between relative z-40">
+        <div>
+            <h1 class="page-title">🏥 Doctor Dashboard</h1>
+            <p class="page-subtitle">
+                Welcome back, <span class="font-semibold text-brand-700">@ViewData["DoctorName"]</span>.
+            </p>
+        </div>
 
-<div class="mt-4">
-    <h4>Actions</h4>
-    <ul>
-        <li><a asp-area="Doctor" asp-controller="Appointments" asp-action="Index">View Appointments</a></li>
-        <li><a asp-area="Doctor" asp-controller="Availability" asp-action="Edit">Edit Availability</a></li>
-    </ul>
+        <!-- ✅ Edit Profile Button -->
+        <a href="@Url.Action("Edit", "Profile", new { area = "Doctor" })"
+           class="btn-brand relative z-50">
+            ✏️ Edit Profile
+        </a>
+    </div>
+
+    <!-- 🌿 Overview Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-30">
+        <div class="card">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-gray-600 font-semibold">Upcoming Appointments</h3>
+                <span class="text-emerald-500 text-lg">📅</span>
+            </div>
+            <p class="text-3xl font-bold text-brand-700">@ViewData["UpcomingAppointments"]</p>
+            <p class="text-xs text-gray-500 mt-1">appointments scheduled</p>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-gray-600 font-semibold">My Patients</h3>
+                <span class="text-blue-500 text-lg">👥</span>
+            </div>
+            <p class="text-3xl font-bold text-brand-700">@ViewData["PatientCount"]</p>
+            <p class="text-xs text-gray-500 mt-1">active patients under your care</p>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-gray-600 font-semibold">Today's Availability</h3>
+                <span class="text-yellow-500 text-lg">🕓</span>
+            </div>
+            <p class="text-sm text-gray-700 leading-relaxed">
+                @ViewData["TodaySchedule"]
+            </p>
+
+            <!-- ✅ Manage Availability Button -->
+            <a href="@Url.Action("Edit", "Availabilities", new { area = "Doctor" })"
+               class="text-sm text-brand-700 hover:underline mt-2 inline-block relative z-50">
+                Manage Availability →
+            </a>
+        </div>
+    </div>
+
+    <!-- 📅 Next Appointment -->
+    <div class="card relative z-30">
+        <div class="card-header">
+            <h2 class="card-title">Next Appointment</h2>
+        </div>
+
+        @if (ViewBag.NextAppointment == null)
+        {
+            <div class="text-gray-500 italic">No upcoming appointments scheduled.</div>
+        }
+        else
+        {
+            var appt = ViewBag.NextAppointment;
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <p class="text-lg font-semibold text-brand-800">@appt.PatientName</p>
+                    <p class="text-sm text-gray-500">@appt.DateTime.ToString("dddd, dd MMM yyyy • hh:mm tt")</p>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Status:
+                        <span class="font-medium text-emerald-700">@appt.Status</span>
+                    </p>
+                </div>
+
+                <!-- ✅ View Appointments Button -->
+                <a href="@Url.Action("Index", "Appointments", new { area = "Doctor" })"
+                   class="btn-blue relative z-50">
+                    View All Appointments →
+                </a>
+            </div>
+        }
+    </div>
+
 </div>

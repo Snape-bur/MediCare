@@ -1,0 +1,145 @@
+﻿@{
+    ViewData["Title"] = "Reports Center";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="max-w-7xl mx-auto mt-10 px-6">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">📈 Reports Center</h2>
+       
+    </div>
+
+    <!-- ✅ KPI SUMMARY CARDS -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+        <div class="bg-blue-600 text-white p-5 rounded-xl shadow-lg text-center">
+            <p class="text-sm opacity-80">Total Appointments</p>
+            <h3 class="text-3xl font-bold">@ViewBag.TotalAppointments</h3>
+        </div>
+
+        <div class="bg-green-600 text-white p-5 rounded-xl shadow-lg text-center">
+            <p class="text-sm opacity-80">Completed</p>
+            <h3 class="text-3xl font-bold">@ViewBag.CompletedCount</h3>
+        </div>
+
+        <div class="bg-purple-600 text-white p-5 rounded-xl shadow-lg text-center">
+            <p class="text-sm opacity-80">Patients This Month</p>
+            <h3 class="text-3xl font-bold">@ViewBag.MonthlyPatients</h3>
+        </div>
+    </div>
+
+    <!-- 📊 Charts Section -->
+    <div class="bg-white shadow-md rounded-2xl p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-6">Appointment Analytics</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <canvas id="monthlyChart" height="170"></canvas>
+            </div>
+            <div>
+                <canvas id="statusChart" height="170"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📁 Report Sections -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- 🩺 Appointments Report -->
+        <div class="bg-blue-600 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.03] transition">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Appointments Report</h3>
+                <p class="text-blue-100 text-sm mb-4">
+                    Analyze appointments and their statuses.
+                </p>
+            </div>
+            <a asp-action="Appointments" class="inline-block bg-white text-blue-700 px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-50 transition">
+                View Report →
+            </a>
+        </div>
+
+        <!-- 💳 Payments Report -->
+        <div class="bg-green-600 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.03] transition">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Payments Report</h3>
+                <p class="text-green-100 text-sm mb-4">
+                    Monitor revenue and payment statuses.
+                </p>
+            </div>
+            <a asp-action="Payments" class="inline-block bg-white text-green-700 px-5 py-2 rounded-lg font-semibold shadow hover:bg-green-50 transition">
+                View Report →
+            </a>
+        </div>
+
+        <!-- 👤 Patient Stats Report -->
+        <div class="bg-purple-600 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.03] transition">
+            <div>
+                <h3 class="text-lg font-semibold mb-2">Patient Statistics</h3>
+                <p class="text-purple-100 text-sm mb-4">
+                    Track patients’ growth & demographics.
+                </p>
+            </div>
+            <a asp-action="Patients" class="inline-block bg-white text-purple-700 px-5 py-2 rounded-lg font-semibold shadow hover:bg-purple-50 transition">
+                View Report →
+            </a>
+        </div>
+
+    </div>
+
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const monthLabels = @Html.Raw(Json.Serialize(ViewBag.Months));
+            const monthData = @Html.Raw(Json.Serialize(ViewBag.MonthCounts));
+
+            const statusLabels = @Html.Raw(Json.Serialize(ViewBag.StatusLabels));
+            const statusData = @Html.Raw(Json.Serialize(ViewBag.StatusCounts));
+
+            // ✅ Area Chart (Monthly)
+            new Chart(document.getElementById('monthlyChart'), {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{
+                        label: 'Appointments',
+                        data: monthData,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.4)',
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#1d4ed8',
+                        borderWidth: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: true } },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // ✅ Doughnut Chart (Status)
+            new Chart(document.getElementById('statusChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: ['#16a34a', '#eab308', '#dc2626', '#0ea5e9'],
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    cutout: '55%'
+                }
+            });
+        </script>
+    }
+</div>

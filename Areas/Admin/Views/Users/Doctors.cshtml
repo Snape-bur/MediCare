@@ -2,30 +2,41 @@
 
 @{
     ViewData["Title"] = "Doctors";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Doctors</h2>
+<div class="max-w-7xl mx-auto mt-10 px-6">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">👨‍⚕️ Doctors</h2>
+        <a asp-action="Index"
+           class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-700 to-cyan-500 text-white font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Specialty</th>
-            <th>Consultation Fee</th>
-            <th>Availability</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var doctor in Model)
-        {
-            <tr>
-                <td>@doctor.AppUser.FullName</td>
-                <td>@doctor.AppUser.Email</td>
-                <td>@doctor.Specialty.Name</td>
-                <td>@doctor.ConsultationFee</td>
-                <td>@doctor.AvailabilitySchedule</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+        <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gradient-to-r from-blue-600 to-blue-400 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left font-semibold">Full Name</th>
+                    <th class="px-6 py-3 text-left font-semibold">Email</th>
+                    <th class="px-6 py-3 text-left font-semibold">Specialty</th>
+                    <th class="px-6 py-3 text-left font-semibold">Consultation Fee</th>
+                    <th class="px-6 py-3 text-left font-semibold">Clinic</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @foreach (var doctor in Model)
+                {
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-3">@doctor.AppUser.FullName</td>
+                        <td class="px-6 py-3">@doctor.AppUser.Email</td>
+                        <td class="px-6 py-3">@doctor.Specialty?.Name</td>
+                        <td class="px-6 py-3">@doctor.ConsultationFee.ToString("C")</td>
+                        <td class="px-6 py-3">@doctor.Clinic?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

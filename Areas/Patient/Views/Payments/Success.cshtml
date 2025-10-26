@@ -1,0 +1,56 @@
+﻿@model MediCare.Models.Appointment
+
+@{
+    ViewData["Title"] = "Payment Successful";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex justify-center items-center min-h-[80vh] bg-gray-50">
+    <div class="bg-white shadow-lg rounded-3xl p-10 w-full max-w-lg text-center">
+        <!-- Animated Success Icon -->
+        <div class="flex justify-center mb-4">
+            <div class="bg-green-100 text-green-600 rounded-full p-5 text-3xl animate-bounce">
+                ✅
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold text-green-700 mb-4">
+            Payment Successful
+        </h2>
+        <p class="text-gray-600 mb-6">
+            Thank you! Your payment has been confirmed successfully.
+        </p>
+
+        <div class="text-left bg-gray-50 p-5 rounded-xl shadow-inner mb-6">
+            <p><strong>Doctor:</strong> @Model.Doctor?.AppUser?.FullName</p>
+            <p><strong>Specialty:</strong> @Model.Doctor?.Specialty?.Name</p>
+            <p><strong>Date:</strong> @Model.DateTime.ToString("dddd, dd MMM yyyy hh:mm tt")</p>
+            <p><strong>Transaction ID:</strong> <span class="font-mono text-sm">@ViewBag.TransactionId</span></p>
+            <p><strong>Status:</strong> <span class="text-green-600 font-semibold">Paid</span></p>
+        </div>
+
+        <p class="text-sm text-gray-500 mb-2">Redirecting to your appointments in <span id="countdown">3</span> seconds...</p>
+
+        <a asp-area="Patient" asp-controller="Appointments" asp-action="Index"
+           class="inline-block mt-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow transition">
+            Back to My Appointments
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Countdown timer for redirect
+        let seconds = 3;
+        const countdown = document.getElementById("countdown");
+
+        const interval = setInterval(() => {
+            seconds--;
+            countdown.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                window.location.href = "/Patient/Appointments";
+            }
+        }, 1000);
+    </script>
+}

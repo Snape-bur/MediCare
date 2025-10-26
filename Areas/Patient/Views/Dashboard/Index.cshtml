@@ -1,0 +1,103 @@
+﻿@model MediCare.Models.Patient
+
+@{
+    ViewData["Title"] = "Patient Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string initials = string.Join("", Model.AppUser.FullName
+        .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+        .Take(2)
+        .Select(n => n[0])).ToUpper();
+
+    var totalAppointments = ViewBag.TotalAppointments ?? 0;
+    var completedAppointments = ViewBag.CompletedAppointments ?? 0;
+    var upcomingAppointments = ViewBag.UpcomingAppointments ?? 0;
+}
+
+<div class="max-w-5xl mx-auto mt-10">
+    <!-- Profile Card -->
+    <div class="bg-white shadow-xl rounded-2xl p-8 flex flex-col md:flex-row md:items-center gap-6 border border-gray-100">
+        <div class="flex-shrink-0">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-700 via-blue-500 to-cyan-400 text-white flex items-center justify-center text-2xl font-bold shadow-lg">
+                @initials
+            </div>
+        </div>
+
+        <div class="flex-1">
+            <h2 class="text-2xl font-semibold text-gray-800">@Model.AppUser.FullName</h2>
+            <p class="text-gray-500 text-sm mt-1">@Model.Gender • Born @Model.DateOfBirth.ToShortDateString()</p>
+            <p class="mt-2 text-gray-700 text-sm">
+                <span class="font-semibold">Phone:</span> @Model.PhoneNumber <br />
+                <span class="font-semibold">Address:</span> @Model.Address
+            </p>
+        </div>
+
+        <div class="flex flex-col gap-2 md:ml-auto">
+            <a asp-area="Patient" asp-controller="Booking" asp-action="Index"
+               class="px-4 py-2 bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-400 hover:brightness-110 text-white font-medium rounded-lg text-sm text-center shadow">
+                + Book Appointment
+            </a>
+            <a asp-area="Patient" asp-controller="Appointments" asp-action="Index"
+               class="px-4 py-2 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-900 hover:brightness-110 text-white font-medium rounded-lg text-sm text-center shadow">
+                View Appointments
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl shadow text-center">
+            <h3 class="text-gray-600 text-sm">Total Appointments</h3>
+            <p class="text-2xl font-bold text-blue-700 mt-1">@totalAppointments</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 rounded-xl shadow text-center">
+            <h3 class="text-gray-600 text-sm">Completed Visits</h3>
+            <p class="text-2xl font-bold text-green-700 mt-1">@completedAppointments</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 p-4 rounded-xl shadow text-center">
+            <h3 class="text-gray-600 text-sm">Upcoming Appointments</h3>
+            <p class="text-2xl font-bold text-yellow-700 mt-1">@upcomingAppointments</p>
+        </div>
+    </div>
+
+    <!-- Upcoming Appointment -->
+    <div class="bg-white mt-8 p-6 rounded-xl shadow-md border border-gray-100">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Upcoming Appointment
+        </h3>
+
+        @if (ViewBag.NextAppointment != null)
+        {
+            var next = (MediCare.Models.Appointment)ViewBag.NextAppointment;
+            <div class="flex flex-col md:flex-row md:items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div>
+                    <p class="font-medium text-gray-800">Dr. @next.Doctor.AppUser.FullName</p>
+                    <p class="text-sm text-gray-500">@next.Doctor.Specialty.Name</p>
+                </div>
+                <div class="text-right mt-3 md:mt-0">
+                    <p class="font-semibold text-blue-700">@next.DateTime.ToString("dd MMM yyyy, hh:mm tt")</p>
+                    <span class="inline-block mt-1 px-2 py-1 text-xs rounded-lg bg-blue-600 text-white">@next.Status</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="text-gray-500">You have no upcoming appointments.</p>
+        }
+    </div>
+
+    <!-- Medical History -->
+    <div class="bg-white mt-8 p-6 rounded-xl shadow-md border border-gray-100">
+        <h3 class="text-xl font-semibold text-gray-800 mb-2">Medical History</h3>
+        <p class="text-gray-600 leading-relaxed">
+            @(string.IsNullOrWhiteSpace(Model.MedicalHistory)
+                        ? "No medical history provided."
+                        : Model.MedicalHistory)
+        </p>
+    </div>
+</div>

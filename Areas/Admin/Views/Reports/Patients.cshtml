@@ -1,6 +1,131 @@
-﻿@{
-    ViewData["Title"] = "Patients Report";
+﻿@model IEnumerable<MediCare.Models.Patient>
+
+@{
+    ViewData["Title"] = "Patient Statistics";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var total = ViewBag.TotalPatients ?? 0;
 }
 
-<h2>Patients Report</h2>
-<p>No patient statistics available yet.</p>
+<div class="max-w-7xl mx-auto mt-10 px-6">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl font-bold text-gray-800">👤 Patient Statistics</h2>
+        <div class="flex items-center space-x-3">
+            <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
+               class="px-5 py-2.5 rounded-xl bg-gray-700 text-white font-semibold shadow hover:bg-gray-800 transition">
+                ⬅ Back to Reports Center
+            </a>
+            <a asp-action="ExportPatients"
+               class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-medium shadow hover:bg-emerald-700 transition">
+                ⬇ Export Patients to Excel
+            </a>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-2xl p-8 text-gray-700">
+        <p class="mb-4 text-gray-600">Monitor patient registrations and demographic insights.</p>
+
+        @if (!Model.Any())
+        {
+            <div class="border border-gray-200 rounded-lg p-4 text-center text-gray-500">
+                No patient records found.
+            </div>
+        }
+        else
+        {
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 text-center">
+                    <h3 class="text-2xl font-bold text-blue-800">@total</h3>
+                    <p class="text-sm text-blue-600">Total Registered Patients</p>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 text-center">
+                    <h3 class="text-2xl font-bold text-purple-800">@Model.Count(p => p.Gender == "Male")</h3>
+                    <p class="text-sm text-purple-600">Female Patients</p>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-xl p-5 text-center">
+                    <h3 class="text-2xl font-bold text-purple-800">@Model.Count(p => p.Gender == "Female")</h3>
+                    <p class="text-sm text-purple-600">Female Patients</p>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">📊 Monthly Registrations</h3>
+                <canvas id="patientChart" height="100"></canvas>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+                <table class="min-w-full border-collapse border border-gray-200">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="px-4 py-2 text-left">#</th>
+                            <th class="px-4 py-2 text-left">Name</th>
+                            <th class="px-4 py-2 text-left">Email</th>
+                            <th class="px-4 py-2 text-left">Gender</th>
+                            <th class="px-4 py-2 text-left">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                        }
+                        @foreach (var p in Model)
+                        {
+                            <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
+                                <td class="px-4 py-2">@i</td>
+                                <td class="px-4 py-2">@p.AppUser.FullName</td>
+                                <td class="px-4 py-2">@p.AppUser.Email</td>
+                                <td class="px-4 py-2">@p.Gender</td>
+                                <td class="px-4 py-2">@p.AppUser.PhoneNumber</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @{
+        var monthlyData = ViewBag.MonthlyData as IEnumerable<dynamic>;
+    }
+    <script>
+        const monthLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                    monthlyData?.Select(m => (string)m.Month).ToList() ?? new List<string>()
+            ));
+    const monthCounts = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+                monthlyData?.Select(m => (int)m.Count).ToList() ?? new List<int>()
+        ));
+
+    const ctx = document.getElementById('patientChart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: monthLabels,
+            datasets: [{
+                label: 'New Patients',
+                data: monthCounts,
+                fill: true,
+                borderColor: '#2563eb',
+                backgroundColor: 'rgba(37,99,235,0.1)',
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#2563eb'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
+}
+

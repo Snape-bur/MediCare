@@ -5,33 +5,93 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Appointment Details</h2>
+<div class="max-w-4xl mx-auto p-6 space-y-8">
 
-<div class="card p-3 mb-3">
-    <h4>Patient Info</h4>
-    <p><strong>Name:</strong> @Model.Patient?.AppUser?.FullName</p>
-    <p><strong>Email:</strong> @Model.Patient?.AppUser?.Email</p>
-</div>
-
-<div class="card p-3 mb-3">
-    <h4>Appointment Info</h4>
-    <p><strong>Date/Time:</strong> @Model.DateTime</p>
-    <p><strong>Status:</strong> @Model.Status</p>
-</div>
-
-<form asp-action="Details" method="post">
-    <input type="hidden" name="id" value="@Model.AppointmentId" />
-
-    <div class="form-group">
-        <label>Consultation Notes</label>
-        <textarea name="notes" class="form-control">@Model.Notes</textarea>
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="page-title">🩺 Appointment Details</h1>
+            <p class="page-subtitle">Review patient consultation and feedback.</p>
+        </div>
+        <a href="@Url.Action("Index", "Appointments", new { area = "Doctor" })"
+           class="btn-gray relative z-50">
+            ⬅ Back to Appointments
+        </a>
     </div>
 
-    <div class="form-group mt-3">
-        <label>Prescription</label>
-        <textarea name="prescription" class="form-control">@Model.Prescription</textarea>
+    <!-- Patient Info Card -->
+    <div class="card">
+        <h2 class="text-lg font-semibold text-brand-800 mb-4">Patient Information</h2>
+        <div class="text-sm space-y-2">
+            <p><span class="text-gray-500">Full Name:</span> <strong>@Model.Patient?.AppUser?.FullName</strong></p>
+            <p><span class="text-gray-500">Email:</span> <strong>@Model.Patient?.AppUser?.Email</strong></p>
+            <p><span class="text-gray-500">Phone:</span> <strong>@Model.Patient?.PhoneNumber</strong></p>
+        </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Save</button>
-    <a asp-action="Index" class="btn btn-secondary mt-3">Back</a>
-</form>
+    <!-- Appointment Info -->
+    <div class="card">
+        <h2 class="text-lg font-semibold text-brand-800 mb-4">Appointment</h2>
+        <div class="text-sm space-y-2">
+            <p><span class="text-gray-500">Date/Time:</span> <strong>@Model.DateTime.ToString("dd MMM yyyy • hh:mm tt")</strong></p>
+            <p><span class="text-gray-500">Status:</span> <strong>@Model.Status</strong></p>
+        </div>
+    </div>
+
+    <!-- Consultation Info -->
+    <div class="card">
+        <h2 class="text-lg font-semibold text-brand-800 mb-4">Consultation Notes</h2>
+
+        <div class="space-y-6">
+            <div>
+                <label class="text-gray-600 font-semibold">Notes</label>
+                <div class="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm whitespace-pre-wrap border border-gray-200">
+                    @(string.IsNullOrWhiteSpace(Model.Notes)
+                                        ? "No notes available."
+                                        : Model.Notes)
+                </div>
+            </div>
+
+            <div>
+                <label class="text-gray-600 font-semibold">Prescription</label>
+                <div class="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm whitespace-pre-wrap border border-gray-200">
+                    @(string.IsNullOrWhiteSpace(Model.Prescription)
+                                        ? "No prescription issued."
+                                        : Model.Prescription)
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Feedback Section -->
+    <div class="card">
+        <h2 class="text-lg font-semibold text-brand-800 mb-4">Patient Feedback</h2>
+
+        @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+        {
+            var feedback = Model.Feedbacks.FirstOrDefault();
+
+            <div class="space-y-2">
+                <p>
+                    <span class="font-semibold text-gray-700 mr-2">Rating:</span>
+                    <span class="text-yellow-500 font-bold text-lg">★ @feedback.Rating</span>
+                </p>
+
+                <p><strong class="text-gray-700">Comment:</strong></p>
+                <p class="italic text-gray-600 bg-gray-50 p-3 rounded-lg">
+                    "@feedback.Comments"
+                </p>
+
+                <p class="text-xs text-gray-400 mt-2">
+                    Submitted on: @feedback.CreatedAt.ToString("dd MMM yyyy")
+                </p>
+            </div>
+        }
+        else
+        {
+            <p class="text-gray-400 italic">No feedback submitted yet.</p>
+        }
+    </div>
+
+</div>

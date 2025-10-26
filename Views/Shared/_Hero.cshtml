@@ -18,28 +18,39 @@
                     minutes. Transparent pricing, reminders, and secure records in one
                     place.
                 </p>
-                <form id="book" class="mt-8 grid gap-3 sm:grid-cols-3">
-                    <input type="text"
-                           placeholder="Search specialty (e.g., cardiology)"
-                           class="sm:col-span-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-sm focus:border-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/50" />
-                    <button type="button"
-                            class="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
+                <form method="get" asp-controller="Home" asp-action="Search"
+                      class="mt-8 grid gap-3 sm:grid-cols-3">
+
+                    <select name="specialtyId"
+                            class="sm:col-span-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-sm">
+                        <option value="">Search specialty...</option>
+                        @foreach (var s in ViewBag.Specialties)
+                        {
+                            <option value="@s.SpecialtyId">@s.Name</option>
+                        }
+                    </select>
+
+                    <button type="submit"
+                            class="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-neutral shadow-soft">
                         Check availability
                     </button>
                 </form>
+
+
             </div>
             <div class="relative">
                 <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-accent/20 to-white blur-2xl"></div>
                 <div class="overflow-hidden rounded-3xl border border-secondary bg-white shadow-soft">
                     <div class="grid grid-cols-3 gap-4 p-6">
                         <div class="col-span-3">
-                            <h3 class="text-sm font-semibold">Your next visit</h3>
+                            <h3 class="text-sm font-semibold text-slate-700">Top-rated specialists</h3>
                             <p class="mt-1 text-sm text-slate-600">
-                                Dr. Jane Smith • Dermatology • Oct 22, 10:30 AM
+                                Search and book appointments with certified doctors you can trust — anytime.
                             </p>
+
                         </div>
                         <!-- Calendar preview image -->
-                        <img src="https://cdn.pixabay.com/photo/2024/09/01/15/40/ai-generated-9014380_1280.png"
+                        <img src="https://cdn.pixabay.com/photo/2022/01/08/08/07/dentist-6923507_960_720.jpg"
                              alt="Calendar preview"
                              class="col-span-3 h-40 w-full rounded-xl object-cover" />
                         <!-- Doctor profile images -->

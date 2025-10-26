@@ -13,3 +13,27 @@ obj/
 
 # Logs
 *.log
+
+# Rider / VS Code folders
+.idea/
+.vscode/
+
+# Publish output
+publish/
+out/
+
+# App settings (do not push DB connections!)
+appsettings.json
+appsettings.Development.json
+secrets.json
+
+# NuGet Packages
+*.nupkg
+packages/
+
+# SQL/Local Database files
+*.mdf
+*.ldf
+
+# Other generated files
+*.db

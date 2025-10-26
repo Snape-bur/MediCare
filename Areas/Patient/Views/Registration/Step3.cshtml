@@ -1,0 +1,28 @@
+﻿@model MediCare.Areas.Patient.Models.Step3MedicalVM
+@await Html.PartialAsync("_RegistrationProgress", new MediCare.Areas.Patient.Models.RegistrationProgressViewModel { CurrentStep = 3 })
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8 mt-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Step 3 - Medical Information</h2>
+
+    <form asp-action="Step3" method="post" class="space-y-6">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-red-500 mb-4"></div>
+
+        <div>
+            <label asp-for="MedicalHistory" class="block text-sm font-medium text-gray-700">
+                Medical History <span class="text-red-500">*</span>
+            </label>
+            <textarea asp-for="MedicalHistory" rows="5" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="List any existing conditions, allergies, or relevant health history"></textarea>
+            <span asp-validation-for="MedicalHistory" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="flex justify-between">
+            <a asp-action="Step2" class="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg shadow hover:bg-gray-400">← Back</a>
+            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg shadow hover:bg-green-700">Finish ✔</button>
+        </div>
+    </form>
+</div>

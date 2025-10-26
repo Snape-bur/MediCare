@@ -1,0 +1,48 @@
+﻿@model IEnumerable<MediCare.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Manage Availabilities";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="max-w-7xl mx-auto bg-white shadow rounded-2xl p-8">
+    <h2 class="text-2xl font-bold text-gray-700 mb-6">🩺 Doctor Availability Management</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-4">
+            @TempData["Message"]
+        </div>
+    }
+
+    <table class="min-w-full border-collapse text-sm">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+            <tr>
+                <th class="px-5 py-3 text-left font-semibold">Doctor Name</th>
+                <th class="px-5 py-3 text-left font-semibold">Specialty</th>
+                <th class="px-5 py-3 text-left font-semibold">Weekly Summary</th>
+                <th class="px-5 py-3 text-center font-semibold">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            @foreach (var doc in Model)
+            {
+                var summary = string.Join(", ", doc.Availabilities
+                .OrderBy(a => a.Day)
+                .Select(a => $"{a.Day}: {a.StartTime:hh\\:mm}-{a.EndTime:hh\\:mm}"));
+
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="px-5 py-3 font-medium">@doc.AppUser?.FullName</td>
+                    <td class="px-5 py-3 text-gray-700">@doc.Specialty?.Name</td>
+                    <td class="px-5 py-3 text-gray-600">@summary</td>
+                    <td class="px-5 py-3 text-center">
+                        <a asp-action="Edit" asp-route-id="@doc.DoctorId"
+                           class="btn-brand text-sm">
+                            ✏️ Edit
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,62 @@
+﻿@model MediCare.Areas.Patient.Models.Step1PersonalInfoVM
+@await Html.PartialAsync("_RegistrationProgress", new MediCare.Areas.Patient.Models.RegistrationProgressViewModel { CurrentStep = 1 })
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="max-w-2xl mx-auto bg-white shadow-md rounded-xl p-8 mt-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Step 1 - Personal Information</h2>
+
+    <form asp-action="Step1" method="post" class="space-y-6">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="All" class="text-red-500 mb-4"></div>
+
+        <div class="grid grid-cols-2 gap-6">
+            <div>
+                <label asp-for="FirstName" class="block text-sm font-medium text-gray-700">
+                    First Name <span class="text-red-500">*</span>
+                </label>
+                <input asp-for="FirstName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                <span asp-validation-for="FirstName" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div>
+                <label asp-for="LastName" class="block text-sm font-medium text-gray-700">
+                    Last Name <span class="text-red-500">*</span>
+                </label>
+                <input asp-for="LastName" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                <span asp-validation-for="LastName" class="text-red-500 text-sm"></span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6">
+            <div>
+                <label asp-for="DateOfBirth" class="block text-sm font-medium text-gray-700">
+                    Date of Birth <span class="text-red-500">*</span>
+                </label>
+                <input asp-for="DateOfBirth" type="date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+                <span asp-validation-for="DateOfBirth" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div>
+                <label asp-for="Gender" class="block text-sm font-medium text-gray-700">
+                    Gender <span class="text-red-500">*</span>
+                </label>
+                <select asp-for="Gender" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <option value="">-- Select Gender --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-red-500 text-sm"></span>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700">
+                Next →
+            </button>
+        </div>
+    </form>
+</div>

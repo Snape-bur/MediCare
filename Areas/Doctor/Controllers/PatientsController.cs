@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace MediCare.Areas.Doctor.Controllers
 {
@@ -20,28 +22,57 @@ namespace MediCare.Areas.Doctor.Controllers
             _userManager = userManager;
         }
 
-        // GET: Doctor/Patients
+   
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Unauthorized();
+            if (user == null)
+                return Unauthorized();
 
-            // Find the doctor profile
             var doctor = await _context.Doctors
                 .FirstOrDefaultAsync(d => d.AppUserId == user.Id);
 
-            if (doctor == null) return NotFound("Doctor profile not found.");
+            if (doctor == null)
+                return NotFound("Doctor profile not found.");
 
-            // Get distinct patients who have appointments with this doctor
             var patients = await _context.Appointments
-                .Include(a => a.Patient)
-                .ThenInclude(p => p.AppUser)
                 .Where(a => a.DoctorId == doctor.DoctorId)
+                .Include(a => a.Patient)
+                    .ThenInclude(p => p.AppUser)
+                .Include(a => a.Patient)
+                    .ThenInclude(p => p.Appointments)
+                        .ThenInclude(a => a.Feedbacks) 
                 .Select(a => a.Patient)
                 .Distinct()
                 .ToListAsync();
 
             return View(patients);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return Unauthorized();
+
+            var doctor = await _context.Doctors
+                .FirstOrDefaultAsync(d => d.AppUserId == user.Id);
+
+            if (doctor == null)
+                return NotFound("Doctor profile not found.");
+
+            // Load patient and their appointments with this doctor only
+            var patient = await _context.Patients
+                .Include(p => p.AppUser)
+                .Include(p => p.Appointments)
+                    .ThenInclude(a => a.Doctor)
+                .Where(p => p.Appointments.Any(a => a.DoctorId == doctor.DoctorId))
+                .FirstOrDefaultAsync(p => p.PatientId == id);
+
+            if (patient == null)
+                return NotFound("Patient not found or not linked to this doctor.");
+
+            return View(patient);
         }
     }
 }

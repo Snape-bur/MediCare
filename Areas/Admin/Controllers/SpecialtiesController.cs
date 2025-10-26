@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MediCare.Data;
 using MediCare.Models;
@@ -20,122 +17,130 @@ namespace MediCare.Areas.Admin.Controllers
             _context = context;
         }
 
-        // GET: Admin/Specialties
+        // ✅ INDEX: List all specialties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Specialties.ToListAsync());
+            var specialties = await _context.Specialties.ToListAsync();
+            return View(specialties);
         }
 
-        // GET: Admin/Specialties/Details/5
+        // ✅ DETAILS: Show single specialty
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var specialty = await _context.Specialties
-                .FirstOrDefaultAsync(m => m.SpecialtyId == id);
+            var specialty = await _context.Specialties.FirstOrDefaultAsync(m => m.SpecialtyId == id);
             if (specialty == null)
-            {
                 return NotFound();
-            }
 
             return View(specialty);
         }
 
-        // GET: Admin/Specialties/Create
+        // ✅ CREATE: Page
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Specialties/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SpecialtyId,Name,Description")] Specialty specialty)
+        public async Task<IActionResult> Create([Bind("Name,Description")] Specialty specialty)
         {
-            if (ModelState.IsValid)
+            // Trim user input
+            specialty.Name = specialty.Name?.Trim();
+            specialty.Description = specialty.Description?.Trim();
+
+            // Duplicate check
+            var exists = await _context.Specialties.AnyAsync(s => s.Name == specialty.Name);
+            if (exists)
             {
-                _context.Add(specialty);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = $"⚠️ A specialty named '{specialty.Name}' already exists.";
+                return View(specialty);
             }
-            return View(specialty);
+
+            // Model validation
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "⚠️ Please fill all required fields correctly.";
+                return View(specialty);
+            }
+
+            _context.Add(specialty);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = $"✅ Specialty '{specialty.Name}' added successfully.";
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Admin/Specialties/Edit/5
+
+        // ✅ EDIT: Page
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var specialty = await _context.Specialties.FindAsync(id);
             if (specialty == null)
-            {
                 return NotFound();
-            }
+
             return View(specialty);
         }
 
-        // POST: Admin/Specialties/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // ✅ EDIT: Update existing specialty
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("SpecialtyId,Name,Description")] Specialty specialty)
         {
             if (id != specialty.SpecialtyId)
-            {
                 return NotFound();
+
+            // 🔍 Prevent duplicate names on update
+            var duplicate = await _context.Specialties
+                .AnyAsync(s => s.Name == specialty.Name && s.SpecialtyId != id);
+            if (duplicate)
+            {
+                TempData["Error"] = $"⚠️ Another specialty with the name '{specialty.Name}' already exists.";
+                return View(specialty);
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(specialty);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SpecialtyExists(specialty.SpecialtyId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "⚠️ Please check the fields and try again.";
+                return View(specialty);
             }
-            return View(specialty);
+
+            try
+            {
+                _context.Update(specialty);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = $"✅ Specialty '{specialty.Name}' updated successfully.";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SpecialtyExists(specialty.SpecialtyId))
+                    return NotFound();
+                else
+                    throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Admin/Specialties/Delete/5
+        // ✅ DELETE: Confirm page
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var specialty = await _context.Specialties
-                .FirstOrDefaultAsync(m => m.SpecialtyId == id);
+            var specialty = await _context.Specialties.FirstOrDefaultAsync(m => m.SpecialtyId == id);
             if (specialty == null)
-            {
                 return NotFound();
-            }
 
             return View(specialty);
         }
 
-        // POST: Admin/Specialties/Delete/5
+        // ✅ DELETE: Action
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -144,12 +149,18 @@ namespace MediCare.Areas.Admin.Controllers
             if (specialty != null)
             {
                 _context.Specialties.Remove(specialty);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = $"🗑️ Specialty '{specialty.Name}' deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "⚠️ Specialty not found or already deleted.";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // ✅ Helper
         private bool SpecialtyExists(int id)
         {
             return _context.Specialties.Any(e => e.SpecialtyId == id);
