@@ -5,89 +5,126 @@
     var availabilities = ViewBag.Availabilities as List<MediCare.Models.Availability>;
 }
 
-<div class="max-w-4xl mx-auto mt-12 bg-white shadow-lg rounded-3xl p-8">
-    <div class="flex flex-col md:flex-row gap-6 items-center">
-        <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png"
-             alt="Doctor" class="w-32 h-32 object-contain" />
-        <div>
-            <h2 class="text-2xl font-semibold text-blue-700">@Model.AppUser.FullName</h2>
-            <p class="text-gray-700"><span class="font-semibold">Specialty:</span> @Model.Specialty?.Name</p>
-            <p class="text-gray-700"><span class="font-semibold">Clinic:</span> @Model.Clinic?.Name </p>
-            <p class="text-gray-700"><span class="font-semibold">Address:</span> @Model.Clinic?.Address </p>
-            <p class="text-gray-700">
-                <span class="font-semibold">Consultation Fee:</span>
-                <span class="text-green-600 font-bold">฿@Model.ConsultationFee.ToString("N2")</span>
-            </p>
-            <p class="text-gray-500 mt-2">@Model.ProfileInfo</p>
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <div class="mb-8">
+        <a asp-action="Index" asp-controller="Appointments"
+           class="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back to search
+        </a>
+    </div>
+
+    <div class="bg-white rounded-[2rem] shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden mb-10">
+        <div class="flex flex-col md:flex-row items-center md:items-stretch">
+            <div class="w-full md:w-1/3 bg-gray-50 p-8 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100">
+                <div class="relative">
+                    <img src="@Url.Content("~/images/Moses.jpg")"
+                         alt="Doctor" class="w-48 h-48 rounded-3xl object-cover shadow-2xl border-4 border-white" />
+                    <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-[10px] font-black uppercase tracking-tighter px-4 py-1 rounded-full shadow-lg">
+                        Verified Expert
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Consultation Fee</p>
+                    <p class="text-3xl font-black text-blue-700">฿@Model.ConsultationFee.ToString("N0")</p>
+                </div>
+            </div>
+
+            <div class="w-full md:w-2/3 p-10">
+                <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg uppercase">@Model.Specialty?.Name</span>
+                    <span class="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-lg uppercase tracking-wide">Accepting Patients</span>
+                </div>
+
+                <h2 class="text-4xl font-black text-gray-900 mb-6">Dr. @Model.AppUser.FullName</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-gray-50 rounded-lg text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Clinic</p>
+                            <p class="text-gray-900 font-semibold">@Model.Clinic?.Name</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-gray-50 rounded-lg text-blue-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase">Address</p>
+                            <p class="text-gray-900 font-semibold text-sm">@Model.Clinic?.Address</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prose prose-blue text-gray-600 leading-relaxed italic">
+                    "@Model.ProfileInfo"
+                </div>
+            </div>
         </div>
     </div>
 
-    <hr class="my-6 border-gray-200" />
+    <div class="space-y-6">
+        <h3 class="text-2xl font-black text-gray-900 flex items-center gap-3 ml-2">
+            <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            Available Schedules
+        </h3>
 
-    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm.75 4v4.25l2.5 1.5-.75 1.25-3.25-2V6h1.5z" />
-        </svg>
-        Available Slots
-    </h3>
+        @if (availabilities == null || !availabilities.Any())
+        {
+            <div class="bg-gray-50 border-2 border-dashed border-gray-200 rounded-[2rem] p-12 text-center">
+                <p class="text-gray-400 font-bold">No booking slots available for this week.</p>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach (var slot in availabilities)
+                {
+                    <div class="group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:border-blue-200 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-lg font-black text-gray-900">@slot.Day</p>
+                                <p class="text-xs font-bold text-blue-500 uppercase">@NextDate(slot.Day).ToString("dd MMM yyyy")</p>
+                            </div>
+                            <div class="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </div>
+                        </div>
 
-    @if (availabilities == null || !availabilities.Any())
-    {
-        <div class="bg-yellow-50 border border-yellow-300 text-yellow-700 px-4 py-3 rounded-md text-center">
-            No available slots found for this doctor.
-        </div>
-    }
-    else
-    {
-        <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-center border border-gray-200 rounded-lg">
-                <thead class="bg-gray-100 text-gray-600 uppercase">
-                    <tr>
-                        <th class="px-4 py-2">Day</th>
-                        <th class="px-4 py-2">Start Time</th>
-                        <th class="px-4 py-2">End Time</th>
-                        <th class="px-4 py-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var slot in availabilities)
-                    {
-                        <tr class="border-t hover:bg-gray-50">
-                            <td class="py-2">
-                                @slot.Day
-                                <br />
-                                <span class="text-xs text-gray-500">
-                                    @NextDate(slot.Day).ToString("dd MMM yyyy")
+                        <div class="space-y-1 mb-6">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-400 font-medium">Shift Start</span>
+                                <span class="text-gray-900 font-bold">
+                                    @* Convert TimeSpan to DateTime to use AM/PM format *@
+                                    @(DateTime.Today.Add(slot.StartTime).ToString("hh:mm tt"))
                                 </span>
-                            </td>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-400 font-medium">Shift End</span>
+                                <span class="text-gray-900 font-bold">
+                                    @(DateTime.Today.Add(slot.EndTime).ToString("hh:mm tt"))
+                                </span>
+                            </div>
+                        </div>
 
-                            <td>@slot.StartTime.ToString(@"hh\:mm")</td>
-                            <td>@slot.EndTime.ToString(@"hh\:mm")</td>
-                            <td>
-                                <form asp-action="Book" method="post">
-                                    <input type="hidden" name="doctorId" value="@Model.DoctorId" />
-                                    <input type="hidden" name="day" value="@slot.Day" />
-                                    <input type="hidden" name="date" value="@NextDate(slot.Day).ToString("yyyy-MM-dd")" />
-                                    <input type="hidden" name="start" value="@slot.StartTime" />
-                                    <input type="hidden" name="end" value="@slot.EndTime" />
-                                    <button type="submit"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-1.5 rounded-full transition">
-                                        Book This Slot
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    }
-
-    <div class="text-center mt-6">
-        <a asp-action="Index" asp-controller="Appointments"
-           class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-5 py-2 rounded-full transition">
-            ← Back to Find Doctors
-        </a>
+                        <form asp-action="Book" method="post">
+                            <input type="hidden" name="doctorId" value="@Model.DoctorId" />
+                            <input type="hidden" name="day" value="@slot.Day" />
+                            <input type="hidden" name="date" value="@NextDate(slot.Day).ToString("yyyy-MM-dd")" />
+                            <input type="hidden" name="start" value="@slot.StartTime" />
+                            <input type="hidden" name="end" value="@slot.EndTime" />
+                            <button type="submit"
+                                    class="w-full py-3 bg-gray-900 group-hover:bg-blue-600 text-white font-black rounded-xl transition-all shadow-md active:scale-95">
+                                Select Slot
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
     </div>
 </div>
 
@@ -97,7 +134,7 @@
         var today = DateTime.Today;
         int daysToAdd = ((int)day - (int)today.DayOfWeek + 7) % 7;
         if (daysToAdd == 0)
-            daysToAdd = 7; // Always future day
+            daysToAdd = 7;
         return today.AddDays(daysToAdd);
     }
 }

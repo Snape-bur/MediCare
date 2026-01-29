@@ -5,85 +5,90 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-2xl font-bold text-gray-700 mb-6">👨‍⚕️ Doctor Details</h2>
-
-<div class="bg-white shadow rounded-2xl p-8 max-w-3xl">
-    <dl class="divide-y divide-gray-200">
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Doctor Name</dt>
-            <dd class="col-span-2">@Model.AppUser?.FullName</dd>
+<div class="max-w-5xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div class="flex items-center gap-6">
+            <div class="w-20 h-20 bg-blue-600 rounded-[2rem] flex items-center justify-center text-white text-2xl font-black shadow-xl shadow-blue-200">
+                @Model.AppUser?.FullName.Substring(0, 1)
+            </div>
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight"> @Model.AppUser?.FullName</h2>
+                <p class="text-blue-600 font-bold uppercase tracking-widest text-xs">@Model.Specialty?.Name Specialist</p>
+            </div>
         </div>
-
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Specialty</dt>
-            <dd class="col-span-2">@Model.Specialty?.Name </dd>
+        <div class="flex gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.DoctorId" class="px-6 py-3 bg-slate-900 text-white font-black rounded-xl hover:bg-blue-600 transition-all">Edit Profile</a>
+            <a asp-action="Index" class="px-6 py-3 bg-white border border-slate-200 text-slate-500 font-black rounded-xl hover:bg-slate-50 transition-all">Return</a>
         </div>
+    </div>
 
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Clinic</dt>
-            <dd class="col-span-2">@Model.Clinic?.Name</dd>
-        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 p-10 shadow-sm">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Physician Biography</h3>
+                <p class="text-slate-600 leading-relaxed italic text-lg">"@Model.ProfileInfo"</p>
 
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Consultation Fee</dt>
-            <dd class="col-span-2">@Model.ConsultationFee.ToString("C")</dd>
-        </div>
+                <div class="grid grid-cols-2 gap-8 mt-10 pt-10 border-t border-slate-100">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Qualification</p>
+                        <p class="font-bold text-slate-900">@Model.Qualification</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Experience</p>
+                        <p class="font-bold text-slate-900">@(Model.ExperienceYears ?? 0) Years</p>
+                    </div>
+                </div>
+            </div>
 
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Experience</dt>
-            <dd class="col-span-2">
-                @(Model.ExperienceYears.HasValue ? $"{Model.ExperienceYears} years" : "—")
-            </dd>
-        </div>
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 p-10 shadow-sm">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Active Weekly Schedule</h3>
+                    <a asp-controller="Availabilities" asp-action="Edit" asp-route-id="@Model.DoctorId" class="text-xs font-black text-blue-600 hover:underline">Edit Slots</a>
+                </div>
 
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Qualification</dt>
-            <dd class="col-span-2">@Model.Qualification </dd>
-        </div>
-
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Phone Number</dt>
-            <dd class="col-span-2">@Model.PhoneNumber </dd>
-        </div>
-
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Profile Info</dt>
-            <dd class="col-span-2">@Model.ProfileInfo </dd>
-        </div>
-
-        <!-- 🕒 Availability Schedule -->
-        <div class="py-3 grid grid-cols-3">
-            <dt class="font-semibold text-gray-600">Availability</dt>
-            <dd class="col-span-2">
                 @if (Model.Availabilities != null && Model.Availabilities.Any())
                 {
-                    <ul class="list-disc ml-5 space-y-1">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         @foreach (var slot in Model.Availabilities.OrderBy(a => a.Day))
                         {
-                            <li>
-                                <strong>@slot.Day</strong>:
-                                @slot.StartTime.ToString(@"hh\:mm") - @slot.EndTime.ToString(@"hh\:mm")
-                            </li>
+                            <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <span class="font-bold text-slate-900">@slot.Day</span>
+                                <span class="text-sm font-black text-blue-600">@slot.StartTime.ToString(@"hh\:mm") — @slot.EndTime.ToString(@"hh\:mm")</span>
+                            </div>
                         }
-                    </ul>
+                    </div>
                 }
                 else
                 {
-                    <span class="text-gray-500">No availability added</span>
+                    <p class="text-slate-400 italic text-sm">No availability configured for this provider.</p>
                 }
-            </dd>
+            </div>
         </div>
-    </dl>
 
-    <div class="flex justify-between mt-6">
-        <a asp-action="Index"
-           class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
-            ⬅ Back
-        </a>
-
-        <a asp-action="Edit" asp-route-id="@Model.DoctorId"
-           class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
-            ✏️ Edit
-        </a>
+        <div class="space-y-8">
+            <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl">
+                <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-8">Contact & Location</h3>
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <i data-lucide="phone" class="w-5 h-5 text-blue-400"></i>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-500 uppercase">Direct Phone</p>
+                            <p class="font-bold">@Model.PhoneNumber</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-blue-400"></i>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-500 uppercase">Primary Clinic</p>
+                            <p class="font-bold text-sm">@Model.Clinic?.Name</p>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-white/10">
+                        <p class="text-[10px] font-black text-slate-500 uppercase mb-2">Consultation Rate</p>
+                        <p class="text-3xl font-black text-white">฿@Model.ConsultationFee.ToString("N0")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

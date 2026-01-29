@@ -8,191 +8,165 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MediCare Doctor</title>
+    <title>@ViewData["Title"] - MediCare Practitioner</title>
 
-    <!-- ✅ Tailwind CSS CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- ✅ Theme Configuration -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         brand: {
-                            50: '#f6fef9',
-                            100: '#e8f9f0',
-                            200: '#c6f1db',
-                            400: '#4fd1a1',
-                            500: '#38b981',
-                            600: '#2ea96e',
-                            700: '#24885b',
-                            800: '#1c6a47',
-                            900: '#134d34'
+                            50: '#f0fdf4',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Segoe UI', 'sans-serif']
-                    },
-                    boxShadow: {
-                        soft: '0 2px 8px rgba(0,0,0,0.04)',
-                        medium: '0 4px 16px rgba(0,0,0,0.06)',
                     }
                 }
             }
         }
     </script>
 
-    <!-- ✅ Global UI Styles -->
     <style type="text/tailwindcss">
         @@layer components {
-            /* 🌿 Button Styles */
-            .btn-brand {
-                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-700 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
+            .nav-link {
+                @@apply flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300;
             }
 
-            .btn-blue {
-                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-indigo-700 hover:to-sky-700 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
+            .nav-link-active {
+                @@apply bg-emerald-600 text-white shadow-lg shadow-emerald-200/50;
             }
 
-            .btn-gray {
-                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-800 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-200;
-            }
-
-            .btn-danger {
-                @@apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-red-600 to-rose-700 hover:from-rose-700 hover:to-red-800 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ease-in-out;
-            }
-            /* 🧩 Card Component */
-            .card {
-                @@apply bg-white shadow-soft rounded-2xl p-6 border border-gray-100;
-            }
-            /* 🩺 Page Headings */
-            h1.page-title {
-                @@apply text-2xl font-bold text-brand-800 mb-2;
-            }
-
-            p.page-subtitle {
-                @@apply text-sm text-gray-500 mb-6;
-            }
-            /* ✅ Always allow link/button clicks */
-            a, button {
-                position: relative !important;
-                z-index: 50 !important;
-                cursor: pointer !important;
-                pointer-events: auto !important;
-            }
-            /* 🚫 Prevent parent or header from blocking clicks */
-            header, .shadow-sm, .border-b, .relative, .bg-white {
-                z-index: auto !important;
-                pointer-events: auto !important;
+            .nav-link-inactive {
+                @@apply text-slate-500 hover:bg-slate-50 hover:text-emerald-600;
             }
         }
-    </style>
+        /* Custom scrollbar for clinical look */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
 
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-[#F8FAFC] text-slate-900 antialiased font-sans">
 
     <div class="flex min-h-screen">
-        <!-- 🌿 Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 shadow-sm flex flex-col">
-            <div class="flex items-center gap-2 border-b border-gray-100 px-5 py-5">
-                <div class="w-9 h-9 rounded-full bg-brand-600 flex items-center justify-center text-white text-lg font-bold">
-                    🩺
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col sticky top-0 h-screen z-50">
+            <div class="p-8 pb-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-xl shadow-emerald-100">
+                        <i data-lucide="activity" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-black tracking-tight text-slate-900">Medi<span class="text-emerald-600">Care</span></h1>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Practitioner</p>
+                    </div>
                 </div>
-                <h1 class="text-lg font-semibold text-brand-800">MediCare Doctor</h1>
             </div>
 
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <p class="px-4 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-4">Practice Management</p>
 
-            <!-- Sidebar Nav -->
-            <nav class="flex-1 p-4 space-y-2 text-sm font-medium">
                 <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index"
-                   class="block px-4 py-2 rounded-lg transition
-                          @(ViewData["Title"]?.ToString() == "Doctor Dashboard"
-                                                 ? "bg-brand-100 text-brand-800"
-                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
-                    🏠 Dashboard
+                   class="nav-link @(ViewData["Title"]?.ToString() == "Doctor Dashboard" ? "nav-link-active" : "nav-link-inactive")">
+                    <i data-lucide="layout-grid" class="w-5 h-5"></i> Dashboard
                 </a>
 
                 <a asp-area="Doctor" asp-controller="Appointments" asp-action="Index"
-                   class="block px-4 py-2 rounded-lg transition
-                          @(ViewData["Title"]?.ToString()?.Contains("Appointment") == true
-                                                 ? "bg-brand-100 text-brand-800"
-                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
-                    📅 Appointments
+                   class="nav-link @(ViewData["Title"]?.ToString() == "Visit Schedule" || ViewData["Title"]?.ToString()?.Contains("Appointment") == true ? "nav-link-active" : "nav-link-inactive")">
+                    <i data-lucide="calendar" class="w-5 h-5"></i> Visit Schedule
                 </a>
 
                 <a asp-area="Doctor" asp-controller="Patients" asp-action="Index"
-                   class="block px-4 py-2 rounded-lg transition
-                          @(ViewData["Title"]?.ToString()?.Contains("Patient") == true
-                                                 ? "bg-brand-100 text-brand-800"
-                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
-                    👥 Patients
+                   class="nav-link @(ViewData["Title"]?.ToString()?.Contains("Patient") == true ? "nav-link-active" : "nav-link-inactive")">
+                    <i data-lucide="users" class="w-5 h-5"></i> My Patients
                 </a>
 
+                <p class="px-4 pt-8 text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-4">Professional Setup</p>
+
                 <a asp-area="Doctor" asp-controller="Availabilities" asp-action="Edit"
-                   class="block px-4 py-2 rounded-lg transition
-                          @(ViewData["Title"]?.ToString()?.Contains("Availability") == true
-                                                 ? "bg-brand-100 text-brand-800"
-                                                 : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
-                    🕓 Availability
+                   class="nav-link @(ViewData["Title"]?.ToString()?.Contains("Availability") == true ? "nav-link-active" : "nav-link-inactive")">
+                    <i data-lucide="clock" class="w-5 h-5"></i> Availability
                 </a>
 
                 <a asp-area="Doctor" asp-controller="Profile" asp-action="Edit"
-                   class="block px-4 py-2 rounded-lg transition
-          @(ViewData["Title"]?.ToString()?.Contains("Profile") == true
-                               ? "bg-brand-100 text-brand-800"
-                               : "text-gray-700 hover:bg-brand-50 hover:text-brand-700")">
-                    👤 My Profile
+                   class="nav-link @(ViewData["Title"]?.ToString()?.Contains("Profile") == true ? "nav-link-active" : "nav-link-inactive")">
+                    <i data-lucide="user-cog" class="w-5 h-5"></i> My Profile
                 </a>
-
             </nav>
 
-            <!-- Logout Section -->
-            <div class="p-4 border-t border-gray-100 bg-brand-50/60">
+            <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+                <div class="p-4 rounded-3xl bg-white border border-slate-200 mb-4 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-black text-xs">
+                            @User.Identity?.Name?.Substring(0, 1).ToUpper()
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-black text-slate-900 truncate">Dr. @User.Identity?.Name</p>
+                            <p class="text-[9px] font-bold text-emerald-600 uppercase tracking-tighter">Practitioner</p>
+                        </div>
+                    </div>
+                </div>
+
                 <form asp-area="Identity" asp-page="/Account/Logout" method="post">
-                    <button type="submit"
-                            class="w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium
-                                   text-brand-800 bg-brand-100 hover:bg-brand-200 transition">
-                        🚪 Logout
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all">
+                        <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
                     </button>
                 </form>
-                <p class="text-xs text-gray-400 text-center mt-3">© 2025 MediCare</p>
             </div>
         </aside>
 
-        <!-- 🌿 Main Layout -->
-        <div class="flex-1 flex flex-col">
-            <!-- ✅ Header (fixed stacking issue removed) -->
-            <header class="bg-white border-b border-gray-100 flex justify-between items-center px-4 py-3.5">
-                <div class="flex flex-col leading-tight">
-                    <h1 class="text-lg font-semibold text-brand-800">@ViewData["Title"]</h1>
-                    <p class="text-sm text-gray-500">MediCare Doctor Portal</p>
+        <div class="flex-1 flex flex-col h-screen overflow-y-auto">
+            <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 px-10 py-5 sticky top-0 z-40 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Medical Portal</h2>
+                    <p class="text-sm font-bold text-slate-900">@ViewData["Title"]</p>
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <span class="text-sm text-gray-600">
-                        Hi, <strong>@User.Identity?.Name</strong>
-                    </span>
-                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png"
-                         alt="Doctor Avatar"
-                         class="w-9 h-9 rounded-full border border-gray-200 shadow-sm" />
+                <div class="flex items-center gap-6">
+                    <button class="p-2.5 text-slate-400 hover:text-emerald-600 bg-slate-50 rounded-xl transition-all">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                    </button>
+                    <div class="h-8 w-[1px] bg-slate-200"></div>
+                    <div class="flex items-center gap-3">
+                        <img src="https://ui-avatars.com/api/?name=Doctor+@User.Identity?.Name&background=059669&color=fff"
+                             class="w-10 h-10 rounded-2xl shadow-lg border-2 border-white" alt="Doctor" />
+                    </div>
                 </div>
             </header>
 
-
-            <!-- ✅ Page Body -->
-            <main class="flex-1 p-8 bg-gray-50">
+            <main class="p-10 pb-20">
                 @RenderBody()
             </main>
 
-            <!-- ✅ Footer -->
-            <footer class="text-center py-4 text-xs text-gray-400 border-t bg-white">
-                MediCare Doctor Portal © 2025 — Crafted with 💚 by MediCare Dev Team
+            <footer class="mt-auto px-10 py-8 border-t border-slate-200 bg-white flex justify-between items-center">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">© 2025 MediCare Practitioner Cloud</p>
+                <div class="flex gap-6">
+                    <a href="#" class="text-[10px] font-black text-slate-300 hover:text-emerald-600 uppercase tracking-widest transition-colors text-xs">Privacy Protocol</a>
+                    <a href="#" class="text-[10px] font-black text-slate-300 hover:text-emerald-600 uppercase tracking-widest transition-colors text-xs">Clinical Terms</a>
+                </div>
             </footer>
         </div>
     </div>
 
+    <script>
+        lucide.createIcons();
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

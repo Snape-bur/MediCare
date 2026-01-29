@@ -3,88 +3,110 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-lg mx-auto bg-white shadow-lg rounded-2xl p-8 mt-10">
-    <h2 class="text-2xl font-bold text-blue-700 mb-4">🩺 Leave Feedback</h2>
+<div class="max-w-xl mx-auto px-4 py-12">
+    <div class="mb-8">
+        <a asp-area="Patient" asp-controller="Dashboard" asp-action="Index"
+           class="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-blue-600 transition-colors uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back to Dashboard
+        </a>
+    </div>
 
-    <form asp-action="Create" method="post" class="space-y-5">
-        @Html.AntiForgeryToken()
-
-        <input type="hidden" name="appointmentId" value="@ViewBag.AppointmentId" />
-        <input type="hidden" name="doctorId" value="@ViewBag.DoctorId" />
-        <input type="hidden" name="patientId" value="@ViewBag.PatientId" />
-
-        <!-- ⭐ Animated Star Rating -->
-        <div>
-            <label class="block font-semibold mb-2 text-gray-700">Rating</label>
-
-            <!-- Stars -->
-            <div id="star-rating" class="flex justify-center gap-2 text-4xl cursor-pointer select-none text-gray-300">
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <span class="star transition transform duration-200 hover:scale-125" data-value="@i">⭐</span>
-                }
-            </div>
-
-            <!-- Hidden input for form -->
-            <input type="hidden" id="rating" name="rating" required />
-
-            <!-- Rating text -->
-            <div class="text-center mt-2">
-                <p id="rating-text" class="text-gray-700 text-sm font-semibold"></p>
-            </div>
+    <div class="bg-white rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-700 to-indigo-600 px-10 py-8 text-white">
+            <h2 class="text-3xl font-black tracking-tight">How was your visit?</h2>
+            <p class="text-blue-100 mt-1 font-medium">Your feedback helps us improve our care.</p>
         </div>
 
-        <!-- 💬 Comments -->
-        <div>
-            <label class="block font-semibold mb-1 text-gray-700">Comments</label>
-            <textarea name="comments" rows="4" class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-500" placeholder="Write your feedback..." required></textarea>
-        </div>
+        <div class="p-10">
+            <form asp-action="Create" method="post" class="space-y-8">
+                @Html.AntiForgeryToken()
 
-        <!-- Submit -->
-        <button type="submit"
-                class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition transform hover:scale-[1.02]">
-            Submit Feedback
-        </button>
-    </form>
+                <input type="hidden" name="appointmentId" value="@ViewBag.AppointmentId" />
+                <input type="hidden" name="doctorId" value="@ViewBag.DoctorId" />
+                <input type="hidden" name="patientId" value="@ViewBag.PatientId" />
+
+                <div class="text-center">
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-6">Rate your experience</label>
+
+                    <div id="star-rating" class="flex justify-center items-center gap-3">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <button type="button" class="star-btn group outline-none" data-value="@i">
+                                <svg class="star-icon w-12 h-12 transition-all duration-300 transform group-hover:scale-110 pointer-events-none fill-gray-200" viewBox="0 0 24 24">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                            </button>
+                        }
+                    </div>
+
+                    <input type="hidden" id="rating" name="rating" required />
+
+                    <div class="mt-4 h-6">
+                        <p id="rating-text" class="text-blue-600 font-black text-sm uppercase tracking-tighter"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="flex items-center gap-2 text-xs font-black text-gray-400 uppercase tracking-widest mb-3 ml-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+                        Additional Comments
+                    </label>
+                    <textarea name="comments" rows="5"
+                              class="w-full bg-gray-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 font-medium text-gray-700 p-5 placeholder-gray-300 transition-all shadow-inner"
+                              placeholder="Describe your consultation..." required></textarea>
+                </div>
+
+                <button type="submit"
+                        class="w-full py-5 bg-gray-900 hover:bg-blue-600 text-white font-black rounded-2xl transition-all shadow-lg shadow-gray-200 active:scale-[0.98] flex items-center justify-center gap-3 group">
+                    Submit Feedback
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </button>
+            </form>
+        </div>
+    </div>
 </div>
 
-<!-- ⭐ Rating Script -->
 <script>
-    const stars = document.querySelectorAll('.star');
+    const stars = document.querySelectorAll('.star-btn');
+    const icons = document.querySelectorAll('.star-icon');
     const ratingInput = document.getElementById('rating');
     const ratingText = document.getElementById('rating-text');
 
-    const labels = ["Poor", "Fair", "Good", "Very Good", "Excellent"];
+    const labels = ["Poor Experience", "Fair Experience", "Good Service", "Very Good Service", "Excellent Experience!"];
 
     stars.forEach(star => {
-        star.addEventListener('mouseover', () => {
+        star.addEventListener('mouseenter', () => {
             const hoverValue = star.getAttribute('data-value');
-            highlightStars(hoverValue);
+            updateStarsUI(hoverValue, 'fill-yellow-400');
         });
 
         star.addEventListener('mouseleave', () => {
-            highlightStars(ratingInput.value || 0);
+            const currentValue = ratingInput.value || 0;
+            updateStarsUI(currentValue, 'fill-blue-600');
         });
 
         star.addEventListener('click', () => {
-            const rating = star.getAttribute('data-value');
-            ratingInput.value = rating;
+            const val = star.getAttribute('data-value');
+            ratingInput.value = val;
+            ratingText.textContent = labels[val - 1];
+            updateStarsUI(val, 'fill-blue-600');
 
-            highlightStars(rating);
-
-            // show label and number
-            ratingText.textContent = `${labels[rating - 1]} (${rating}/5)`;
-
-            // small click animation
-            star.classList.add('scale-125');
-            setTimeout(() => star.classList.remove('scale-125'), 200);
+            // Interaction feedback
+            star.classList.add('scale-90');
+            setTimeout(() => star.classList.remove('scale-90'), 150);
         });
     });
 
-    function highlightStars(value) {
-        stars.forEach(s => {
-            s.classList.toggle('text-yellow-400', s.getAttribute('data-value') <= value);
-            s.classList.toggle('text-gray-300', s.getAttribute('data-value') > value);
+    function updateStarsUI(value, activeColorClass) {
+        icons.forEach((icon, index) => {
+            if (index < value) {
+                icon.classList.remove('fill-gray-200', 'fill-yellow-400', 'fill-blue-600');
+                icon.classList.add(activeColorClass);
+            } else {
+                icon.classList.remove('fill-yellow-400', 'fill-blue-600');
+                icon.classList.add('fill-gray-200');
+            }
         });
     }
 </script>

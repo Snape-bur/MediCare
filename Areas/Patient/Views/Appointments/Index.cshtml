@@ -5,141 +5,143 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-6xl mx-auto mt-10 bg-white rounded-3xl shadow-lg p-8">
-
- 
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-blue-700">🩺 My Appointments</h2>
+<div class="max-w-6xl mx-auto mt-10 bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h2 class="text-3xl font-extrabold text-blue-900 tracking-tight">My Appointments</h2>
+            <p class="text-gray-500 text-sm mt-1">Manage and track your upcoming visits with healthcare professionals.</p>
+        </div>
 
         <a asp-area="Patient"
            asp-controller="Dashboard"
            asp-action="Index"
-           class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-800 via-blue-600 to-cyan-400 text-white font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300">
-            ⬅ Back to Dashboard
+           class="px-5 py-2.5 rounded-xl bg-gray-50 text-blue-700 font-bold border border-blue-100 hover:bg-blue-100 transition-all duration-300">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard
         </a>
     </div>
 
     @if (TempData["Message"] != null)
     {
-        <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-4">
+        <div class="flex items-center bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl mb-6 animate-fade-in">
+            <i class="fa-solid fa-circle-check mr-3"></i>
             @TempData["Message"]
         </div>
     }
 
     @if (TempData["Error"] != null)
     {
-        <div class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded mb-4">
-            @TempData["Error"] 
+        <div class="flex items-center bg-rose-50 border border-rose-200 text-rose-800 px-4 py-3 rounded-2xl mb-6 animate-fade-in">
+            <i class="fa-solid fa-circle-exclamation mr-3"></i>
+            @TempData["Error"]
         </div>
     }
 
     @if (!Model.Any())
     {
-        <div class="text-center text-gray-500 py-6">
-            You have not booked any appointments yet.
+        <div class="text-center py-16 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+            <div class="text-blue-200 mb-4">
+                <i class="fa-solid fa-calendar-plus text-6xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">No appointments found</h3>
+            <p class="text-gray-500 mb-6">Ready to see a doctor? Book your first appointment today.</p>
+            <a asp-area="Patient" asp-controller="Booking" asp-action="Index"
+               class="flex-1 md:flex-none inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all shadow-md shadow-blue-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+               Find a Doctor
+            </a>
         </div>
     }
     else
     {
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto rounded-2xl">
             <table class="w-full text-sm text-gray-700 border-collapse">
-                <thead class="bg-blue-50 text-blue-700 text-xs uppercase tracking-wide">
-                    <tr>
-                        <th class="px-4 py-3 text-left font-semibold">Doctor</th>
-                        <th class="px-4 py-3 text-left font-semibold">Specialty</th>
-                        <th class="px-4 py-3 text-left font-semibold">Date & Time</th>
-                        <th class="px-4 py-3 text-left font-semibold">Status</th>
-                        <th class="px-4 py-3 text-center font-semibold">Action</th>
+                <thead>
+                    <tr class="bg-gray-50 text-gray-400 text-xs uppercase tracking-widest border-b border-gray-100">
+                        <th class="px-6 py-4 text-left font-black">Practitioner</th>
+                        <th class="px-6 py-4 text-left font-black">Specialty</th>
+                        <th class="px-6 py-4 text-left font-black">Schedule</th>
+                        <th class="px-6 py-4 text-left font-black">Status</th>
+                        <th class="px-6 py-4 text-center font-black">Action</th>
                     </tr>
                 </thead>
 
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-gray-50">
                     @foreach (var appt in Model)
                     {
-                        <tr class="hover:bg-blue-50 transition">
-                            <td class="px-4 py-3 font-medium">@appt.Doctor?.AppUser?.FullName</td>
-                            <td class="px-4 py-3">@appt.Doctor?.Specialty?.Name</td>
-                            <td class="px-4 py-3">
-                                @appt.DateTime.ToString("ddd, dd MMM yyyy • hh:mm tt")
+                        <tr class="hover:bg-blue-50/50 transition group">
+                            <td class="px-6 py-5">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3 border border-blue-200">
+                                        @appt.Doctor?.AppUser?.FullName?.Substring(0, 1)
+                                    </div>
+                                    <span class="font-bold text-gray-900">@appt.Doctor?.AppUser?.FullName</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-lg text-xs font-semibold">
+                                    @appt.Doctor?.Specialty?.Name
+                                </span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="font-bold text-gray-900">@appt.DateTime.ToString("dd MMM yyyy")</div>
+                                <div class="text-gray-500 text-xs">@appt.DateTime.ToString("hh:mm tt")</div>
 
                                 @if (appt.RescheduledAt != null)
                                 {
-                                    <div class="text-xs text-amber-600 font-medium mt-1">
-                                        🔄 Rescheduled by doctor on @appt.RescheduledAt?.ToString("dd MMM yyyy, hh:mm tt")
+                                    <div class="mt-2 flex items-center text-amber-600 font-bold text-[10px] uppercase tracking-tighter bg-amber-50 px-2 py-0.5 rounded w-fit border border-amber-100">
+                                        <i class="fa-solid fa-clock-rotate-left mr-1"></i> Rescheduled
                                     </div>
                                 }
                             </td>
-
-
-                            <td class="px-4 py-3">
-                                @switch (appt.Status)
-                                {
-                                    case "Pending":
-                                        <span class="px-2.5 py-0.5 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">Pending</span>
-                                        ;
-                                        break;
-                                    case "Confirmed":
-                                        <span class="px-2.5 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium">Confirmed</span>
-                                        ;
-                                        break;
-                                    case "Paid":
-                                        <span class="px-2.5 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Paid</span>
-                                        ;
-                                        break;
-                                    case "Completed":
-                                        <span class="px-2.5 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">Completed</span>
-                                        ;
-                                        break;
-                                    case "Cancelled":
-                                        <span class="px-2.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium">Cancelled</span>
-                                        ;
-                                        break;
-                                }
-                            </td>
-                            <td class="px-4 py-3 text-center space-x-2">
-                                <!-- 🔍 View Details -->
-                                <a asp-area="Patient"
-                                   asp-controller="Appointments"
-                                   asp-action="Details"
-                                   asp-route-id="@appt.AppointmentId"
-                                   class="inline-block px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-700 via-blue-500 to-cyan-400
-                      text-white text-xs font-medium shadow-md hover:shadow-lg hover:scale-[1.04] transition-all duration-300">
-                                    View
-                                </a>
-
-                                @if (appt.Status == "Confirmed")
-                                {
-                                    <!-- 💳 Pay Now -->
-                                    <a asp-area="Patient"
-                                       asp-controller="Payments"
-                                       asp-action="Index"
-                                       asp-route-appointmentId="@appt.AppointmentId"
-                                       class="inline-block px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-700 via-emerald-500 to-teal-400
-                              text-white text-xs font-medium shadow-md hover:shadow-lg hover:scale-[1.04] transition-all duration-300">
-                                        Pay
-                                    </a>
-                                }
-                                else if (appt.Status == "Completed")
-                                {
-                                    var feedback = appt.Feedbacks?.FirstOrDefault();
-                                    if (feedback == null)
+                            <td class="px-6 py-5">
+                                @{
+                                    var badgeClass = appt.Status switch
                                     {
-                                        <!-- 📝 Leave Feedback -->
-                                        <a asp-area="Patient"
-                                           asp-controller="Feedback"
-                                           asp-action="Create"
-                                           asp-route-appointmentId="@appt.AppointmentId"
-                                           class="inline-block px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-indigo-700 via-indigo-500 to-purple-400
-                                      text-white text-xs font-medium shadow-md hover:shadow-lg hover:scale-[1.04] transition-all duration-300">
-                                            Feedback
+                                        "Pending" => "bg-amber-100 text-amber-700 border-amber-200",
+                                        "Confirmed" => "bg-sky-100 text-sky-700 border-sky-200",
+                                        "Paid" => "bg-emerald-100 text-emerald-700 border-emerald-200",
+                                        "Completed" => "bg-blue-100 text-blue-700 border-blue-200",
+                                        "Cancelled" => "bg-rose-100 text-rose-700 border-rose-200",
+                                        _ => "bg-gray-100 text-gray-700 border-gray-200"
+                                    };
+                                }
+                                <span class="px-3 py-1 rounded-full text-xs font-bold border @badgeClass shadow-sm">
+                                    @appt.Status
+                                </span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <a asp-area="Patient" asp-controller="Appointments" asp-action="Details" asp-route-id="@appt.AppointmentId"
+                                       class="p-2 rounded-xl bg-white border border-gray-200 text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all shadow-sm" title="View Details">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </a>
+
+                                    @if (appt.Status == "Confirmed")
+                                    {
+                                        <a asp-area="Patient" asp-controller="Payments" asp-action="Index" asp-route-appointmentId="@appt.AppointmentId"
+                                           class="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-all shadow-md">
+                                            Pay Now
                                         </a>
                                     }
-                                    else
+                                    else if (appt.Status == "Completed")
                                     {
-                                        <span class="text-blue-700 text-xs font-semibold">✔ Reviewed</span>
+                                        var feedback = appt.Feedbacks?.FirstOrDefault();
+                                        if (feedback == null)
+                                        {
+                                            <a asp-area="Patient" asp-controller="Feedback" asp-action="Create" asp-route-appointmentId="@appt.AppointmentId"
+                                               class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-xs font-bold border border-indigo-100 hover:bg-indigo-100 transition-all">
+                                                Review
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="flex items-center text-gray-400 text-xs px-2">
+                                                <i class="fa-solid fa-star text-amber-400 mr-1"></i> Reviewed
+                                            </span>
+                                        }
                                     }
-                                }
-                      
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -147,3 +149,13 @@
         </div>
     }
 </div>
+
+<style>
+    @@keyframes fade-in {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fade-in 0.4s ease-out forwards;
+    }
+</style>

@@ -5,44 +5,83 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto bg-white shadow rounded-2xl p-8">
-    <h2 class="text-2xl font-bold text-gray-700 mb-6">🩺 Doctor Availability Management</h2>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+    <div>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Schedule <span class="text-blue-600">Management</span></h2>
+        <p class="text-slate-500 font-medium">Configure weekly consultation windows for all registered specialists.</p>
+    </div>
+</div>
 
-    @if (TempData["Message"] != null)
-    {
-        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-4">
-            @TempData["Message"]
+@if (TempData["Message"] != null)
+{
+    <div class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <span class="font-bold text-sm">@TempData["Message"]</span>
+    </div>
+}
+
+<div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+    <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+        <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Physician Workload</h3>
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Live Schedules</span>
         </div>
-    }
+    </div>
 
-    <table class="min-w-full border-collapse text-sm">
-        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
-            <tr>
-                <th class="px-5 py-3 text-left font-semibold">Doctor Name</th>
-                <th class="px-5 py-3 text-left font-semibold">Specialty</th>
-                <th class="px-5 py-3 text-left font-semibold">Weekly Summary</th>
-                <th class="px-5 py-3 text-center font-semibold">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-100">
-            @foreach (var doc in Model)
-            {
-                var summary = string.Join(", ", doc.Availabilities
-                .OrderBy(a => a.Day)
-                .Select(a => $"{a.Day}: {a.StartTime:hh\\:mm}-{a.EndTime:hh\\:mm}"));
-
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-5 py-3 font-medium">@doc.AppUser?.FullName</td>
-                    <td class="px-5 py-3 text-gray-700">@doc.Specialty?.Name</td>
-                    <td class="px-5 py-3 text-gray-600">@summary</td>
-                    <td class="px-5 py-3 text-center">
-                        <a asp-action="Edit" asp-route-id="@doc.DoctorId"
-                           class="btn-brand text-sm">
-                            ✏️ Edit
-                        </a>
-                    </td>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                    <th class="px-8 py-5">Doctor & Specialty</th>
+                    <th class="px-8 py-5">Weekly Operating Hours</th>
+                    <th class="px-8 py-5 text-right">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+                @foreach (var doc in Model)
+                {
+                    <tr class="group hover:bg-slate-50/80 transition-all">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                    @doc.AppUser?.FullName.Substring(0, 1)
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-900">@doc.AppUser?.FullName</p>
+                                    <p class="text-[10px] font-black text-blue-500 uppercase tracking-wider">@doc.Specialty?.Name</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex flex-wrap gap-2">
+                                @if (doc.Availabilities != null && doc.Availabilities.Any())
+                                {
+                                    @foreach (var slot in doc.Availabilities.OrderBy(a => a.Day))
+                                    {
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 rounded-lg text-[10px] font-bold text-slate-600 shadow-sm">
+                                            <span class="text-blue-600">@slot.Day.ToString().Substring(0, 3)</span>
+                                            <span class="text-slate-300">|</span>
+                                            @slot.StartTime.ToString(@"hh\:mm")-@slot.EndTime.ToString(@"hh\:mm")
+                                        </span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-xs text-slate-400 italic">No hours defined</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <a asp-action="Edit" asp-route-id="@doc.DoctorId"
+                               class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-black uppercase rounded-xl hover:bg-blue-600 transition-all shadow-md active:scale-95">
+                                <i data-lucide="calendar-clock" class="w-4 h-4"></i>
+                                Edit Schedule
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

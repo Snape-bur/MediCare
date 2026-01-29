@@ -31,6 +31,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // ✅ Add Session (with cache + settings)
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddHttpClient();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);

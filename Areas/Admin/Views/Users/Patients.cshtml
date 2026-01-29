@@ -1,40 +1,111 @@
 ﻿@model IEnumerable<MediCare.Models.Patient>
 
 @{
-    ViewData["Title"] = "Patients";
+    ViewData["Title"] = "Patient Registry";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto mt-10 px-6">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-3xl font-bold text-gray-800">🧑‍🤝‍🧑 Patients</h2>
-        <a asp-action="Index"
-           class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-green-700 to-emerald-500 text-white font-semibold shadow hover:shadow-lg hover:scale-[1.02] transition-all">
-            ⬅ Back to Dashboard
-        </a>
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <div>
+            <h2 class="text-4xl font-black text-slate-900 tracking-tight">User <span class="text-emerald-600">Directory</span></h2>
+            <p class="text-slate-500 font-medium mt-1">Management of registered patient accounts and primary contact records.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <a asp-action="Index"
+               class="px-5 py-3 rounded-xl bg-white border border-slate-200 text-slate-500 font-black text-[10px] uppercase tracking-widest hover:text-emerald-600 transition-all flex items-center gap-2">
+                <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Registry Home
+            </a>
+            <div class="h-10 w-[1px] bg-slate-200 mx-2 hidden md:block"></div>
+            <span class="px-4 py-2 bg-emerald-50 text-emerald-700 text-[10px] font-black rounded-full uppercase tracking-tighter">
+                @Model?.Count() Total Patients
+            </span>
+        </div>
     </div>
 
-    <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
-        <table class="min-w-full text-sm text-gray-700">
-            <thead class="bg-gradient-to-r from-green-600 to-emerald-400 text-white">
-                <tr>
-                    <th class="px-6 py-3 text-left font-semibold">Full Name</th>
-                    <th class="px-6 py-3 text-left font-semibold">Email</th>
-                    <th class="px-6 py-3 text-left font-semibold">Phone</th>
-                    <th class="px-6 py-3 text-left font-semibold">Address</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-100">
-                @foreach (var patient in Model)
-                {
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-3">@patient.AppUser.FullName</td>
-                        <td class="px-6 py-3">@patient.AppUser.Email</td>
-                        <td class="px-6 py-3">@patient.AppUser.PhoneNumber</td>
-                        <td class="px-6 py-3">@patient.AppUser.Address</td>
+    <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+            <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Patient Master Database</h3>
+            <div class="flex items-center gap-2 text-slate-400">
+                <i data-lucide="database" class="w-4 h-4"></i>
+                <span class="text-[10px] font-black uppercase tracking-widest">Encrypted Storage</span>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-white">
+                        <th class="px-8 py-5">Patient Details</th>
+                        <th class="px-6 py-5">Account Email</th>
+                        <th class="px-6 py-5">Phone Contact</th>
+                        <th class="px-6 py-5">Physical Residence</th>
+                        <th class="px-8 py-5 text-center">Status</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var patient in Model)
+                        {
+                            <tr class="group hover:bg-slate-50/80 transition-all">
+                                <td class="px-8 py-6">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 font-black text-lg group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-inner">
+                                            @patient.AppUser.FullName.Substring(0, 1)
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-slate-900 text-base">@patient.AppUser.FullName</p>
+                                            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Active Member</p>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                                        <i data-lucide="mail" class="w-4 h-4 text-slate-300"></i>
+                                        @patient.AppUser.Email
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-6">
+                                    <div class="flex items-center gap-2 text-sm font-semibold text-slate-500">
+                                        <i data-lucide="phone" class="w-4 h-4 text-slate-300"></i>
+                                        @patient.AppUser.PhoneNumber
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-6 max-w-xs">
+                                    <p class="text-sm text-slate-500 font-medium truncate group-hover:whitespace-normal group-hover:overflow-visible transition-all">
+                                        @patient.AppUser.Address
+                                    </p>
+                                </td>
+
+                                <td class="px-8 py-6">
+                                    <div class="flex justify-center">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-200 text-slate-600 text-[10px] font-black rounded-full uppercase tracking-widest shadow-sm group-hover:border-emerald-200 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-all">
+                                            <span class="w-1 h-1 bg-current rounded-full"></span>
+                                            Verified
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="px-8 py-20 text-center">
+                                <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="user-minus" class="w-8 h-8 text-slate-300"></i>
+                                </div>
+                                <p class="text-slate-500 font-bold uppercase text-xs tracking-widest">No patient records currently exist in the database.</p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

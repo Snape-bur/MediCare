@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration; // Added for appsettings access
+using System.Net.Http; // Added for Cloudflare API call
+using System.Text.Json; // Added for parsing response
 using MediCare.Models;
 
 namespace MediCare.Areas.Identity.Pages.Account
@@ -21,18 +24,21 @@ namespace MediCare.Areas.Identity.Pages.Account
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IConfiguration _configuration; // Added configuration
 
         public RegisterModel(
             UserManager<AppUser> userManager,
             IUserStore<AppUser> userStore,
             SignInManager<AppUser> signInManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IConfiguration configuration) // Added to constructor
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -42,9 +48,11 @@ namespace MediCare.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        // Property to pass SiteKey to the Razor Page
+        public string TurnstileSiteKey => _configuration["CloudflareTurnstile:SiteKey"];
+
         public class InputModel
         {
-
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -73,10 +81,20 @@ namespace MediCare.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
+            // 1. Get Turnstile token and Secret Key
+            var turnstileResponse = Request.Form["cf-turnstile-response"];
+            var secretKey = _configuration["CloudflareTurnstile:SecretKey"];
+
+            // 2. Security Check: Verify Turnstile
+            if (string.IsNullOrEmpty(turnstileResponse) || !await VerifyTurnstileToken(turnstileResponse, secretKey))
+            {
+                ModelState.AddModelError(string.Empty, "Security verification failed. Please try again.");
+                return Page();
+            }
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -87,16 +105,11 @@ namespace MediCare.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("New Patient account created.");
 
-                    // ✅ Assign default role = Patient
                     await _userManager.AddToRoleAsync(user, "Patient");
-
-                    // ✅ Auto sign-in new patient
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    // ✅ Redirect to Patient Registration Step1
                     return RedirectToAction("Step1", "Registration", new { area = "Patient" });
                 }
-
 
                 foreach (var error in result.Errors)
                 {
@@ -104,8 +117,33 @@ namespace MediCare.Areas.Identity.Pages.Account
                 }
             }
 
-            // Something failed, redisplay form
             return Page();
+        }
+
+        // Helper Method to verify the token with Cloudflare
+        private async Task<bool> VerifyTurnstileToken(string token, string secretKey)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("secret", secretKey),
+                    new KeyValuePair<string, string>("response", token)
+                });
+
+                var response = await client.PostAsync("https://challenges.cloudflare.com/turnstile/v0/siteverify", content);
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                // Parse JSON to check success
+                using var doc = JsonDocument.Parse(jsonResponse);
+                return doc.RootElement.GetProperty("success").GetBoolean();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Turnstile verification error: {ex.Message}");
+                return false;
+            }
         }
 
         private AppUser CreateUser()

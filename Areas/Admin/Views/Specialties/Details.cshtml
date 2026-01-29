@@ -5,38 +5,98 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-3xl mx-auto px-6 py-10">
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">🩺 Specialty Details</h1>
-        <a asp-action="Index"
-           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-indigo-600 border border-indigo-300 rounded-xl hover:bg-indigo-50 transition">
-            ← Back to List
-        </a>
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div class="flex items-center gap-5">
+            <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-indigo-200">
+                <i data-lucide="heart-pulse" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Specialty <span class="text-indigo-600">Overview</span></h2>
+                <p class="text-slate-500 font-medium">Detailed classification for medical departments.</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <a asp-action="Index"
+               class="px-6 py-3 bg-white border border-slate-200 text-slate-400 font-black rounded-xl hover:text-slate-900 hover:bg-slate-50 transition-all uppercase text-[10px] tracking-widest flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Back to Registry
+            </a>
+            <a asp-action="Edit" asp-route-id="@Model.SpecialtyId"
+               class="px-6 py-3 bg-indigo-600 text-white font-black rounded-xl hover:bg-indigo-700 transition-all uppercase text-[10px] tracking-widest flex items-center gap-2 shadow-lg shadow-indigo-100">
+                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                Edit Specialty
+            </a>
+        </div>
     </div>
 
-    <!-- Card -->
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
-        <div>
-            <h2 class="text-lg font-semibold text-gray-800">Specialty Name</h2>
-            <p class="text-gray-600 mt-1">@Model.Name</p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                    <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Category Profile</h3>
+                </div>
+
+                <div class="p-10 space-y-10">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Official Classification</p>
+                        <h1 class="text-4xl font-black text-slate-900">@Model.Name</h1>
+                    </div>
+
+                    <div class="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 relative">
+                        <i data-lucide="quote" class="absolute right-6 top-6 w-8 h-8 text-slate-200"></i>
+                        <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-4">Field Definition</p>
+                        <p class="text-lg text-slate-700 font-medium leading-relaxed italic">
+                            "@Model.Description"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-6 bg-white rounded-3xl border border-slate-200 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase">Assigned Doctors</p>
+                        <p class="text-lg font-bold text-slate-900 uppercase">View Registry</p>
+                    </div>
+                </div>
+                <div class="p-6 bg-white rounded-3xl border border-slate-200 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600">
+                        <i data-lucide="check-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-400 uppercase">Status</p>
+                        <p class="text-lg font-bold text-green-600 uppercase tracking-tighter">Active</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <h2 class="text-lg font-semibold text-gray-800">Description</h2>
-            <p class="text-gray-600 mt-1">@Model.Description</p>
-        </div>
+        <div class="space-y-6">
+            <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                <i data-lucide="stethoscope" class="absolute -right-6 -bottom-6 w-40 h-40 text-white/5 rotate-12"></i>
 
-        <!-- Actions -->
-        <div class="flex items-center justify-end gap-4 pt-6">
-            <a asp-action="Edit" asp-route-id="@Model.SpecialtyId"
-               class="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-500 rounded-xl shadow-md hover:from-indigo-700 hover:to-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
-                Edit
-            </a>
-            <a asp-action="Index"
-               class="px-5 py-2.5 text-sm font-medium text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition">
-                Back
-            </a>
+                <h3 class="font-black text-slate-500 uppercase tracking-widest text-[10px] mb-10 relative z-10">System Metadata</h3>
+
+                <div class="space-y-8 relative z-10">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Unique Identifier</p>
+                        <p class="text-xl font-bold font-mono">#SPC-00@Model.SpecialtyId</p>
+                    </div>
+
+                    <div class="pt-8 border-t border-white/10">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Administrative Controls</p>
+                        <a asp-action="Delete" asp-route-id="@Model.SpecialtyId"
+                           class="flex items-center justify-center gap-2 w-full py-4 bg-red-600/10 border border-red-600/20 text-red-500 font-black rounded-2xl hover:bg-red-600 hover:text-white transition-all text-xs uppercase tracking-tighter">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            Remove Specialty
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -30,7 +30,7 @@ namespace MediCare.Areas.Patient.Controllers
                 .Include(d => d.Specialty)
                 .Include(d => d.Clinic)
                 .AsQueryable();
-
+                
             if (specialtyId.HasValue)
                 doctors = doctors.Where(d => d.SpecialtyId == specialtyId);
 

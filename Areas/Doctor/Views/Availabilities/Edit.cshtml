@@ -1,81 +1,94 @@
 ﻿@model MediCare.Models.Doctor
 @using MediCare.Models
 @{
-    ViewData["Title"] = "Edit My Availability";
+    ViewData["Title"] = "My Availability Schedule";
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
     var allDays = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>().ToList();
 }
 
-<div class="max-w-3xl mx-auto bg-white shadow rounded-3xl p-8 mt-10 border border-gray-100">
-    <h2 class="text-2xl font-bold text-blue-700 mb-4 flex items-center space-x-2">
-        <span>🩺</span>
-        <span>My Availability Schedule</span>
-    </h2>
-    <p class="text-gray-600 mb-6">Set or adjust your weekly working hours here.</p>
+<div class="max-w-4xl mx-auto px-4 py-12 animate-in fade-in duration-700">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Shift <span class="text-blue-600">Configuration</span></h2>
+            <p class="text-slate-500 font-medium mt-1">Define your weekly consultation windows for patient bookings.</p>
+        </div>
+        <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index"
+           class="inline-flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Back to Dashboard
+        </a>
+    </div>
 
     @if (TempData["Message"] != null)
     {
-        <div class="bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded-lg mb-5 shadow-sm">
-            @Html.Raw(TempData["Message"])
-        </div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="bg-red-50 border border-red-300 text-red-800 px-4 py-3 rounded-lg mb-5 shadow-sm">
-            @Html.Raw(TempData["Error"])
+        <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 shadow-sm">
+            <i data-lucide="check-circle" class="w-5 h-5"></i>
+            <span class="font-bold text-sm">@Html.Raw(TempData["Message"])</span>
         </div>
     }
 
-    <form asp-action="Edit" method="post" class="space-y-4">
+    <form asp-action="Edit" method="post" class="space-y-8">
         @Html.AntiForgeryToken()
 
-        <div id="availabilityContainer" class="space-y-3">
-            @for (int i = 0; i < Model.Availabilities.Count; i++)
-            {
-                var slot = Model.Availabilities.ElementAt(i);
-                <div class="availability-row flex items-center gap-4 bg-gray-50 rounded-xl p-3">
-                    <input type="hidden" name="availabilities[@i].AvailabilityId" value="@slot.AvailabilityId" />
-
-                    <select name="availabilities[@i].Day"
-                            class="day-select border-gray-300 rounded-lg px-2 py-1 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="">Select Day</option>
-                        @foreach (var day in allDays)
-                        {
-                            <option value="@((int)day)" selected="@(slot.Day == day)">@day</option>
-                        }
-                    </select>
-
-                    <input type="time" name="availabilities[@i].StartTime"
-                           value="@slot.StartTime.ToString(@"hh\:mm")"
-                           class="start-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
-
-                    <span>to</span>
-
-                    <input type="time" name="availabilities[@i].EndTime"
-                           value="@slot.EndTime.ToString(@"hh\:mm")"
-                           class="end-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
-
-                    <button type="button" class="remove-slot text-red-600 text-sm hover:underline">🗑 Remove</button>
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+            <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600 rounded-lg text-white">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Weekly Shifts</h3>
                 </div>
-            }
+                <button type="button" id="addSlot"
+                        class="px-4 py-2 bg-blue-50 text-blue-600 font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-blue-600 hover:text-white transition-all flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Shift
+                </button>
+            </div>
+
+            <div class="p-8 space-y-4" id="availabilityContainer">
+                @for (int i = 0; i < Model.Availabilities.Count; i++)
+                {
+                    var slot = Model.Availabilities.ElementAt(i);
+                    <div class="availability-row flex flex-wrap md:flex-nowrap items-center gap-4 bg-slate-50 hover:bg-slate-100/50 transition-colors border border-slate-100 rounded-2xl p-4 group">
+                        <input type="hidden" name="availabilities[@i].AvailabilityId" value="@slot.AvailabilityId" />
+
+                        <div class="flex-1 min-w-[140px]">
+                            <select name="availabilities[@i].Day"
+                                    class="day-select w-full bg-white border-slate-200 rounded-xl px-4 py-2 font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 transition-all text-sm shadow-sm">
+                                <option value="">Select Day</option>
+                                @foreach (var day in allDays)
+                                {
+                                    <option value="@((int)day)" selected="@(slot.Day == day)">@day</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+                            <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
+                            <input type="time" name="availabilities[@i].StartTime"
+                                   value="@slot.StartTime.ToString(@"hh\:mm")"
+                                   class="start-time border-none p-0 focus:ring-0 font-bold text-slate-900 text-sm" />
+                            <span class="text-[10px] font-black text-slate-300 uppercase">to</span>
+                            <i data-lucide="moon" class="w-4 h-4 text-blue-500"></i>
+                            <input type="time" name="availabilities[@i].EndTime"
+                                   value="@slot.EndTime.ToString(@"hh\:mm")"
+                                   class="end-time border-none p-0 focus:ring-0 font-bold text-slate-900 text-sm" />
+                        </div>
+
+                        <button type="button" class="remove-slot p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+
+            <div id="validationMessage" class="px-8 pb-8 space-y-2"></div>
         </div>
 
-        <!-- Add Slot -->
-        <button type="button" id="addSlot"
-                class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700">
-            ➕ Add New Day & Time
-        </button>
-
-        <div id="validationMessage" class="mt-3"></div>
-
-        <div class="flex justify-between pt-6 border-t border-gray-100 mt-6">
-            <a asp-area="Doctor" asp-controller="Dashboard" asp-action="Index"
-               class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
-                ⬅ Back to Dashboard
-            </a>
+        <div class="flex items-center gap-4 pt-4 pb-20">
             <button id="saveBtn" type="submit"
-                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
-                💾 Save Changes
+                    class="flex-1 py-5 bg-gradient-to-r from-blue-700 to-blue-500 text-white font-black rounded-[2rem] shadow-xl shadow-blue-100 hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3 group">
+                <i data-lucide="save" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                Commit Availability Changes
             </button>
         </div>
     </form>
@@ -83,29 +96,43 @@
 
 @section Scripts {
     <script>
+        // Use Lucide for newly created elements
+        function initIcons() {
+            if (window.lucide) lucide.createIcons();
+        }
+
         document.getElementById('addSlot').addEventListener('click', function () {
             const container = document.getElementById('availabilityContainer');
             const index = container.querySelectorAll('.availability-row').length;
             const newRow = document.createElement('div');
-            newRow.classList.add('availability-row', 'flex', 'items-center', 'gap-4', 'bg-gray-50', 'rounded-xl', 'p-3');
+            newRow.classList.add('availability-row', 'flex', 'flex-wrap', 'md:flex-nowrap', 'items-center', 'gap-4', 'bg-slate-50', 'border', 'border-slate-100', 'rounded-2xl', 'p-4', 'animate-in', 'slide-in-from-right-4', 'duration-300');
             newRow.innerHTML = `
-                <select name="availabilities[${index}].Day" class="day-select border-gray-300 rounded-lg px-2 py-1 focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="">Select Day</option>
-                    ${Array.from({length:7}).map((_,i)=>`<option value="${i}">${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][i]}</option>`).join("")}
-                </select>
-
-                <input type="time" name="availabilities[${index}].StartTime" class="start-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
-                <span>to</span>
-                <input type="time" name="availabilities[${index}].EndTime" class="end-time border-gray-300 rounded-lg px-2 py-1 text-sm" />
-
-                <button type="button" class="remove-slot text-red-600 text-sm hover:underline">🗑 Remove</button>
+                <div class="flex-1 min-w-[140px]">
+                    <select name="availabilities[${index}].Day" class="day-select w-full bg-white border-slate-200 rounded-xl px-4 py-2 font-bold text-slate-900 focus:ring-2 focus:ring-blue-500 transition-all text-sm shadow-sm">
+                        <option value="">Select Day</option>
+                        ${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'].map((day,i)=>`<option value="${i}">${day}</option>`).join("")}
+                    </select>
+                </div>
+                <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
+                    <input type="time" name="availabilities[${index}].StartTime" class="start-time border-none p-0 focus:ring-0 font-bold text-slate-900 text-sm" />
+                    <span class="text-[10px] font-black text-slate-300 uppercase">to</span>
+                    <i data-lucide="moon" class="w-4 h-4 text-blue-500"></i>
+                    <input type="time" name="availabilities[${index}].EndTime" class="end-time border-none p-0 focus:ring-0 font-bold text-slate-900 text-sm" />
+                </div>
+                <button type="button" class="remove-slot p-2.5 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                    <i data-lucide="trash-2" class="w-5 h-5"></i>
+                </button>
             `;
             container.appendChild(newRow);
+            initIcons();
+            checkForDuplicates();
         });
 
         document.addEventListener('click', function (e) {
-            if (e.target.classList.contains('remove-slot')) {
-                e.target.closest('.availability-row').remove();
+            const btn = e.target.closest('.remove-slot');
+            if (btn) {
+                btn.closest('.availability-row').remove();
                 checkForDuplicates();
             }
         });
@@ -115,34 +142,33 @@
             const slots = [];
             const messages = [];
             const saveBtn = document.querySelector('#saveBtn');
+            const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
             rows.forEach(row => {
                 const day = row.querySelector('.day-select')?.value;
                 const start = row.querySelector('.start-time')?.value;
                 const end = row.querySelector('.end-time')?.value;
-                row.classList.remove('border', 'border-red-400', 'bg-red-50');
+                row.classList.remove('border-red-400', 'bg-red-50');
 
                 if (day && start && end) {
                     const startTime = new Date(`1970-01-01T${start}`);
                     const endTime = new Date(`1970-01-01T${end}`);
 
                     if (startTime >= endTime) {
-                        messages.push(`⚠️ Invalid range for ${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day]}: start must be before end`);
-                        row.classList.add('border', 'border-red-400', 'bg-red-50');
+                        messages.push(`⚠️ Invalid range for ${days[day]}: Start must be before end`);
+                        row.classList.add('border-red-400', 'bg-red-50');
                     }
 
                     const conflict = slots.find(s =>
                         s.day === day &&
-                        (
-                            (startTime >= s.startTime && startTime < s.endTime) ||
-                            (endTime > s.startTime && endTime <= s.endTime) ||
-                            (startTime <= s.startTime && endTime >= s.endTime)
-                        )
+                        ((startTime >= s.startTime && startTime < s.endTime) ||
+                         (endTime > s.startTime && endTime <= s.endTime) ||
+                         (startTime <= s.startTime && endTime >= s.endTime))
                     );
 
                     if (conflict) {
-                        messages.push(`❌ Overlap detected on ${["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day]}: ${start}–${end}`);
-                        row.classList.add('border', 'border-red-400', 'bg-red-50');
+                        messages.push(`❌ Overlap detected on ${days[day]}: ${start}–${end}`);
+                        row.classList.add('border-red-400', 'bg-red-50');
                     } else {
                         slots.push({ day, startTime, endTime });
                     }
@@ -150,15 +176,20 @@
             });
 
             const msgBox = document.querySelector('#validationMessage');
-            msgBox.innerHTML = "";
             if (messages.length > 0) {
-                msgBox.innerHTML = messages.map(m => `<div class="text-red-600 font-medium">${m}</div>`).join("");
+                msgBox.innerHTML = messages.map(m => `
+                    <div class="flex items-center gap-2 text-red-600 bg-red-50/50 p-3 rounded-xl border border-red-100 animate-in fade-in slide-in-from-left-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4"></i>
+                        <span class="text-[11px] font-black uppercase tracking-tight">${m}</span>
+                    </div>
+                `).join("");
                 saveBtn.disabled = true;
-                saveBtn.classList.add("opacity-50", "cursor-not-allowed");
+                saveBtn.classList.add("opacity-50", "grayscale");
+                initIcons();
             } else {
                 msgBox.innerHTML = "";
                 saveBtn.disabled = false;
-                saveBtn.classList.remove("opacity-50", "cursor-not-allowed");
+                saveBtn.classList.remove("opacity-50", "grayscale");
             }
         }
 
@@ -170,6 +201,9 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', checkForDuplicates);
+        document.addEventListener('DOMContentLoaded', () => {
+            initIcons();
+            checkForDuplicates();
+        });
     </script>
 }

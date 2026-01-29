@@ -1,141 +1,76 @@
 ﻿@model MediCare.Models.Doctor
 
 @{
-    ViewData["Title"] = "Edit Doctor";
+    ViewData["Title"] = "Edit Doctor Profile";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-2xl font-bold text-gray-700 mb-6">✏️ Edit Doctor</h2>
+<div class="max-w-4xl mx-auto">
+    <div class="mb-10 flex items-center justify-between">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Update <span class="text-blue-600">Profile</span></h2>
+            <p class="text-slate-500 font-medium">Modifying details for Dr. @Model.AppUser?.FullName</p>
+        </div>
+        <a asp-action="Index" class="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-red-500 transition-colors">Discard Changes</a>
+    </div>
 
-<div class="bg-white shadow rounded-2xl p-8 max-w-2xl">
-    <form asp-action="Edit" method="post" class="space-y-5">
-        @* Hidden field for DoctorId *@
+    <form asp-action="Edit" method="post" class="space-y-8">
         <input type="hidden" asp-for="DoctorId" />
+        <div asp-validation-summary="ModelOnly" class="p-4 bg-red-50 text-red-600 rounded-2xl text-sm font-bold mb-6"></div>
 
-        <div asp-validation-summary="ModelOnly" class="text-red-500 mb-4"></div>
-
-        <!-- Specialty Dropdown -->
-        <div>
-            <label asp-for="SpecialtyId" class="block text-sm font-semibold mb-1">Specialty</label>
-            <select asp-for="SpecialtyId" asp-items="ViewBag.SpecialtyId"
-                    class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">-- Choose Specialty --</option>
-            </select>
-            <span asp-validation-for="SpecialtyId" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- Clinic Dropdown -->
-        <div>
-            <label asp-for="ClinicId" class="block text-sm font-semibold mb-1">Clinic</label>
-            <select asp-for="ClinicId" asp-items="ViewBag.ClinicId"
-                    class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none">
-                <option value="">-- Choose Clinic --</option>
-            </select>
-            <span asp-validation-for="ClinicId" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- Consultation Fee -->
-        <div>
-            <label asp-for="ConsultationFee" class="block text-sm font-semibold mb-1">Consultation Fee</label>
-            <input asp-for="ConsultationFee" type="number" step="0.01"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                   placeholder="Enter consultation fee" />
-            <span asp-validation-for="ConsultationFee" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- 🕒 Availability Section -->
-        <div class="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-lg">
-            <p class="mb-2 font-semibold">📅 Availability Schedule</p>
-
-            @if (Model.Availabilities != null && Model.Availabilities.Any())
-            {
-                <!-- 🟢 Display existing availability list -->
-                <ul class="list-disc ml-5 space-y-1">
-                    @foreach (var slot in Model.Availabilities.OrderBy(a => a.Day))
-                    {
-                        <li>
-                            <strong>@slot.Day</strong>:
-                            @slot.StartTime.ToString(@"hh\:mm") – @slot.EndTime.ToString(@"hh\:mm")
-                        </li>
-                    }
-                </ul>
-
-
-                <!-- ✏️ Manage button -->
-                <div class="mt-3">
-                    <a asp-area="Admin" asp-controller="Availabilities" asp-action="Edit" asp-route-id="@Model.DoctorId"
-                       class="inline-block mt-2 text-sm text-indigo-600 hover:underline">
-                        ✏️ Edit Availability
-                    </a>
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 p-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Specialty</label>
+                    <select asp-for="SpecialtyId" asp-items="ViewBag.SpecialtyId" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900"></select>
                 </div>
-            }
-            else
-            {
-                <!-- 🔵 If no availability yet -->
-                <p class="text-sm text-blue-600 italic">No availability set yet.</p>
-                <div class="mt-2">
-                    <a asp-area="Admin" asp-controller="Availabilities" asp-action="Edit" asp-route-id="@Model.DoctorId"
-                       class="inline-block mt-1 text-sm text-indigo-600 hover:underline">
-                        ➕ Add Availability
-                    </a>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Clinic</label>
+                    <select asp-for="ClinicId" asp-items="ViewBag.ClinicId" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900"></select>
                 </div>
-            }
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Consultation Fee (THB)</label>
+                    <input asp-for="ConsultationFee" type="number" step="0.01" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Years of Experience</label>
+                    <input asp-for="ExperienceYears" type="number" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" />
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Qualifications</label>
+                    <input asp-for="Qualification" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
+                    <input asp-for="PhoneNumber" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" />
+                </div>
+
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Profile Info</label>
+                    <textarea asp-for="ProfileInfo" rows="4" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900 shadow-inner"></textarea>
+                </div>
+            </div>
         </div>
 
-
-        <!-- Profile Info -->
-        <div>
-            <label asp-for="ProfileInfo" class="block text-sm font-semibold mb-1">Profile Info</label>
-            <textarea asp-for="ProfileInfo" rows="3"
-                      class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                      placeholder="Brief introduction about the doctor"></textarea>
-            <span asp-validation-for="ProfileInfo" class="text-red-500 text-sm"></span>
+        <div class="p-6 bg-slate-50 rounded-[2rem] border border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                </div>
+                <p class="text-sm font-bold text-slate-600">Need to update weekly hours?</p>
+            </div>
+            <a asp-area="Admin" asp-controller="Availabilities" asp-action="Edit" asp-route-id="@Model.DoctorId" class="px-5 py-2 bg-white text-blue-600 text-xs font-black uppercase rounded-lg border border-slate-200 hover:bg-blue-50">Manage Schedule</a>
         </div>
 
-        <!-- Experience Years -->
-        <div>
-            <label asp-for="ExperienceYears" class="block text-sm font-semibold mb-1">Experience (Years)</label>
-            <input asp-for="ExperienceYears" type="number" min="0"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                   placeholder="Years of experience" />
-            <span asp-validation-for="ExperienceYears" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- Qualification -->
-        <div>
-            <label asp-for="Qualification" class="block text-sm font-semibold mb-1">Qualification</label>
-            <input asp-for="Qualification"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                   placeholder="e.g. MBBS, MD" />
-            <span asp-validation-for="Qualification" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- Phone Number -->
-        <div>
-            <label asp-for="PhoneNumber" class="block text-sm font-semibold mb-1">Phone Number</label>
-            <input asp-for="PhoneNumber" type="tel"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                   placeholder="e.g. +66 812345678" />
-            <span asp-validation-for="PhoneNumber" class="text-red-500 text-sm"></span>
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex justify-between pt-6">
-            <a asp-action="Index"
-               class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
-                ⬅ Back
-            </a>
-            <button type="submit"
-                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
-                💾 Save Changes
+        <div class="flex items-center gap-4 pt-6 pb-20">
+            <button type="submit" class="flex-1 py-5 bg-blue-600 text-white font-black rounded-[2rem] shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98]">
+                Save Profile Updates
             </button>
+            <a asp-action="Index" class="px-10 py-5 bg-white text-slate-400 font-black rounded-[2rem] border border-slate-200 hover:text-red-500 hover:bg-red-50 transition-all">
+                Cancel
+            </a>
         </div>
     </form>
 </div>
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

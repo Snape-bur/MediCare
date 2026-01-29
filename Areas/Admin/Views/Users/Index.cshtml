@@ -1,53 +1,99 @@
 ﻿@{
-    ViewData["Title"] = "User Management Dashboard";
+    ViewData["Title"] = "User Registry Control";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto mt-10 px-6">
-    <h2 class="text-3xl font-bold text-gray-800 mb-6">👥 User Management Dashboard</h2>
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <div>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight">User <span class="text-blue-600">Registry</span></h1>
+            <p class="text-slate-500 font-medium mt-1">Manage global accounts, healthcare providers, and clinical branches.</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-full uppercase tracking-tighter">System Administrator Mode</span>
+        </div>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-        <!-- 👨‍⚕️ Doctors Card -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between transition-transform hover:scale-[1.02]">
-            <div>
-                <h3 class="text-xl font-semibold mb-2">Doctors</h3>
-                <p class="text-blue-100">View and manage all registered doctors, including their specialties and profiles.</p>
-            </div>
-            <div class="mt-6 flex justify-between items-center">
-                <span class="text-5xl font-bold">@ViewBag.DoctorCount</span>
-                <a asp-action="Doctors" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-50 transition">
-                    View List →
-                </a>
+        <div class="group relative bg-white rounded-[2.5rem] p-10 border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+            <i data-lucide="stethoscope" class="absolute -right-4 -bottom-4 w-32 h-32 text-slate-50 group-hover:text-blue-50 transition-colors duration-500"></i>
+
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <i data-lucide="user-cog" class="w-7 h-7"></i>
+                </div>
+
+                <h3 class="text-2xl font-black text-slate-900 mb-2">Physicians</h3>
+                <p class="text-slate-500 text-sm font-medium mb-10 leading-relaxed">Modify specialist credentials, manage profiles, and update medical designations.</p>
+
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Active</p>
+                        <p class="text-4xl font-black text-slate-900">@ViewBag.DoctorCount</p>
+                    </div>
+                    <a asp-action="Doctors" class="px-6 py-3 bg-slate-900 text-white font-black text-xs rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-slate-200 uppercase tracking-widest">
+                        Manage List
+                    </a>
+                </div>
             </div>
         </div>
 
-        <!-- 🧑‍🤝‍🧑 Patients Card -->
-        <div class="bg-gradient-to-r from-green-600 to-emerald-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between transition-transform hover:scale-[1.02]">
-            <div>
-                <h3 class="text-xl font-semibold mb-2">Patients</h3>
-                <p class="text-green-100">Access all registered patients and their linked user accounts.</p>
-            </div>
-            <div class="mt-6 flex justify-between items-center">
-                <span class="text-5xl font-bold">@ViewBag.PatientCount</span>
-                <a asp-action="Patients" class="bg-white text-green-600 px-4 py-2 rounded-lg font-medium shadow hover:bg-green-50 transition">
-                    View List →
-                </a>
+        <div class="group relative bg-white rounded-[2.5rem] p-10 border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+            <i data-lucide="heart" class="absolute -right-4 -bottom-4 w-32 h-32 text-slate-50 group-hover:text-emerald-50 transition-colors duration-500"></i>
+
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                    <i data-lucide="users" class="w-7 h-7"></i>
+                </div>
+
+                <h3 class="text-2xl font-black text-slate-900 mb-2">Patient Base</h3>
+                <p class="text-slate-500 text-sm font-medium mb-10 leading-relaxed">Review registered individuals, verify accounts, and monitor health record links.</p>
+
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Registered</p>
+                        <p class="text-4xl font-black text-slate-900">@ViewBag.PatientCount</p>
+                    </div>
+                    <a asp-action="Patients" class="px-6 py-3 bg-slate-900 text-white font-black text-xs rounded-xl hover:bg-emerald-600 transition-all shadow-lg shadow-slate-200 uppercase tracking-widest">
+                        Manage List
+                    </a>
+                </div>
             </div>
         </div>
 
-        <!-- 🏥 Clinics Card -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-500 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between transition-transform hover:scale-[1.02]">
-            <div>
-                <h3 class="text-xl font-semibold mb-2">Clinics</h3>
-                <p class="text-indigo-100">Manage clinic branches, addresses, and contact details.</p>
+        <div class="group relative bg-slate-900 rounded-[2.5rem] p-10 shadow-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1">
+            <i data-lucide="map" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 group-hover:text-white/10 transition-colors duration-500"></i>
+
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-6 group-hover:bg-blue-600 transition-all duration-300">
+                    <i data-lucide="building-2" class="w-7 h-7"></i>
+                </div>
+
+                <h3 class="text-2xl font-black text-white mb-2">Clinic Hubs</h3>
+                <p class="text-slate-400 text-sm font-medium mb-10 leading-relaxed">Update branch locations, facility communication, and physical HQ addresses.</p>
+
+                <div class="flex items-end justify-between">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Total Branches</p>
+                        <p class="text-4xl font-black text-white">@ViewBag.ClinicCount</p>
+                    </div>
+                    <a asp-controller="Clinics" asp-action="Index" class="px-6 py-3 bg-white text-slate-900 font-black text-xs rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-lg uppercase tracking-widest">
+                        Manage List
+                    </a>
+                </div>
             </div>
-            <div class="mt-6 flex justify-between items-center">
-                <span class="text-5xl font-bold">@ViewBag.ClinicCount</span>
-                <a asp-controller="Clinics" asp-action="Index" class="bg-white text-indigo-600 px-4 py-2 rounded-lg font-medium shadow hover:bg-indigo-50 transition">
-                    Manage →
-                </a>
-            </div>
+        </div>
+
+    </div>
+
+    <div class="mt-12 p-8 bg-blue-50 rounded-[2rem] border border-blue-100 flex items-center gap-6">
+        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm flex-shrink-0">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+        </div>
+        <div>
+            <h4 class="text-sm font-black text-slate-900 uppercase tracking-tight">Administrative Security</h4>
+            <p class="text-xs text-slate-600 font-medium leading-relaxed">All user modifications are logged in the system audit trail. Password resets and email changes will trigger a notification to the account holder.</p>
         </div>
     </div>
 </div>

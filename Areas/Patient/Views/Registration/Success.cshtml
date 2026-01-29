@@ -1,3 +1,65 @@
-﻿<h2 class="text-green-600 font-bold">Registration Complete 🎉</h2>
-<p>Your patient profile has been created successfully.</p>
-<a asp-area="Patient" asp-controller="Dashboard" asp-action="Index" class="btn btn-primary">Go to Dashboard</a>
+﻿@{
+    ViewData["Title"] = "Registration Complete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="min-h-[85vh] flex items-center justify-center px-4 py-12 bg-[#F8FAFC]">
+    <div class="w-full max-w-lg text-center animate-in fade-in zoom-in-95 duration-700">
+
+        <div class="mb-8 relative inline-block">
+            <div class="w-24 h-24 bg-emerald-50 rounded-[2.5rem] flex items-center justify-center text-emerald-500 shadow-xl shadow-emerald-100 relative z-10">
+                <i data-lucide="party-popper" class="w-12 h-12 stroke-[2.5px]"></i>
+            </div>
+            <div class="absolute inset-0 bg-emerald-400 opacity-20 blur-3xl rounded-full animate-pulse"></div>
+        </div>
+
+        <h2 class="text-4xl font-black text-slate-900 tracking-tight mb-3">Welcome to <span class="text-blue-600">MediCare</span></h2>
+        <p class="text-slate-500 font-medium px-6 leading-relaxed">Your patient profile has been verified and established. You are now ready to access our network of specialists.</p>
+
+        <div class="mt-12 bg-white rounded-[3rem] border border-slate-200 shadow-2xl shadow-slate-900/5 overflow-hidden relative group">
+            <div class="h-3 bg-gradient-to-r from-blue-600 via-indigo-500 to-emerald-500"></div>
+
+            <div class="p-10 text-left">
+                <div class="flex items-start justify-between mb-8">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Account Status</p>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                            <p class="text-sm font-black text-slate-900 uppercase">Fully Activated</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-2xl text-slate-300">
+                        <i data-lucide="fingerprint" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-4">
+                        <div class="p-2 bg-white rounded-lg text-blue-600 shadow-sm">
+                            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600">Book your first consultation anytime</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-4">
+                        <div class="p-2 bg-white rounded-lg text-emerald-600 shadow-sm">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                        </div>
+                        <p class="text-xs font-bold text-slate-600">Secure access to your health history</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center gap-6">
+            <a asp-area="Patient" asp-controller="Dashboard" asp-action="Index"
+               class="w-full py-5 bg-blue-600 text-white font-black rounded-[2rem] shadow-xl shadow-blue-100 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                Enter My Dashboard
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </a>
+
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                Need Help? <a href="#" class="text-blue-600 hover:underline">Contact Support</a>
+            </p>
+        </div>
+    </div>
+</div>

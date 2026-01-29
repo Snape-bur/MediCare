@@ -3,91 +3,127 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto p-6 space-y-8 relative z-30">
+<div class="max-w-7xl mx-auto px-6 py-12 space-y-10 animate-in fade-in duration-700">
 
-    <!-- 🩺 Header -->
-    <div class="flex items-center justify-between relative z-40">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-            <h1 class="page-title">🏥 Doctor Dashboard</h1>
-            <p class="page-subtitle">
-                Welcome back, <span class="font-semibold text-brand-700">@ViewData["DoctorName"]</span>.
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight">Clinical <span class="text-blue-600">Overview</span></h1>
+            <p class="text-slate-500 font-medium mt-1">
+                Welcome back, <span class="text-blue-600 font-bold">@ViewData["DoctorName"]</span>. Here is your practice summary.
             </p>
         </div>
 
-        <!-- ✅ Edit Profile Button -->
         <a href="@Url.Action("Edit", "Profile", new { area = "Doctor" })"
-           class="btn-brand relative z-50">
-            ✏️ Edit Profile
+           class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-600 font-black rounded-xl text-xs uppercase tracking-widest shadow-sm hover:bg-slate-50 hover:border-blue-200 hover:text-blue-600 transition-all group">
+            <i data-lucide="user-cog" class="w-4 h-4 transition-transform group-hover:rotate-12"></i>
+            Edit Profile
         </a>
     </div>
 
-    <!-- 🌿 Overview Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-30">
-        <div class="card">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-gray-600 font-semibold">Upcoming Appointments</h3>
-                <span class="text-emerald-500 text-lg">📅</span>
-            </div>
-            <p class="text-3xl font-bold text-brand-700">@ViewData["UpcomingAppointments"]</p>
-            <p class="text-xs text-gray-500 mt-1">appointments scheduled</p>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        <div class="card">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-gray-600 font-semibold">My Patients</h3>
-                <span class="text-blue-500 text-lg">👥</span>
-            </div>
-            <p class="text-3xl font-bold text-brand-700">@ViewData["PatientCount"]</p>
-            <p class="text-xs text-gray-500 mt-1">active patients under your care</p>
-        </div>
-
-        <div class="card">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-gray-600 font-semibold">Today's Availability</h3>
-                <span class="text-yellow-500 text-lg">🕓</span>
-            </div>
-            <p class="text-sm text-gray-700 leading-relaxed">
-                @ViewData["TodaySchedule"]
-            </p>
-
-            <!-- ✅ Manage Availability Button -->
-            <a href="@Url.Action("Edit", "Availabilities", new { area = "Doctor" })"
-               class="text-sm text-brand-700 hover:underline mt-2 inline-block relative z-50">
-                Manage Availability →
-            </a>
-        </div>
-    </div>
-
-    <!-- 📅 Next Appointment -->
-    <div class="card relative z-30">
-        <div class="card-header">
-            <h2 class="card-title">Next Appointment</h2>
-        </div>
-
-        @if (ViewBag.NextAppointment == null)
-        {
-            <div class="text-gray-500 italic">No upcoming appointments scheduled.</div>
-        }
-        else
-        {
-            var appt = ViewBag.NextAppointment;
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-                <div>
-                    <p class="text-lg font-semibold text-brand-800">@appt.PatientName</p>
-                    <p class="text-sm text-gray-500">@appt.DateTime.ToString("dddd, dd MMM yyyy • hh:mm tt")</p>
-                    <p class="text-sm text-gray-600 mt-1">
-                        Status:
-                        <span class="font-medium text-emerald-700">@appt.Status</span>
-                    </p>
+        <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-xl shadow-slate-900/5 relative overflow-hidden group">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                        <i data-lucide="calendar-clock" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Schedule</span>
                 </div>
+                <h3 class="text-4xl font-black text-slate-900">@ViewData["UpcomingAppointments"]</h3>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter mt-1">Upcoming Consultations</p>
+            </div>
+            <i data-lucide="calendar" class="absolute -right-4 -bottom-4 w-24 h-24 text-slate-50 group-hover:text-blue-50/50 transition-colors"></i>
+        </div>
 
-                <!-- ✅ View Appointments Button -->
-                <a href="@Url.Action("Index", "Appointments", new { area = "Doctor" })"
-                   class="btn-blue relative z-50">
-                    View All Appointments →
+        <div class="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-xl shadow-slate-900/5 relative overflow-hidden group">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                        <i data-lucide="users" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest">Registry</span>
+                </div>
+                <h3 class="text-4xl font-black text-slate-900">@ViewData["PatientCount"]</h3>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-tighter mt-1">Patients Under Care</p>
+            </div>
+            <i data-lucide="heart-pulse" class="absolute -right-4 -bottom-4 w-24 h-24 text-slate-50 group-hover:text-emerald-50/50 transition-colors"></i>
+        </div>
+
+        <div class="bg-slate-900 rounded-[2.5rem] p-8 shadow-2xl relative overflow-hidden text-white">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-400">
+                        <i data-lucide="clock" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Daily Hours</span>
+                </div>
+                <p class="text-lg font-bold text-slate-100 leading-tight mb-4">
+                    @ViewData["TodaySchedule"]
+                </p>
+                <a href="@Url.Action("Edit", "Availabilities", new { area = "Doctor" })"
+                   class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-400 hover:text-blue-300 transition-colors">
+                    Update Availability <i data-lucide="arrow-right" class="w-3 h-3"></i>
                 </a>
             </div>
-        }
+            <i data-lucide="activity" class="absolute -right-4 -bottom-4 w-24 h-24 text-white/5"></i>
+        </div>
     </div>
 
+    <div class="bg-white rounded-[3rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+        <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+            <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Immediate Priority</h3>
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
+                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Next Entry</span>
+            </div>
+        </div>
+
+        <div class="p-10">
+            @if (ViewBag.NextAppointment == null)
+            {
+                <div class="flex flex-col items-center py-10 text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                        <i data-lucide="coffee" class="w-8 h-8 text-slate-300"></i>
+                    </div>
+                    <p class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">No pending appointments for today.</p>
+                </div>
+            }
+            else
+            {
+                var appt = ViewBag.NextAppointment;
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center text-white shadow-xl shadow-blue-200">
+                            <i data-lucide="user-check" class="w-10 h-10"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Patient Name</p>
+                            <h2 class="text-3xl font-black text-slate-900 tracking-tight mb-2">@appt.PatientName</h2>
+                            <div class="flex items-center gap-4">
+                                <span class="flex items-center gap-1.5 text-sm font-bold text-slate-500">
+                                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                                    @appt.DateTime.ToString("dddd, dd MMM yyyy")
+                                </span>
+                                <span class="flex items-center gap-1.5 text-sm font-black text-blue-600">
+                                    <i data-lucide="clock" class="w-4 h-4"></i>
+                                    @appt.DateTime.ToString("hh:mm tt")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-3 w-full md:w-auto">
+                        <span class="px-4 py-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-black rounded-full uppercase tracking-widest">
+                            Status: @appt.Status
+                        </span>
+                        <a href="@Url.Action("Index", "Appointments", new { area = "Doctor" })"
+                           class="w-full md:w-auto px-8 py-4 bg-slate-900 text-white font-black rounded-2xl shadow-xl shadow-slate-200 hover:bg-blue-600 transition-all text-xs uppercase tracking-widest text-center">
+                            Manage All Visits
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 </div>

@@ -4,134 +4,123 @@
 
 @{
     var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
-    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MediCare Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-50 text-gray-800 flex">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-    <!-- Sidebar -->
-    <aside class="w-64 min-h-screen bg-white shadow-lg fixed">
-        <div class="px-6 py-5 border-b">
-            <h1 class="text-2xl font-bold text-blue-600">MediCare Admin</h1>
+        .sidebar-active {
+            background: linear-gradient(to right, rgba(37, 99, 235, 0.1), rgba(37, 99, 235, 0));
+            border-right: 4px solid #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 h-full flex overflow-hidden">
+
+    <aside class="w-72 h-full bg-white border-r border-slate-200 hidden lg:flex flex-col flex-shrink-0">
+        <div class="p-8 mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <i data-lucide="shield-plus" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-tighter text-slate-900">MediCare</h1>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Admin Portal</span>
+                </div>
+            </div>
         </div>
 
-        <nav class="mt-6">
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <p class="px-4 text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Main Menu</p>
+
             <ul class="space-y-1">
-
-                <!-- Dashboard -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Dashboard" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="layout-dashboard"
-                           class="w-5 h-5 @(currentController == "Dashboard" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">Dashboard</span>
-                    </a>
-                </li>
-
-                <!-- Doctors -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Doctors" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Doctors" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="stethoscope"
-                           class="w-5 h-5 @(currentController == "Doctors" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">Doctors</span>
-                    </a>
-                </li>
-
-                <!-- Specialties -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Specialties" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Specialties" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="heart-pulse"
-                           class="w-5 h-5 @(currentController == "Specialties" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">Specialties</span>
-                    </a>
-                </li>
-
-                <!-- View user and clinis -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Users" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Users" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="users"
-                           class="w-5 h-5 @(currentController == "Users" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">View Users & Clinics</span>
-                    </a>
-                </li>
-
-                <!-- Clinics -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Clinics" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="hospital"
-                           class="w-5 h-5 @(currentController == "Clinics" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">Clinics</span>
-                    </a>
-                </li>
-
-                <!-- Reports -->
-                <li>
-                    <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
-                       class="flex items-center px-6 py-3 rounded transition
-                              @(currentController == "Reports" ? "bg-blue-600 text-white font-semibold" : "hover:bg-blue-50 hover:text-blue-700")">
-                        <i data-lucide="bar-chart-3"
-                           class="w-5 h-5 @(currentController == "Reports" ? "text-white" : "text-blue-600")"></i>
-                        <span class="ml-3">Reports</span>
-                    </a>
-                </li>
-
+                @foreach (var item in new[] {
+                                new { Name = "Dashboard", Controller = "Dashboard", Icon = "layout-grid" },
+                                new { Name = "Doctors", Controller = "Doctors", Icon = "stethoscope" },
+                                new { Name = "Specialties", Controller = "Specialties", Icon = "heart-pulse" },
+                                new { Name = "Clinics", Controller = "Clinics", Icon = "building-2" },
+                                new { Name = "User Registry", Controller = "Users", Icon = "users-round" },
+                                new { Name = "Analytics", Controller = "Reports", Icon = "bar-chart-big" }
+                                })
+                {
+                    <li>
+                        <a asp-area="Admin" asp-controller="@item.Controller" asp-action="Index"
+                           class="flex items-center px-4 py-3.5 rounded-xl transition-all duration-200 group
+                               @(currentController == item.Controller ? "bg-blue-50 text-blue-600 font-bold" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900")">
+                            <i data-lucide="@item.Icon" class="w-5 h-5 @(currentController == item.Controller ? "text-blue-600" : "text-slate-400 group-hover:text-slate-900")"></i>
+                            <span class="ml-3">@item.Name</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
+
+        <div class="p-6 border-t border-slate-100">
+            <div class="bg-slate-900 rounded-2xl p-4 text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-xs font-bold text-slate-400">System Version</p>
+                    <p class="text-sm font-black text-white">v2.0.4-stable</p>
+                </div>
+                <i data-lucide="cpu" class="absolute -right-2 -bottom-2 w-12 h-12 text-white/5"></i>
+            </div>
+        </div>
     </aside>
 
-    <!-- Main Content -->
-    <div class="flex-1 ml-64">
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        <!-- Top Bar -->
-        <header class="bg-white shadow-sm sticky top-0 z-10">
-            <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <h2 class="text-xl font-semibold text-gray-700">@ViewData["Title"]</h2>
+        <header class="h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-20">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-slate-500 p-2 bg-slate-100 rounded-lg">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <h2 class="text-lg font-bold text-slate-800 tracking-tight">@ViewData["Title"]</h2>
+            </div>
 
-                <div>
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="inline">
-                            <button type="submit"
-                                    class="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-400 text-white font-semibold shadow hover:shadow-md transition">
-                                Logout
-                            </button>
-                        </form>
-                    }
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-3 pr-6 border-r border-slate-200">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-xs font-black text-slate-900 uppercase">@User.Identity.Name</p>
+                        <p class="text-[10px] font-bold text-blue-600 uppercase tracking-tighter">System Administrator</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-slate-100 border-2 border-white shadow-sm flex items-center justify-center text-slate-600 font-bold">
+                        AD
+                    </div>
                 </div>
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                        <button type="submit" class="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all">
+                            <i data-lucide="log-out" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+                }
             </div>
         </header>
 
-        <!-- Page Body -->
-        <main class="p-8">
-            <div class="bg-white shadow rounded-2xl p-6">
-                @RenderBody()
+        <main class="flex-1 overflow-y-auto p-8 scroll-smooth">
+            <div class="max-w-7xl mx-auto">
+                <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    @RenderBody()
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
         lucide.createIcons();
     </script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

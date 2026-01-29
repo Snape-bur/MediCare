@@ -1,69 +1,74 @@
 ﻿@* _Hero.cshtml *@
 <!-- Hero -->
-<section class="relative overflow-hidden">
-    <div class="glow"></div>
-    <div class="mx-auto max-w-7xl px-4 pt-14 pb-20 md:pt-20 md:pb-28">
-        <div class="grid items-center gap-12 md:grid-cols-2">
+<section class="relative overflow-hidden pt-20 pb-32">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-400/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-emerald-400/10 blur-[120px] rounded-full"></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-6">
+        <div class="grid items-center gap-16 md:grid-cols-2">
             <div>
-                <div class="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-neutral ring-1 ring-inset ring-brand-100">
-                    <span class="inline-block h-2 w-2 rounded-full bg-accent"></span>
-                    Instant online booking • 24/7
+                <div class="inline-flex items-center gap-2 rounded-full bg-slate-50 px-4 py-1.5 text-[10px] font-black tracking-widest text-slate-500 uppercase ring-1 ring-slate-200">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    24/7 Digital Concierge
                 </div>
-                <h1 class="mt-4 text-4xl font-extrabold sm:text-5xl">
-                    Healthcare appointments,
-                    <span class="text-brand-900">simplified</span>.
+
+                <h1 class="mt-8 text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
+                    Clinical care, <br />
+                    <span class="text-blue-600">reimagined</span>.
                 </h1>
-                <p class="mt-4 text-neutral">
-                    Find the right specialist, pick a time, and confirm in under 2
-                    minutes. Transparent pricing, reminders, and secure records in one
-                    place.
+
+                <p class="mt-6 text-lg text-slate-500 font-medium leading-relaxed max-w-lg">
+                    Access top-tier specialists with a seamless, 2-minute booking experience. Secure records, transparent fees, and verified care.
                 </p>
-                <form method="get" asp-controller="Home" asp-action="Search"
-                      class="mt-8 grid gap-3 sm:grid-cols-3">
 
-                    <select name="specialtyId"
-                            class="sm:col-span-2 w-full rounded-xl border border-brand-200 px-4 py-3 text-sm">
-                        <option value="">Search specialty...</option>
-                        @foreach (var s in ViewBag.Specialties)
-                        {
-                            <option value="@s.SpecialtyId">@s.Name</option>
-                        }
-                    </select>
-
-                    <button type="submit"
-                            class="rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-neutral shadow-soft">
-                        Check availability
-                    </button>
-                </form>
-
-
+                <div class="mt-10 p-2 bg-white rounded-[2rem] shadow-2xl shadow-slate-200 border border-slate-100 flex flex-col sm:flex-row gap-2">
+                    <div class="flex-1 relative group">
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-blue-600 transition-colors"></i>
+                        <form method="get" asp-controller="Home" asp-action="Search" class="w-full flex flex-col sm:flex-row gap-2">
+                            <select name="specialtyId" class="w-full bg-transparent border-none focus:ring-0 py-4 pl-12 font-bold text-slate-900 appearance-none">
+                                <option value="">Select Clinical Specialty...</option>
+                                @foreach (var s in ViewBag.Specialties)
+                                {
+                                    <option value="@s.SpecialtyId">@s.Name</option>
+                                }
+                            </select>
+                            <button type="submit" class="bg-blue-600 text-white px-8 py-4 rounded-[1.5rem] font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 active:scale-95">
+                                Find Doctor
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+
             <div class="relative">
-                <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-accent/20 to-white blur-2xl"></div>
-                <div class="overflow-hidden rounded-3xl border border-secondary bg-white shadow-soft">
-                    <div class="grid grid-cols-3 gap-4 p-6">
-                        <div class="col-span-3">
-                            <h3 class="text-sm font-semibold text-slate-700">Top-rated specialists</h3>
-                            <p class="mt-1 text-sm text-slate-600">
-                                Search and book appointments with certified doctors you can trust — anytime.
-                            </p>
-
+                <div class="absolute -inset-4 bg-gradient-to-tr from-blue-600/10 to-emerald-600/10 blur-3xl rounded-[3rem]"></div>
+                <div class="relative bg-white rounded-[3rem] border border-slate-200 shadow-2xl overflow-hidden group">
+                    <div class="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <div class="flex gap-1.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
                         </div>
-                        <!-- Calendar preview image -->
-                        <img src="https://cdn.pixabay.com/photo/2022/01/08/08/07/dentist-6923507_960_720.jpg"
-                             alt="Calendar preview"
-                             class="col-span-3 h-40 w-full rounded-xl object-cover" />
-                        <!-- Doctor profile images -->
-                        <img src="https://images.pexels.com/photos/8460379/pexels-photo-8460379.jpeg"
-                             alt="Doctor profile 1"
-                             class="h-20 w-full rounded-xl object-cover" />
-                        <img src="https://images.pexels.com/photos/8376232/pexels-photo-8376232.jpeg"
-                             alt="Doctor profile 2"
-                             class="h-20 w-full rounded-xl object-cover" />
-
-                        <img src="https://images.pexels.com/photos/8460159/pexels-photo-8460159.jpeg"
-                             alt="Doctor profile 3"
-                             class="h-20 w-full rounded-xl object-cover" />
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Provider Network</span>
+                    </div>
+                    <div class="p-4 grid grid-cols-2 gap-4">
+                        <img src="https://images.pexels.com/photos/8460379/pexels-photo-8460379.jpeg" class="rounded-2xl h-48 w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                        <div class="space-y-4">
+                            <div class="h-24 bg-blue-50 rounded-2xl p-4 flex flex-col justify-end">
+                                <p class="text-[9px] font-black text-blue-600 uppercase tracking-widest">Active Surgeons</p>
+                                <p class="text-xl font-black text-slate-900">482+</p>
+                            </div>
+                            <div class="h-20 bg-slate-900 rounded-2xl p-4 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                                <p class="text-[10px] font-black text-white uppercase tracking-tighter">Verified Care</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

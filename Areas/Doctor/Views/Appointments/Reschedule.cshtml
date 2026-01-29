@@ -5,79 +5,114 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8 mt-8">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">🔄 Reschedule Appointment</h2>
+<div class="max-w-4xl mx-auto px-4 py-12 animate-in fade-in duration-700">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div class="flex items-center gap-5">
+            <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-amber-100">
+                <i data-lucide="calendar-range" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Shift <span class="text-amber-600">Adjustment</span></h2>
+                <p class="text-slate-500 font-medium mt-1">Modifying the timeline for @Model.Patient?.AppUser?.FullName.</p>
+            </div>
+        </div>
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-amber-600 transition-colors">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Discard
+        </a>
+    </div>
 
-    <form asp-action="Reschedule" method="post">
+    <form asp-action="Reschedule" method="post" class="space-y-8">
         <input type="hidden" asp-for="AppointmentId" />
 
-        <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2">Current Date & Time</label>
-            <input type="text" value="@Model.DateTime.ToString("f")"
-                   class="w-full border rounded-lg px-4 py-2 bg-gray-100" disabled />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                    <i data-lucide="clock" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
+                    <div class="relative z-10 flex flex-col md:flex-row justify-between gap-6">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2">Current Reservation</p>
+                            <p class="text-xl font-black">@Model.DateTime.ToString("dddd, dd MMM yyyy")</p>
+                            <p class="text-sm font-bold text-amber-500 uppercase mt-1">Time: @Model.DateTime.ToString("hh:mm tt")</p>
+                        </div>
+                        <div class="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-2xl self-start">
+                            <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                            <span class="text-[10px] font-black uppercase tracking-widest">Active Change Request</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+                    <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center gap-3">
+                        <div class="p-2 bg-emerald-600 rounded-lg text-white">
+                            <i data-lucide="calendar-plus" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Availability Selection</h3>
+                    </div>
+
+                    <div class="p-10 space-y-8">
+                        @{
+                            var availableSlots = new List<(DateTime Date, MediCare.Models.Availability Slot)>();
+                            foreach (var slot in (IEnumerable<MediCare.Models.Availability>)ViewBag.Availabilities)
+                            {
+                                var nextDate = DateTime.Today.AddDays(((int)slot.Day - (int)DateTime.Today.DayOfWeek + 7) % 7);
+                                if (nextDate.Date == Model.DateTime.Date || nextDate <= DateTime.Today) nextDate = nextDate.AddDays(7);
+                                availableSlots.Add((nextDate, slot));
+                            }
+                            var sortedSlots = availableSlots.OrderBy(s => s.Date).ToList();
+                        }
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">New Proposed Slot</label>
+                            <div class="relative group">
+                                <i data-lucide="list-filter" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-emerald-600 transition-colors pointer-events-none"></i>
+                                <select id="newDateTime" name="newDateTime" required
+                                        class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 p-4 pl-12 font-bold text-slate-900 appearance-none shadow-inner transition-all">
+                                    <option value="">-- Choose available timeline --</option>
+                                    @foreach (var item in sortedSlots)
+                                    {
+                                        var startDateTime = item.Date.Add(item.Slot.StartTime);
+                                        <option value="@startDateTime.ToString("yyyy-MM-ddTHH:mm")">
+                                            @item.Date.ToString("ddd, MMM dd") — @item.Slot.StartTime.ToString(@"hh\:mm") to @item.Slot.EndTime.ToString(@"hh\:mm")
+                                        </option>
+                                    }
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none"></i>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Modification Rationale</label>
+                            <textarea id="reason" name="reason" rows="3"
+                                      class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-600 p-4 font-semibold text-slate-900 placeholder-slate-300 shadow-inner transition-all leading-relaxed"
+                                      placeholder="Briefly state the reason for this schedule adjustment...">@Model.RescheduleReason</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="p-8 bg-amber-50 border border-amber-100 rounded-[2.5rem] shadow-sm">
+                    <h4 class="text-[10px] font-black text-amber-600 uppercase tracking-[0.2em] mb-4">Patient Impact</h4>
+                    <p class="text-xs text-slate-600 font-bold leading-relaxed">Rescheduling will trigger an automated notification to the patient. They must verify the new timeline to finalize the booking.</p>
+                </div>
+
+                <div class="p-8 bg-white border border-slate-200 rounded-[2.5rem] flex items-center gap-4">
+                    <div class="p-3 bg-slate-50 rounded-xl text-slate-400">
+                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                    </div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-tight">Changes are logged in the practice audit trail.</p>
+                </div>
+            </div>
         </div>
 
-        @{
-            var availableSlots = new List<(DateTime Date, MediCare.Models.Availability Slot)>();
-
-            // 🧠 Build a list of all future slots (skip same-day)
-            foreach (var slot in (IEnumerable<MediCare.Models.Availability>)ViewBag.Availabilities)
-            {
-                var nextDate = DateTime.Today.AddDays(((int)slot.Day - (int)DateTime.Today.DayOfWeek + 7) % 7);
-
-                // Skip current appointment’s same date
-                if (nextDate.Date == Model.DateTime.Date)
-                {
-                    nextDate = nextDate.AddDays(7);
-                }
-
-                // Skip any past or same-day
-                if (nextDate <= DateTime.Today)
-                {
-                    nextDate = nextDate.AddDays(7);
-                }
-
-                availableSlots.Add((nextDate, slot));
-            }
-
-            // ✅ Sort by date (nearest first)
-            var sortedSlots = availableSlots.OrderBy(s => s.Date).ToList();
-        }
-
-        <div class="mb-4">
-            <label class="block text-gray-700 font-medium mb-2">Select New Date &amp; Time</label>
-            <select id="newDateTime" name="newDateTime"
-                    class="w-full border rounded-lg px-4 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none" required>
-                <option value="">-- Choose available slot --</option>
-
-                @foreach (var item in sortedSlots)
-                {
-                    var nextDate = item.Date;
-                    var slot = item.Slot;
-                    var startDateTime = nextDate.Add(slot.StartTime);
-
-                    <option value="@startDateTime.ToString("yyyy-MM-ddTHH:mm")">
-                        @nextDate.ToString("dddd, MMM dd yyyy") —
-                        @slot.StartTime.ToString(@"hh\:mm")–@slot.EndTime.ToString(@"hh\:mm")
-                    </option>
-                }
-            </select>
-        </div>
-
-
-
-        <div class="mb-4">
-            <label for="reason" class="block text-gray-700 font-medium mb-2">Reason for Reschedule (optional)</label>
-            <textarea id="reason" name="reason"
-                      class="w-full border rounded-lg px-4 py-2"
-                      rows="3">@Model.RescheduleReason</textarea>
-        </div>
-
-        <div class="flex justify-between items-center">
-            <a asp-action="Index" class="text-gray-600 hover:text-gray-800">⬅ Back to Appointments</a>
+        <div class="flex items-center gap-4 pt-4 pb-20">
             <button type="submit"
-                    class="px-6 py-2.5 bg-blue-600 text-white rounded-lg shadow hover:scale-105 transition">
-                💾 Save Changes
+                    class="flex-1 py-5 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-black rounded-[2rem] shadow-xl shadow-amber-100 hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3 group">
+                <i data-lucide="save" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                Synchronize New Schedule
             </button>
         </div>
     </form>

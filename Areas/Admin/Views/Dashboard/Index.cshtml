@@ -3,79 +3,97 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto mt-10 px-6">
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">📊 Admin Dashboard</h1>
-
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-
-        <!-- Doctors -->
-        <div class="bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
-            <div>
-                <h3 class="text-lg font-semibold mb-1">Total Doctors</h3>
-                <p class="text-blue-100 text-sm">Registered specialists</p>
-            </div>
-            <div class="flex justify-between items-center mt-6">
-                <span class="text-4xl font-bold">@ViewBag.DoctorCount</span>
-                <a asp-area="Admin" asp-controller="Users" asp-action="Doctors"
-                   class="bg-white text-blue-600 px-3 py-1.5 rounded-lg font-medium hover:bg-blue-50 transition">View</a>
-            </div>
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <div>
+            <h1 class="text-4xl font-black text-gray-900 tracking-tight">System <span class="text-blue-600">Overview</span></h1>
+            <p class="text-gray-500 mt-2 font-medium">Platform management and real-time statistics.</p>
         </div>
-
-        <!-- Patients -->
-        <div class="bg-gradient-to-r from-green-600 to-emerald-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
-            <div>
-                <h3 class="text-lg font-semibold mb-1">Total Patients</h3>
-                <p class="text-green-100 text-sm">Active patient profiles</p>
-            </div>
-            <div class="flex justify-between items-center mt-6">
-                <span class="text-4xl font-bold">@ViewBag.PatientCount</span>
-                <a asp-area="Admin" asp-controller="Users" asp-action="Patients"
-                   class="bg-white text-green-600 px-3 py-1.5 rounded-lg font-medium hover:bg-green-50 transition">View</a>
-            </div>
-        </div>
-
-        <!-- Clinics -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-500 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
-            <div>
-                <h3 class="text-lg font-semibold mb-1">Clinics</h3>
-                <p class="text-indigo-100 text-sm">Registered locations</p>
-            </div>
-            <div class="flex justify-between items-center mt-6">
-                <span class="text-4xl font-bold">@ViewBag.ClinicCount</span>
-                <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
-                   class="bg-white text-indigo-600 px-3 py-1.5 rounded-lg font-medium hover:bg-indigo-50 transition">Manage</a>
-            </div>
-        </div>
-
-        <!-- Appointments -->
-        <div class="bg-gradient-to-r from-pink-600 to-rose-400 text-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:scale-[1.02] transition-transform">
-            <div>
-                <h3 class="text-lg font-semibold mb-1">Appointments</h3>
-                <p class="text-pink-100 text-sm">Upcoming & completed</p>
-            </div>
-            <div class="flex justify-between items-center mt-6">
-                <span class="text-4xl font-bold">@ViewBag.AppointmentCount</span>
-                <a asp-area="Admin" asp-controller="Reports" asp-action="Index"
-                   class="bg-white text-pink-600 px-3 py-1.5 rounded-lg font-medium hover:bg-pink-50 transition">Reports</a>
-            </div>
+        <div class="flex items-center gap-3">
+            <span class="flex h-3 w-3 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <p class="text-sm font-bold text-gray-700 uppercase tracking-widest">System Live</p>
         </div>
     </div>
 
-    <!-- Quick Access Links -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition">
-            <h3 class="text-xl font-semibold mb-3 text-gray-800">⚙️ Manage Users</h3>
-            <p class="text-gray-600 mb-4">Access and control doctors and patients accounts within the system.</p>
-            <a asp-area="Admin" asp-controller="Users" asp-action="Index"
-               class="inline-block bg-gradient-to-r from-indigo-600 to-purple-500 text-white font-medium px-5 py-2.5 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition">Go to Users →</a>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="group bg-white rounded-[2rem] p-7 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="p-4 bg-blue-50 rounded-2xl text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                </div>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Doctors" class="text-xs font-black text-blue-600 uppercase hover:underline">Manage</a>
+            </div>
+            <p class="text-3xl font-black text-gray-900">@ViewBag.DoctorCount</p>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mt-1">Total Doctors</p>
         </div>
 
-        <div class="bg-white shadow-lg rounded-2xl p-6 hover:shadow-xl transition">
-            <h3 class="text-xl font-semibold mb-3 text-gray-800">🏥 Manage Clinics</h3>
-            <p class="text-gray-600 mb-4">Add or update clinic information, contact details, and addresses.</p>
-            <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
-               class="inline-block bg-gradient-to-r from-indigo-600 to-purple-500 text-white font-medium px-5 py-2.5 rounded-xl shadow hover:shadow-lg hover:scale-[1.02] transition">Go to Clinics →</a>
+        <div class="group bg-white rounded-[2rem] p-7 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="p-4 bg-green-50 rounded-2xl text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                </div>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Patients" class="text-xs font-black text-green-600 uppercase hover:underline">Manage</a>
+            </div>
+            <p class="text-3xl font-black text-gray-900">@ViewBag.PatientCount</p>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mt-1">Total Patients</p>
+        </div>
+
+        <div class="group bg-white rounded-[2rem] p-7 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="p-4 bg-indigo-50 rounded-2xl text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                </div>
+                <a asp-area="Admin" asp-controller="Clinics" asp-action="Index" class="text-xs font-black text-indigo-600 uppercase hover:underline">Manage</a>
+            </div>
+            <p class="text-3xl font-black text-gray-900">@ViewBag.ClinicCount</p>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mt-1">Total Clinics</p>
+        </div>
+
+        <div class="group bg-white rounded-[2rem] p-7 border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500">
+            <div class="flex justify-between items-start mb-6">
+                <div class="p-4 bg-orange-50 rounded-2xl text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-300">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <a asp-area="Admin" asp-controller="Reports" asp-action="Index" class="text-xs font-black text-orange-600 uppercase hover:underline">Reports</a>
+            </div>
+            <p class="text-3xl font-black text-gray-900">@ViewBag.AppointmentCount</p>
+            <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mt-1">Appointments</p>
+        </div>
+    </div>
+
+    <h3 class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-6 ml-2">Administrative Hub</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="group relative bg-gray-900 rounded-[2.5rem] p-10 overflow-hidden shadow-2xl transition-all hover:-translate-y-1">
+            <div class="absolute top-0 right-0 p-10 opacity-10 group-hover:scale-110 transition-transform">
+                <svg class="w-32 h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-2xl font-black text-white mb-2">User Directory</h3>
+                <p class="text-gray-400 font-medium mb-8 max-w-[250px]">Complete control over healthcare providers and patient accounts.</p>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index"
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 font-black rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-lg">
+                    Manage Users
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="group relative bg-white rounded-[2.5rem] p-10 overflow-hidden border border-gray-100 shadow-xl transition-all hover:-translate-y-1">
+            <div class="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-110 transition-transform">
+                <svg class="w-32 h-32 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+            </div>
+            <div class="relative z-10">
+                <h3 class="text-2xl font-black text-gray-900 mb-2">Clinical Centers</h3>
+                <p class="text-gray-500 font-medium mb-8 max-w-[250px]">Update facility locations, contact details, and department settings.</p>
+                <a asp-area="Admin" asp-controller="Clinics" asp-action="Index"
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-black rounded-xl hover:bg-gray-900 transition-all shadow-lg shadow-blue-100">
+                    Manage Clinics
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </a>
+            </div>
         </div>
     </div>
 </div>

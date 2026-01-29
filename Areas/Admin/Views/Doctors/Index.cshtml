@@ -5,49 +5,78 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-3xl font-bold text-gray-700 mb-6">👨‍⚕️ Doctor Management</h2>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+    <div>
+        <h2 class="text-3xl font-black text-slate-900 tracking-tight">Doctor <span class="text-blue-600">Management</span></h2>
+        <p class="text-slate-500 font-medium">Manage and monitor all healthcare providers across your clinics.</p>
+    </div>
+    <a asp-action="Create"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 transition-all">
+        <i data-lucide="user-plus" class="w-5 h-5"></i>
+        Add New Doctor
+    </a>
+</div>
 
-<div class="bg-white shadow rounded-2xl p-6">
-    <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-semibold text-gray-600">All Registered Doctors</h3>
-        <a asp-action="Create"
-           class="px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-semibold shadow hover:shadow-lg transition">
-            ➕ Add New Doctor
-        </a>
+<div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+    <div class="p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Registry Overview</h3>
+        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-black rounded-full uppercase">@Model.Count() Total Records</span>
     </div>
 
     @if (Model != null && Model.Any())
     {
         <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-left border border-gray-200 rounded-lg">
-                <thead class="bg-blue-50 text-gray-700 font-semibold">
-                    <tr>
-                        <th class="px-4 py-3">Doctor Name</th>
-                        <th class="px-4 py-3">Specialty</th>
-                        <th class="px-4 py-3">Clinic</th>
-                        <th class="px-4 py-3 text-right">Fee (THB)</th>
-                        <th class="px-4 py-3">Phone</th>
-                        <th class="px-4 py-3 text-center">Actions</th>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-white">
+                        <th class="px-8 py-5">Physician Details</th>
+                        <th class="px-6 py-5">Clinic & Location</th>
+                        <th class="px-6 py-5">Specialty</th>
+                        <th class="px-6 py-5">Consultation Fee</th>
+                        <th class="px-8 py-5 text-right">Administrative Actions</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
+                <tbody class="divide-y divide-slate-100">
                     @foreach (var item in Model)
                     {
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-4 py-3">@item.AppUser?.FullName </td>
-                            <td class="px-4 py-3">@item.Specialty?.Name </td>
-                            <td class="px-4 py-3">@item.Clinic?.Name </td>
-                            <td class="px-4 py-3 text-right">@item.ConsultationFee.ToString("N2")</td>
-                            <td class="px-4 py-3">@item.PhoneNumber </td>
-                            <td class="px-4 py-3 text-center space-x-3">
-                                <a asp-action="Edit" asp-route-id="@item.DoctorId"
-                                   class="text-blue-600 hover:text-blue-800 font-medium transition">Edit</a>
-                                <span class="text-gray-300">|</span>
-                                <a asp-action="Details" asp-route-id="@item.DoctorId"
-                                   class="text-green-600 hover:text-green-800 font-medium transition">View</a>
-                                <span class="text-gray-300">|</span>
-                                <a asp-action="Delete" asp-route-id="@item.DoctorId"
-                                   class="text-red-600 hover:text-red-800 font-medium transition">Delete</a>
+                        <tr class="group hover:bg-slate-50/80 transition-all">
+                            <td class="px-8 py-5">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        @item.AppUser?.FullName.Substring(0, 1)
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-900">@item.AppUser?.FullName</p>
+                                        <p class="text-xs text-slate-400 font-medium">@item.PhoneNumber</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2 text-slate-600">
+                                    <i data-lucide="building-2" class="w-4 h-4 text-slate-300"></i>
+                                    <span class="text-sm font-semibold">@item.Clinic?.Name</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 text-[10px] font-black rounded-lg uppercase tracking-wider">
+                                    @item.Specialty?.Name
+                                </span>
+                            </td>
+                            <td class="px-6 py-5">
+                                <p class="text-sm font-black text-slate-900">฿@item.ConsultationFee.ToString("N0")</p>
+                            </td>
+                            <td class="px-8 py-5">
+                                <div class="flex items-center justify-end gap-2">
+                                    <a asp-action="Details" asp-route-id="@item.DoctorId" class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="View Details">
+                                        <i data-lucide="eye" class="w-5 h-5"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.DoctorId" class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Edit Profile">
+                                        <i data-lucide="edit-3" class="w-5 h-5"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.DoctorId" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Remove">
+                                        <i data-lucide="trash-2" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -57,12 +86,13 @@
     }
     else
     {
-        <div class="text-center text-gray-500 py-10">
-            <p class="text-lg">No doctors have been registered yet.</p>
-            <a asp-action="Create"
-               class="inline-block mt-4 px-5 py-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg font-semibold shadow hover:shadow-lg transition">
-                ➕ Add Your First Doctor
-            </a>
+        <div class="p-20 text-center">
+            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="search-x" class="w-10 h-10 text-slate-300"></i>
+            </div>
+            <h4 class="text-xl font-black text-slate-900">No Specialists Found</h4>
+            <p class="text-slate-500 mb-8">You haven't added any doctors to the system yet.</p>
+            <a asp-action="Create" class="px-8 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-100">Add First Doctor</a>
         </div>
     }
 </div>

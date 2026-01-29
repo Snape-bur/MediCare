@@ -1,66 +1,123 @@
 ﻿@* _Pricing.cshtml *@
 <!-- Pricing -->
-<section id="pricing" class="bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-16">
-        <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-3xl font-bold text-brand-900">
-                Simple, transparent pricing
+@* _Pricing.cshtml *@
+<section id="pricing" class="bg-secondary/20 py-24 px-4 overflow-hidden relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full pointer-events-none">
+        <div class="absolute top-10 left-10 w-64 h-64 bg-accent/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 right-10 w-96 h-96 bg-brand-900/5 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="mx-auto max-w-7xl relative z-10">
+        <div class="mx-auto max-w-2xl text-center mb-16">
+            <h2 class="text-4xl font-black text-brand-900 tracking-tight sm:text-5xl">
+                Simple, transparent <span class="text-accent">pricing</span>
             </h2>
-            <p class="mt-3 text-neutral">
-                Pay per visit or join a membership for perks.
+            <p class="mt-4 text-lg text-neutral/70 font-medium">
+                Choose the best way to manage your health. Pay per visit or join a membership for exclusive benefits.
             </p>
         </div>
-        <div class="mt-10 grid gap-6 md:grid-cols-3">
-            <div class="rounded-2xl border border-secondary bg-white p-6 shadow-soft">
-                <h3 class="text-lg font-semibold">Pay-as-you-go</h3>
-                <p class="mt-1 text-sm text-neutral">Book any doctor, anytime.</p>
-                <div class="mt-6 flex items-end gap-1">
-                    <div class="text-4xl font-extrabold text-brand-900">$0</div>
-                    <div class="pb-1 text-sm text-neutral">/month</div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+
+            <div class="group rounded-[2.5rem] border border-secondary bg-white/80 backdrop-blur-md p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] hover:-translate-y-2">
+                <h3 class="text-xl font-bold text-brand-900">Pay-as-you-go</h3>
+                <p class="mt-2 text-sm text-neutral/60">Perfect for occasional check-ups.</p>
+
+                <div class="mt-8 flex items-baseline gap-1">
+                    <span class="text-5xl font-black text-brand-900">฿0</span>
+                    <span class="text-sm font-bold text-neutral/40 uppercase tracking-widest">/month</span>
                 </div>
-                <ul class="mt-6 space-y-3 text-sm text-neutral">
-                    <li>✔ No subscription</li>
-                    <li>✔ Transparent fees</li>
-                    <li>✔ SMS & email reminders</li>
+
+                <ul class="mt-8 space-y-4 text-sm font-medium text-neutral/80">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        No subscription fee
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Standard consultation rates
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        SMS & email reminders
+                    </li>
                 </ul>
-                <a href="#"
-                   class="mt-6 inline-flex w-full justify-center rounded-xl border border-accent px-4 py-2 text-sm font-semibold text-brand-900 hover:bg-accent hover:text-neutral">Get started</a>
+
+                <a href="#" class="mt-10 flex w-full justify-center rounded-2xl border-2 border-secondary py-4 text-sm font-black text-brand-900 transition-all hover:bg-secondary hover:border-brand-900/10">
+                    Get Started
+                </a>
             </div>
-            <div class="rounded-2xl border-2 border-accent bg-white p-6 shadow-soft relative">
-                <span class="absolute -top-3 right-6 bg-accent text-neutral px-3 py-1 rounded-full text-xs font-semibold">Most popular</span>
-                <h3 class="text-lg font-semibold">Smart Care</h3>
-                <p class="mt-1 text-sm text-neutral">
-                    Priority support and discounted follow-ups.
-                </p>
-                <div class="mt-6 flex items-end gap-1">
-                    <div class="text-4xl font-extrabold text-brand-900">$12</div>
-                    <div class="pb-1 text-sm text-neutral">/month</div>
+
+            <div class="relative group rounded-[2.5rem] border-2 border-accent bg-white p-8 shadow-[0_30px_70px_rgba(0,0,0,0.1)] transition-all duration-300 hover:-translate-y-2 scale-105 z-20">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-accent text-neutral px-6 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-lg">
+                    Most Popular
                 </div>
-                <ul class="mt-6 space-y-3 text-sm text-neutral">
-                    <li>✔ 10% off consultation</li>
-                    <li>✔ Priority booking</li>
-                    <li>✔ Annual check reminders</li>
-                </ul>
-                <a href="#"
-                   class="mt-6 inline-flex w-full justify-center rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-neutral hover:bg-yellow-500">Choose plan</a>
-            </div>
-            <div class="rounded-2xl border border-secondary bg-white p-6 shadow-soft">
-                <h3 class="text-lg font-semibold">Family</h3>
-                <p class="mt-1 text-sm text-neutral">
-                    Up to 5 members under one plan.
-                </p>
-                <div class="mt-6 flex items-end gap-1">
-                    <div class="text-4xl font-extrabold text-brand-900">$29</div>
-                    <div class="pb-1 text-sm text-neutral">/month</div>
+
+                <h3 class="text-xl font-bold text-brand-900">Smart Care</h3>
+                <p class="mt-2 text-sm text-neutral/60">Priority support and follow-ups.</p>
+
+                <div class="mt-8 flex items-baseline gap-1">
+                    <span class="text-5xl font-black text-brand-900">฿450</span>
+                    <span class="text-sm font-bold text-neutral/40 uppercase tracking-widest">/month</span>
                 </div>
-                <ul class="mt-6 space-y-3 text-sm text-neutral">
-                    <li>✔ Everything in Smart Care</li>
-                    <li>✔ Shared records</li>
-                    <li>✔ Pediatric perks</li>
+
+                <ul class="mt-8 space-y-4 text-sm font-medium text-neutral/80">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        10% Off every consultation
+                    </li>
+                    <li class="flex items-center gap-3 text-brand-900 font-bold">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Priority booking access
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Annual health check reminders
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Direct chat with specialists
+                    </li>
                 </ul>
-                <a href="#"
-                   class="mt-6 inline-flex w-full justify-center rounded-xl border border-accent px-4 py-2 text-sm font-semibold text-brand-900 hover:bg-accent hover:text-neutral">Choose plan</a>
+
+                <a href="#" class="mt-10 flex w-full justify-center rounded-2xl bg-brand-900 py-4 text-sm font-black text-white shadow-xl shadow-brand-900/20 transition-all hover:bg-neutral hover:shadow-2xl">
+                    Choose Smart Care
+                </a>
             </div>
+
+            <div class="group rounded-[2.5rem] border border-secondary bg-white/80 backdrop-blur-md p-8 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_30px_60px_rgba(0,0,0,0.08)] hover:-translate-y-2">
+                <h3 class="text-xl font-bold text-brand-900">Family</h3>
+                <p class="mt-2 text-sm text-neutral/60">Health coverage for your household.</p>
+
+                <div class="mt-8 flex items-baseline gap-1">
+                    <span class="text-5xl font-black text-brand-900">฿1,050</span>
+                    <span class="text-sm font-bold text-neutral/40 uppercase tracking-widest">/month</span>
+                </div>
+
+                <ul class="mt-8 space-y-4 text-sm font-medium text-neutral/80">
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Up to 5 family members
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Shared family medical records
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                        Pediatric & elder care perks
+                    </li>
+                </ul>
+
+                <a href="#" class="mt-10 flex w-full justify-center rounded-2xl border-2 border-secondary py-4 text-sm font-black text-brand-900 transition-all hover:bg-secondary hover:border-brand-900/10">
+                    Choose Family Plan
+                </a>
+            </div>
+
         </div>
+
+        <p class="mt-16 text-center text-xs text-neutral/40 font-bold uppercase tracking-[0.3em]">
+            Secure Payments &bull; No Hidden Fees &bull; Cancel Anytime
+        </p>
     </div>
 </section>

@@ -5,55 +5,75 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-7xl mx-auto px-6 py-10">
-    <!-- Page Header -->
-    <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Medical Specialties</h1>
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+        <div>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight">Medical <span class="text-indigo-600">Specialties</span></h1>
+            <p class="text-slate-500 font-medium mt-1">Classify healthcare services and categorize physician expertise.</p>
+        </div>
         <a asp-action="Create"
-           class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white
-                  bg-gradient-to-r from-indigo-600 to-blue-500 rounded-xl shadow-lg
-                  hover:from-indigo-700 hover:to-blue-600 focus:outline-none
-                  focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition">
-            + Add Specialty
+           class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-black rounded-xl shadow-lg shadow-indigo-100 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all">
+            <i data-lucide="plus-circle" class="w-5 h-5"></i>
+            Add Specialty
         </a>
     </div>
 
-    <!-- Search (optional) -->
-    <div class="mb-6">
-        <input type="text" placeholder="Search specialties..."
-               class="w-full md:w-1/3 rounded-xl border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm px-4 py-2" />
+    <div class="mb-10">
+        <div class="relative max-w-md group">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-indigo-600 transition-colors"></i>
+            <input type="text" placeholder="Filter specialties by name..."
+                   class="w-full bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-indigo-600 focus:border-transparent p-4 pl-12 font-semibold text-slate-900 shadow-sm transition-all" />
+        </div>
     </div>
 
-    <!-- Specialties Grid -->
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        @foreach (var item in Model)
-        {
-            <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 p-6 flex flex-col">
-                <!-- Icon + Title -->
-                <div class="flex items-center mb-4">
-                    <div class="h-12 w-12 flex items-center justify-center rounded-xl bg-indigo-100 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M12 11c0-1.657-1.343-3-3-3S6 9.343 6 11s1.343 3 3 3 3-1.343 3-3zM6 11h.01M9 11h6m0 0c0-1.657-1.343-3-3-3s-3 1.343-3 3 1.343 3 3 3 3-1.343 3-3z" />
-                        </svg>
+    @if (Model != null && Model.Any())
+    {
+        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach (var item in Model)
+            {
+                <div class="group bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:border-indigo-200 transition-all duration-500 flex flex-col overflow-hidden">
+                    <div class="h-2 bg-gradient-to-r from-indigo-600 to-blue-400"></div>
+
+                    <div class="p-8 flex-1">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="h-14 w-14 flex items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-inner">
+                                <i data-lucide="heart-pulse" class="h-7 w-7"></i>
+                            </div>
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Category</span>
+                        </div>
+
+                        <h2 class="text-xl font-black text-slate-900 mb-3 group-hover:text-indigo-600 transition-colors">@item.Name</h2>
+                        <p class="text-sm text-slate-500 font-medium leading-relaxed line-clamp-3 italic">
+                            "@item.Description"
+                        </p>
                     </div>
-                    <h2 class="ml-3 text-lg font-semibold text-gray-900">@item.Name</h2>
-                </div>
 
-                <!-- Description -->
-                <p class="text-sm text-gray-600 flex-grow">@item.Description</p>
-
-             
-                <!-- Actions -->
-                <div class="mt-4 flex justify-end gap-3">
-                    <a asp-action="Edit" asp-route-id="@item.SpecialtyId"
-                       class="text-sm font-medium text-indigo-600 hover:text-indigo-800">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.SpecialtyId"
-                       class="text-sm font-medium text-green-600 hover:text-green-800">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.SpecialtyId"
-                       class="text-sm font-medium text-red-600 hover:text-red-800">Delete</a>
+                    <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <a asp-action="Edit" asp-route-id="@item.SpecialtyId" class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-white rounded-lg shadow-sm transition-all" title="Edit">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.SpecialtyId" class="p-2 text-slate-400 hover:text-green-600 hover:bg-white rounded-lg shadow-sm transition-all" title="Details">
+                                <i data-lucide="eye" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                        <a asp-action="Delete" asp-route-id="@item.SpecialtyId" class="p-2 text-slate-300 hover:text-red-500 transition-colors" title="Remove">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </a>
+                    </div>
                 </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="p-20 text-center bg-white rounded-[3rem] border border-slate-100 shadow-sm">
+            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="layers" class="w-10 h-10 text-slate-200"></i>
             </div>
-        }
-    </div>
+            <h4 class="text-xl font-black text-slate-900">No Specialties Defined</h4>
+            <p class="text-slate-500 mb-8">Start by adding medical departments or specialist categories.</p>
+            <a asp-action="Create" class="px-8 py-3 bg-indigo-600 text-white font-black rounded-xl shadow-lg">Add First Specialty</a>
+        </div>
+    }
 </div>

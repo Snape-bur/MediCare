@@ -5,84 +5,157 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="min-h-screen flex items-center justify-center bg-secondary px-4">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-soft p-8">
-        <!-- Header -->
-        <div class="text-center">
-            <h1 class="text-2xl font-bold text-brand-900">@ViewData["Title"]</h1>
-            <p class="mt-2 text-sm text-neutral">Access your account to book and manage appointments.</p>
+<div class="min-h-screen flex flex-col md:flex-row bg-white">
+
+    <div class="hidden md:flex md:w-1/2 lg:w-3/5 bg-brand-900 p-12 flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-32 h-32 bg-secondary/10 rounded-full blur-2xl"></div>
+
+        <div class="relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
+                    <svg class="w-6 h-6 text-neutral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+                <span class="text-2xl font-black text-white tracking-tighter">MediCare</span>
+            </div>
+
+            <div class="mt-8 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                <span class="text-[10px] font-bold uppercase tracking-widest text-white/80">482 Doctors Online Now</span>
+            </div>
         </div>
 
-        <!-- Local Login Form -->
-        <form id="account" method="post" class="mt-6 space-y-5">
-            <div asp-validation-summary="ModelOnly" class="text-red-600 text-sm" role="alert"></div>
+        <div class="relative z-10 max-w-lg">
+            <h2 class="text-5xl font-extrabold text-white leading-[1.1]">
+                Your health, <br />
+                <span class="text-accent">simplified</span> with care.
+            </h2>
+            <p class="mt-6 text-lg text-secondary/70 leading-relaxed font-light">
+                The next generation of healthcare management. Connect with certified specialists and manage your appointments in one secure, HIPAA-compliant space.
+            </p>
+        </div>
 
-            <div>
-                <label asp-for="Input.Email" class="block text-sm font-medium text-neutral">Email</label>
-                <input asp-for="Input.Email"
-                       class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 text-sm focus:border-brand-900 focus:ring-2 focus:ring-accent/50"
-                       placeholder="name@example.com" autocomplete="username" />
-                <span asp-validation-for="Input.Email" class="text-red-600 text-xs"></span>
-            </div>
-
-            <div>
-                <label asp-for="Input.Password" class="block text-sm font-medium text-neutral">Password</label>
-                <input asp-for="Input.Password"
-                       class="mt-1 w-full rounded-xl border border-secondary px-4 py-2 text-sm focus:border-brand-900 focus:ring-2 focus:ring-accent/50"
-                       placeholder="••••••" autocomplete="current-password" />
-                <span asp-validation-for="Input.Password" class="text-red-600 text-xs"></span>
-            </div>
-
-            <div class="flex items-center justify-between text-sm">
-                <div class="flex items-center gap-2">
-                    <input asp-for="Input.RememberMe" class="h-4 w-4 text-accent border-gray-300 rounded" />
-                    <label asp-for="Input.RememberMe" class="text-neutral">@Html.DisplayNameFor(m => m.Input.RememberMe)</label>
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="flex -space-x-3">
+                    <div class="w-12 h-12 rounded-full border-2 border-brand-900 bg-secondary flex items-center justify-center text-xs font-bold text-brand-900 shadow-xl">Dr. S</div>
+                    <div class="w-12 h-12 rounded-full border-2 border-brand-900 bg-accent flex items-center justify-center text-xs font-bold text-neutral shadow-xl">Dr. M</div>
+                    <div class="w-12 h-12 rounded-full border-2 border-brand-900 bg-neutral flex items-center justify-center text-xs font-bold text-white shadow-xl">Dr. K</div>
+                    <div class="w-12 h-12 rounded-full border-2 border-brand-900 bg-white/10 backdrop-blur-md flex items-center justify-center text-[10px] font-bold text-white shadow-xl">+12k</div>
                 </div>
-                <a id="forgot-password" asp-page="./ForgotPassword" class="text-brand-900 hover:underline">Forgot password?</a>
+                <div>
+                    <div class="flex text-accent">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    </div>
+                    <p class="text-xs text-white font-medium">Joined by 15,000+ patients this month</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full md:w-1/2 lg:w-2/5 flex items-center justify-center p-8 sm:p-12 lg:p-20">
+        <div class="w-full max-w-sm">
+            <div class="md:hidden mb-10 flex flex-col items-center">
+                <div class="w-14 h-14 rounded-2xl bg-brand-900 flex items-center justify-center shadow-xl shadow-brand-900/20">
+                    <svg class="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" /></svg>
+                </div>
+                <h1 class="mt-4 text-2xl font-black text-brand-900 tracking-tighter">MediCare</h1>
             </div>
 
-            <button id="login-submit"
-                    type="submit"
-                    class="w-full rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-neutral shadow-soft hover:bg-yellow-500">
-                Log in
-            </button>
-
-            <div class="mt-4 text-sm text-center space-y-1">
-                <p><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-brand-900 hover:underline">Register as a new user</a></p>
-                <p><a id="resend-confirmation" asp-page="./ResendEmailConfirmation" class="text-brand-900 hover:underline">Resend email confirmation</a></p>
+            <div class="mb-10">
+                <h1 class="text-3xl font-extrabold text-brand-900 tracking-tight">Login</h1>
+                <p class="text-neutral mt-2 text-sm">Sign in to book your next consultation.</p>
             </div>
-        </form>
 
-        <!-- External Login -->
-        <div class="mt-8">
-            <h3 class="text-sm font-medium text-neutral text-center">Or log in with</h3>
-            <div class="mt-4 space-y-3">
-                @if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <p class="text-sm text-neutral text-center">
-                        No external authentication services configured. See this
-                        <a href="https://go.microsoft.com/fwlink/?LinkID=532715" class="underline text-accent">guide</a>.
-                    </p>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-3">
+            <form id="account" method="post" class="space-y-5">
+                <div asp-validation-summary="ModelOnly" class="text-red-500 text-xs font-semibold p-3 bg-red-50 rounded-xl" role="alert"></div>
+
+                <div class="space-y-1.5">
+                    <label asp-for="Input.Email" class="text-[11px] font-bold text-neutral/50 uppercase tracking-[0.2em] ml-1">Account Email</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-900 text-neutral/30">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" /></svg>
+                        </div>
+                        <input asp-for="Input.Email"
+                               class="block w-full pl-11 pr-4 py-4 bg-secondary/20 border-transparent rounded-2xl text-sm transition-all focus:bg-white focus:ring-4 focus:ring-accent/20 focus:border-accent"
+                               placeholder="yourname@email.com" />
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <div class="flex justify-between">
+                        <label asp-for="Input.Password" class="text-[11px] font-bold text-neutral/50 uppercase tracking-[0.2em] ml-1">Password</label>
+                        <a asp-page="./ForgotPassword" class="text-[11px] font-bold text-brand-900 hover:text-accent tracking-tighter transition-colors">Forgot Password?</a>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-brand-900 text-neutral/30">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <input asp-for="Input.Password"
+                               type="password"
+                               class="block w-full pl-11 pr-4 py-4 bg-secondary/20 border-transparent rounded-2xl text-sm transition-all focus:bg-white focus:ring-4 focus:ring-accent/20 focus:border-accent"
+                               placeholder="••••••••" />
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input asp-for="Input.RememberMe" class="w-5 h-5 rounded-lg border-secondary text-brand-900 focus:ring-accent" />
+                    <label asp-for="Input.RememberMe" class="ml-3 text-sm text-neutral font-medium">Keep me logged in</label>
+                </div>
+
+                <!-- ✅ reCAPTCHA v2 -->
+                <div class="flex justify-center">
+                    <div class="g-recaptcha"
+                         data-sitekey="@Model.RecaptchaSiteKey">
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="w-full py-4 bg-brand-900 hover:bg-neutral text-white font-black rounded-2xl shadow-xl shadow-brand-900/30 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                    <span>Secure Sign In</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                </button>
+            </form>
+
+            <div class="mt-10">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-secondary"></div></div>
+                    <div class="relative flex justify-center text-[10px] uppercase tracking-[0.3em] font-black text-neutral/30">
+                        <span class="bg-white px-4">Instant Health Login</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-3">
+                    @if (Model.ExternalLogins?.Count > 0)
+                    {
                         @foreach (var provider in Model.ExternalLogins!)
                         {
-                            <button type="submit"
-                                    class="w-full rounded-xl bg-white border border-secondary px-4 py-2 text-sm font-semibold text-brand-900 hover:bg-secondary"
-                                    name="provider"
-                                    value="@provider.Name">
-                                @provider.DisplayName
-                            </button>
+                            <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="w-full">
+                                <button type="submit" name="provider" value="@provider.Name"
+                                        class="w-full flex items-center justify-center gap-2 px-4 py-3.5 border-2 border-secondary hover:border-brand-900/10 hover:bg-secondary/20 rounded-2xl transition-all font-bold text-xs text-brand-900">
+                                    Continue with @provider.DisplayName
+                                </button>
+                            </form>
                         }
-                    </form>
-                }
+                    }
+                </div>
             </div>
+
+            <p class="mt-12 text-center text-sm text-neutral/50 font-medium">
+                New to MediCare?
+                <a asp-page="./Register" class="text-brand-900 font-extrabold hover:text-accent border-b-2 border-accent/30 hover:border-accent transition-all">Join the Community</a>
+            </p>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

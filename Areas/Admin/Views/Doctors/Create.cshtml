@@ -1,94 +1,101 @@
-﻿@{
-    ViewData["Title"] = "Add Doctor";
+﻿@model MediCare.Models.Doctor
+@{
+    ViewData["Title"] = "Add New Doctor";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-md">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">➕ Add Doctor</h2>
-
-    <form asp-action="Create" method="post" class="space-y-6">
-        <div asp-validation-summary="ModelOnly" class="text-red-500"></div>
-
-        <!-- 🔐 Doctor Login Info -->
+<div class="max-w-4xl mx-auto">
+    <div class="mb-10 flex items-center justify-between">
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">📧 Email (Username)</label>
-            <input type="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required />
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Onboard <span class="text-blue-600">Physician</span></h2>
+            <p class="text-slate-500 font-medium">Create a new professional account and profile.</p>
+        </div>
+        <a asp-action="Index" class="text-xs font-black text-slate-400 uppercase tracking-widest hover:text-blue-600 transition-colors">Cancel & Return</a>
+    </div>
+
+    <form asp-action="Create" method="post" class="space-y-8">
+        <div asp-validation-summary="ModelOnly" class="p-4 bg-red-50 text-red-600 rounded-2xl text-sm font-bold mb-6"></div>
+
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 p-10">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-black text-slate-900 uppercase tracking-wider">Account Credentials</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Address (Username)</label>
+                    <input type="email" name="email" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="doctor@medicare.com" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password</label>
+                    <input type="password" name="password" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="••••••••" required />
+                </div>
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Legal Name</label>
+                    <input type="text" name="fullName" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="Dr. John Doe" required />
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">👤 Full Name</label>
-            <input type="text" name="fullName" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required />
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 p-10">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                    <i data-lucide="award" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-lg font-black text-slate-900 uppercase tracking-wider">Professional Profile</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Medical Specialty</label>
+                    <select name="specialtyId" asp-items="ViewBag.SpecialtyId" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900"></select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Assigned Clinic</label>
+                    <select name="clinicId" asp-items="ViewBag.ClinicId" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900">
+                        <option value="">-- Select Clinic --</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Consultation Fee (THB)</label>
+                    <input type="number" step="0.01" name="consultationFee" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="1000.00" required />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Years of Experience</label>
+                    <input type="number" name="experienceYears" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="e.g. 5" />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Qualifications</label>
+                    <input type="text" name="qualification" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="e.g. MBBS, MD (Cardiology)" />
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Contact Phone</label>
+                    <input type="tel" name="phoneNumber" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900" placeholder="+66 80 000 0000" />
+                </div>
+                <div class="md:col-span-2 space-y-2">
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Public Profile Biography</label>
+                    <textarea name="profileInfo" rows="4" class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900 shadow-inner" placeholder="Briefly describe the doctor's background..."></textarea>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">🔑 Password</label>
-            <input type="password" name="password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" required />
+        <div class="flex items-start gap-4 p-6 bg-blue-900 rounded-3xl text-white shadow-xl shadow-blue-100">
+            <i data-lucide="calendar-check" class="w-6 h-6 text-blue-400 mt-1"></i>
+            <div>
+                <p class="font-bold">Next Step: Scheduling</p>
+                <p class="text-sm text-blue-200">After saving, you can manage this doctor's weekly availability slots from the "Specialties" or "Schedule" management page.</p>
+            </div>
         </div>
 
-        <!-- 🩺 Doctor Profile Info -->
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">🏥 Specialty</label>
-            <select name="specialtyId" asp-items="ViewBag.SpecialtyId"
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-            </select>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">🏢 Clinic</label>
-            <select name="clinicId" asp-items="ViewBag.ClinicId"
-                    class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                <option value="">-- Select Clinic --</option>
-            </select>
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">💰 Consultation Fee ($)</label>
-            <input type="number" step="0.01" name="consultationFee"
-                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                   required />
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">🎓 Qualification</label>
-            <input type="text" name="qualification" placeholder="e.g. MBBS, MD"
-                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">📞 Phone Number</label>
-            <input type="tel" name="phoneNumber" placeholder="e.g. +66 987654321"
-                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">⌛ Experience (Years)</label>
-            <input type="number" min="0" name="experienceYears"
-                   class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">📝 Profile Info</label>
-            <textarea name="profileInfo" rows="3" placeholder="Short bio or additional info..."
-                      class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
-        </div>
-
-        <!-- 🕒 Availability Notice -->
-        <div class="bg-blue-50 border border-blue-200 text-blue-700 p-4 rounded-lg">
-            <p>
-                🗓️ You can set the doctor’s availability after creating their profile from the
-                <strong>“Manage Availability”</strong> page.
-            </p>
-        </div>
-
-        <!-- 💾 Buttons -->
-        <div class="flex items-center gap-4 pt-4">
-            <button type="submit"
-                    class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                💾 Save Doctor
+        <div class="flex items-center gap-4 pt-6 pb-20">
+            <button type="submit" class="flex-1 py-5 bg-blue-600 text-white font-black rounded-[2rem] shadow-xl shadow-blue-200 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98]">
+                Complete Registration
             </button>
-            <a asp-action="Index"
-               class="px-6 py-2.5 bg-gray-200 text-gray-800 rounded-lg shadow hover:bg-gray-300">
-                ❌ Cancel
+            <a asp-action="Index" class="px-10 py-5 bg-white text-slate-400 font-black rounded-[2rem] border border-slate-200 hover:text-red-500 hover:bg-red-50 transition-all">
+                Cancel
             </a>
         </div>
     </form>

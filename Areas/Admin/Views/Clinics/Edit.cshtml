@@ -5,46 +5,97 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="text-2xl font-bold text-gray-700 mb-6">✏️ Edit Clinic</h2>
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Update <span class="text-blue-600">Facility</span></h2>
+            <p class="text-slate-500 font-medium mt-1">Modifying records for the @Model.Name location.</p>
+        </div>
+        <a asp-action="Index"
+           class="inline-flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest hover:text-red-500 transition-colors">
+            <i data-lucide="x-circle" class="w-4 h-4"></i>
+            Discard Changes
+        </a>
+    </div>
 
-<div class="bg-white shadow rounded-2xl p-8 max-w-2xl">
-    <form asp-action="Edit" method="post" class="space-y-5">
+    <form asp-action="Edit" method="post" class="space-y-8">
         <input type="hidden" asp-for="ClinicId" />
-        <div asp-validation-summary="ModelOnly" class="text-red-500 mb-4"></div>
+        <div asp-validation-summary="ModelOnly" class="p-4 bg-red-50 text-red-600 rounded-2xl text-xs font-bold mb-6"></div>
 
-        <div>
-            <label asp-for="Name" class="block text-sm font-semibold mb-1">Clinic Name</label>
-            <input asp-for="Name" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
-            <span asp-validation-for="Name" class="text-red-500 text-sm"></span>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 p-10">
+                    <div class="space-y-8">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Official Clinic Name</label>
+                            <div class="relative group">
+                                <i data-lucide="edit-2" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300 group-focus-within:text-blue-600 transition-colors"></i>
+                                <input asp-for="Name"
+                                       class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 pl-12 font-bold text-slate-900 transition-all shadow-inner" />
+                            </div>
+                            <span asp-validation-for="Name" class="text-[10px] text-red-500 font-bold ml-1"></span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Physical Address</label>
+                            <textarea asp-for="Address" rows="3"
+                                      class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-semibold text-slate-900 transition-all shadow-inner"></textarea>
+                            <span asp-validation-for="Address" class="text-[10px] text-red-500 font-bold ml-1"></span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Reception Phone</label>
+                                <input asp-for="PhoneNumber"
+                                       class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-bold text-slate-900 shadow-inner" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Official Email</label>
+                                <input asp-for="Email" type="email"
+                                       class="w-full bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600 p-4 font-bold text-slate-900 shadow-inner" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden">
+                    <i data-lucide="settings" class="absolute -right-4 -bottom-4 w-24 h-24 text-white/5 rotate-12"></i>
+                    <h3 class="font-black text-slate-500 uppercase tracking-widest text-[10px] mb-6 relative z-10">Meta Details</h3>
+
+                    <div class="space-y-6 relative z-10">
+                        <div>
+                            <p class="text-[9px] font-black text-slate-500 uppercase">System ID</p>
+                            <p class="font-bold text-lg">#FAC-00@Model.ClinicId</p>
+                        </div>
+                        <div class="pt-6 border-t border-white/10">
+                            <p class="text-[9px] font-black text-slate-500 uppercase mb-3">Verification Status</p>
+                            <span class="inline-flex items-center gap-2 px-3 py-1 bg-green-500/20 text-green-400 text-[10px] font-black rounded-full border border-green-500/20">
+                                <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                                VERIFIED FACILITY
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-blue-50 rounded-[2rem] border border-blue-100 flex flex-col gap-3">
+                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Administrator Tip</p>
+                    <p class="text-xs text-slate-600 font-medium leading-relaxed">Updating the address will automatically reflect on all assigned doctors' public profiles.</p>
+                </div>
+            </div>
         </div>
 
-        <div>
-            <label asp-for="Address" class="block text-sm font-semibold mb-1">Address</label>
-            <textarea asp-for="Address" rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"></textarea>
-            <span asp-validation-for="Address" class="text-red-500 text-sm"></span>
-        </div>
-
-        <div>
-            <label asp-for="PhoneNumber" class="block text-sm font-semibold mb-1">Phone Number</label>
-            <input asp-for="PhoneNumber" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
-            <span asp-validation-for="PhoneNumber" class="text-red-500 text-sm"></span>
-        </div>
-
-        <div>
-            <label asp-for="Email" class="block text-sm font-semibold mb-1">Email</label>
-            <input asp-for="Email" type="email" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none" />
-            <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
-        </div>
-
-        <div class="flex justify-between pt-6">
-            <a asp-action="Index"
-               class="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-100 transition">
-                ⬅ Back
-            </a>
+        <div class="flex items-center gap-4 pt-6 pb-20">
             <button type="submit"
-                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-emerald-400 text-white font-semibold rounded-xl shadow hover:shadow-lg transition">
-                💾 Save Changes
+                    class="flex-1 py-5 bg-blue-600 text-white font-black rounded-[2rem] shadow-xl shadow-blue-100 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-[0.98] flex items-center justify-center gap-3 group">
+                <i data-lucide="check-circle-2" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
+                Apply Permanent Changes
             </button>
+            <a asp-action="Index"
+               class="px-10 py-5 bg-white text-slate-400 font-black rounded-[2rem] border border-slate-200 hover:text-slate-900 transition-all">
+                Cancel
+            </a>
         </div>
     </form>
 </div>

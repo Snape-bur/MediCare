@@ -5,93 +5,149 @@
     Layout = "~/Areas/Doctor/Views/Shared/_Layout.cshtml";
 }
 
-<div class="max-w-4xl mx-auto p-6 space-y-8">
+<div class="max-w-6xl mx-auto px-6 py-12 space-y-10 animate-in fade-in duration-700">
 
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-        <div>
-            <h1 class="page-title">🩺 Appointment Details</h1>
-            <p class="page-subtitle">Review patient consultation and feedback.</p>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+            <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-xl shadow-blue-200">
+                <i data-lucide="clipboard-list" class="w-8 h-8"></i>
+            </div>
+            <div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Visit <span class="text-blue-600">Details</span></h2>
+                <p class="text-slate-500 font-medium mt-1">Reviewing consultation records and patient feedback for the selected session.</p>
+            </div>
         </div>
         <a href="@Url.Action("Index", "Appointments", new { area = "Doctor" })"
-           class="btn-gray relative z-50">
-            ⬅ Back to Appointments
+           class="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-500 font-black rounded-xl hover:text-slate-900 hover:bg-slate-50 transition-all uppercase text-[10px] tracking-widest shadow-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Back to Registry
         </a>
     </div>
 
-    <!-- Patient Info Card -->
-    <div class="card">
-        <h2 class="text-lg font-semibold text-brand-800 mb-4">Patient Information</h2>
-        <div class="text-sm space-y-2">
-            <p><span class="text-gray-500">Full Name:</span> <strong>@Model.Patient?.AppUser?.FullName</strong></p>
-            <p><span class="text-gray-500">Email:</span> <strong>@Model.Patient?.AppUser?.Email</strong></p>
-            <p><span class="text-gray-500">Phone:</span> <strong>@Model.Patient?.PhoneNumber</strong></p>
-        </div>
-    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-    <!-- Appointment Info -->
-    <div class="card">
-        <h2 class="text-lg font-semibold text-brand-800 mb-4">Appointment</h2>
-        <div class="text-sm space-y-2">
-            <p><span class="text-gray-500">Date/Time:</span> <strong>@Model.DateTime.ToString("dd MMM yyyy • hh:mm tt")</strong></p>
-            <p><span class="text-gray-500">Status:</span> <strong>@Model.Status</strong></p>
-        </div>
-    </div>
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                <i data-lucide="user" class="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12"></i>
+                <h3 class="font-black text-slate-500 uppercase tracking-widest text-[10px] mb-8 relative z-10">Patient Holder</h3>
 
-    <!-- Consultation Info -->
-    <div class="card">
-        <h2 class="text-lg font-semibold text-brand-800 mb-4">Consultation Notes</h2>
+                <div class="space-y-6 relative z-10">
+                    <div class="flex items-center gap-4 pb-6 border-b border-white/10">
+                        <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-blue-400 font-black text-xl">
+                            @Model.Patient?.AppUser?.FullName.Substring(0, 1)
+                        </div>
+                        <div>
+                            <p class="text-lg font-black leading-none">@Model.Patient?.AppUser?.FullName</p>
+                            <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mt-2">Active Patient</p>
+                        </div>
+                    </div>
 
-        <div class="space-y-6">
-            <div>
-                <label class="text-gray-600 font-semibold">Notes</label>
-                <div class="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm whitespace-pre-wrap border border-gray-200">
-                    @(string.IsNullOrWhiteSpace(Model.Notes)
-                                        ? "No notes available."
-                                        : Model.Notes)
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-4 h-4 text-slate-500"></i>
+                            <span class="text-xs font-bold text-slate-300">@Model.Patient?.AppUser?.Email</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-4 h-4 text-slate-500"></i>
+                            <span class="text-xs font-bold text-slate-300">@Model.Patient?.PhoneNumber</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <label class="text-gray-600 font-semibold">Prescription</label>
-                <div class="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm whitespace-pre-wrap border border-gray-200">
-                    @(string.IsNullOrWhiteSpace(Model.Prescription)
-                                        ? "No prescription issued."
-                                        : Model.Prescription)
+            <div class="bg-white rounded-[2rem] p-8 border border-slate-200 shadow-sm">
+                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Schedule Details</h4>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-blue-50 rounded-xl text-blue-600">
+                            <i data-lucide="calendar" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase">Consultation Date</p>
+                            <p class="text-sm font-black text-slate-900">@Model.DateTime.ToString("dd MMM yyyy")</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-indigo-50 rounded-xl text-indigo-600">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase">Time Slot</p>
+                            <p class="text-sm font-black text-slate-900">@Model.DateTime.ToString("hh:mm tt")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
+                    <span class="text-[10px] font-black text-slate-400 uppercase">Workflow Status</span>
+                    <span class="px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100 text-[10px] font-black rounded-lg uppercase tracking-widest">@Model.Status</span>
                 </div>
             </div>
         </div>
-    </div>
 
+        <div class="lg:col-span-2 space-y-8">
 
-    <!-- Feedback Section -->
-    <div class="card">
-        <h2 class="text-lg font-semibold text-brand-800 mb-4">Patient Feedback</h2>
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-900/5 overflow-hidden">
+                <div class="p-8 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                    <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs">Consultation Records</h3>
+                    <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i>
+                </div>
 
-        @if (Model.Feedbacks != null && Model.Feedbacks.Any())
-        {
-            var feedback = Model.Feedbacks.FirstOrDefault();
+                <div class="p-10 space-y-10">
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Clinical Observations</label>
+                        <div class="bg-slate-50 rounded-[2rem] p-8 text-slate-700 text-sm font-medium leading-relaxed border border-slate-100 shadow-inner italic">
+                            @(string.IsNullOrWhiteSpace(Model.Notes) ? "No clinical notes available for this session." : Model.Notes)
+                        </div>
+                    </div>
 
-            <div class="space-y-2">
-                <p>
-                    <span class="font-semibold text-gray-700 mr-2">Rating:</span>
-                    <span class="text-yellow-500 font-bold text-lg">★ @feedback.Rating</span>
-                </p>
-
-                <p><strong class="text-gray-700">Comment:</strong></p>
-                <p class="italic text-gray-600 bg-gray-50 p-3 rounded-lg">
-                    "@feedback.Comments"
-                </p>
-
-                <p class="text-xs text-gray-400 mt-2">
-                    Submitted on: @feedback.CreatedAt.ToString("dd MMM yyyy")
-                </p>
+                    <div class="space-y-4">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Prescription & Medication</label>
+                        <div class="bg-blue-50/50 rounded-[2rem] p-8 border border-blue-100/50">
+                            <div class="flex items-start gap-4">
+                                <i data-lucide="pill" class="w-5 h-5 text-blue-600 mt-1"></i>
+                                <p class="text-sm font-bold text-slate-800 leading-relaxed whitespace-pre-wrap">
+                                    @(string.IsNullOrWhiteSpace(Model.Prescription) ? "No medication was prescribed during this visit." : Model.Prescription)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        }
-        else
-        {
-            <p class="text-gray-400 italic">No feedback submitted yet.</p>
-        }
-    </div>
 
+            <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-lg p-10 relative overflow-hidden">
+                <h3 class="font-black text-slate-900 uppercase tracking-widest text-xs mb-8">Patient Satisfaction</h3>
+
+                @if (Model.Feedbacks != null && Model.Feedbacks.Any())
+                {
+                    var feedback = Model.Feedbacks.FirstOrDefault();
+                    <div class="flex flex-col md:flex-row gap-10">
+                        <div class="flex flex-col items-center justify-center p-6 bg-amber-50 rounded-[2rem] border border-amber-100 min-w-[140px]">
+                            <p class="text-[9px] font-black text-amber-600 uppercase tracking-widest mb-2">Rating</p>
+                            <div class="flex items-center gap-2">
+                                <span class="text-3xl font-black text-slate-900">@feedback.Rating</span>
+                                <i data-lucide="star" class="w-6 h-6 text-amber-500 fill-amber-500"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i data-lucide="quote" class="absolute -top-4 -left-2 w-10 h-10 text-slate-100 -z-10"></i>
+                                <p class="text-lg font-bold text-slate-700 italic leading-relaxed">"@feedback.Comments"</p>
+                            </div>
+                            <div class="mt-6 flex items-center justify-between border-t border-slate-50 pt-4">
+                                <span class="text-[10px] font-black text-slate-400 uppercase">Verified Feedback</span>
+                                <span class="text-[10px] font-bold text-slate-400">@feedback.CreatedAt.ToString("dd MMM yyyy")</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="flex items-center gap-4 p-8 bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                        <i data-lucide="message-square-dashed" class="w-6 h-6 text-slate-300"></i>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Awaiting patient feedback for this session.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
